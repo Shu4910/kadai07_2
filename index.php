@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -12,6 +19,9 @@
   </head>
   <body>
     <div class="container mt-5">
+            <!-- エラーメッセージの表示 -->
+        <?php if (!empty($msg)) { echo '<p style="color:red;">' . $msg . '</p>'; } ?>
+
         <div class="row justify-content-center">
             <div class="col-md-5">
                 <h2 class="text-center mb-4">BizDiverse</h2>
@@ -32,6 +42,10 @@
                 </div>
                 <div class="text-center mt-4">
                     <p>まだ登録していないですか？ <a href="register.php">会員登録する</a></p>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <p>パスワードを忘れた <a href="forgot.php">会員登録する</a></p>
                 </div>
             </div>
         </div>
