@@ -19,12 +19,12 @@
                     <div class="card-body">
                         <form action="login.php" method="post">
                             <div class="form-group">
-                                <label for="email">Eメール</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <label for="mail">Eメール</label>
+                                <input type="mail" class="form-control" id="mail" name="mail" required>
                             </div>
                             <div class="form-group">
-                                <label for="password">パスワード</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <label for="pass">パスワード</label>
+                                <input type="password" class="form-control" id="pass" name="pass" required>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">ログインする</button>
                         </form>
