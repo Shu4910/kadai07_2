@@ -146,7 +146,7 @@
 
     <div class="each-form step4" style="display:none">
         <div class="fukidashi_text">
-        <p style="margin-bottom: 0px;">最後にお住まいの地域を入力してください。<br>※郵便番号を入力すると、自動的に入力されます。</p>
+        <p style="margin-bottom: 0px;">最後にお住まいの地域とパスワードを入力してください。<br>※郵便番号を入力すると、自動的に入力されます。</p>
         </div>
         <table>
         <tbody>
@@ -175,6 +175,13 @@
             </tr>
         </tbody>
         </table>
+
+        
+        <div class="each-form">
+            パスワード: <input type="password" id="pass" name="pass">
+            <br>
+        </div>
+
         <div class="pager_wrap" style="margin-top: 100px;">
             <div class="pager_inner">
                 <div class="button-group"> <!-- Add this div -->
