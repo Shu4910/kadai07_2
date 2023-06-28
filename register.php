@@ -79,7 +79,7 @@
         生年月日: <input type="date" id="birthday" name="birthday" value="1992-09-10">
         <br>
         <div class="each-form">
-            メールアドレス: <input type="mail" id="mail" name="mail">
+            メールアドレス: <input type="email" id="email" name="email">
             <br>
         </div>
         <div class="each-form">

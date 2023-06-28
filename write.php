@@ -3,7 +3,7 @@
 //1. POSTデータ取得 ここは同じ
 $name = $_POST["name"];
 $kana = $_POST["kana"];
-$mail = $_POST["mail"];
+$email = $_POST["email"];
 $tel = $_POST["tel"];
 $birthday = $_POST["birthday"];
 $types = $_POST["types"];
@@ -23,15 +23,15 @@ require "database.php";
 
 // 1. SQL文を用意
 $stmt = $pdo->prepare("INSERT INTO
-                        bizdiverse(id, name, kana, mail, tel, birthday, types, techo, info, zipcode, address1, address2, address3, pass)
+                        bizdiverse(id, name, kana, email, tel, birthday, types, techo, info, zipcode, address1, address2, address3, pass)
                         VALUES (
-                        NULL, :name, :kana, :mail, :tel, :birthday, :types, :techo, :info, :zipcode, :address1, :address2, :address3,:pass)");
+                        NULL, :name, :kana, :email, :tel, :birthday, :types, :techo, :info, :zipcode, :address1, :address2, :address3,:pass)");
 
 
 //  2. バインド変数を用意
 $stmt->bindValue(':name', $name, PDO::PARAM_STR);
 $stmt->bindValue(':kana', $kana, PDO::PARAM_STR);
-$stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+$stmt->bindValue(':email', $email, PDO::PARAM_STR);
 $stmt->bindValue(':tel', $tel, PDO::PARAM_STR);
 $stmt->bindValue(':birthday', $birthday, PDO::PARAM_STR);
 $stmt->bindValue(':types', $types, PDO::PARAM_STR);

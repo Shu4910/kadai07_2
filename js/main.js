@@ -11,7 +11,7 @@ $(document).ready(function() {
     });
 
     $('#next_btn2').click(function() {
-        if($('#birthday').val() == "" || $('#mail').val() == ""){
+        if($('#birthday').val() == "" || $('#email').val() == ""){
             alert('生年月日とメールアドレスを記入してください。');
         } else {
             $('.step2').hide();

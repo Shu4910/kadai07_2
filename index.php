@@ -30,7 +30,7 @@
                         <form action="login.php" method="post">
                             <div class="form-group">
                                 <label for="mail">Eメール</label>
-                                <input type="mail" class="form-control" id="mail" name="mail" required>
+                                <input type="email" class="form-control" id="mail" name="mail" required>
                             </div>
                             <div class="form-group">
                                 <label for="pass">パスワード</label>
@@ -41,11 +41,10 @@
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <p>まだ登録していないですか？ <a href="register.php">会員登録する</a></p>
+                    <p> <a href="register.php">会員登録する</a></p>
                 </div>
-                
                 <div class="text-center mt-4">
-                    <p>パスワードを忘れた <a href="forgot.php">会員登録する</a></p>
+                <p> <a href="forgot1.php">パスワードを忘れた</a></p>
                 </div>
             </div>
         </div>
