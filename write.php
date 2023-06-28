@@ -14,8 +14,8 @@ $address1 = $_POST["address1"];
 $address2 = $_POST["address2"];
 $address3 = $_POST["address3"];
 
-// パスワードのハッシュ化
-$pass = pass_hash($_POST["pass"], pass_DEFAULT);
+$pass = password_hash($_POST["pass"], PASSWORD_DEFAULT);
+
 
 //2. DB接続します
 require "database.php";

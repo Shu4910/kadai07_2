@@ -17,7 +17,7 @@ if ($status == false) {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($result) {
         $_SESSION['mail'] = $mail; // セッションにメールアドレスを保存
-        header('Location: info.php'); // ユーザーダッシュボードにリダイレクト
+        header('Location: user_dashboard.php'); // ユーザーダッシュボードにリダイレクト
     } else {
         echo "メールアドレスまたはパスワードが間違っています。";
     }

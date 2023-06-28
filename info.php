@@ -7,16 +7,26 @@ $mail = $_SESSION['mail']; // セッションからメールアドレスを取�
 $msg = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // ログアウトが押された場合
+    if (isset($_POST['logout'])) {
+        session_destroy();
+        header('Location: index.php');
+        exit;
+    }
+
     $newName = $_POST['name'];
     $newMail = $_POST['mail'];
     $newPass = $_POST['pass'];
     $confirmPass = $_POST['confirm_pass'];
 
     if ($newPass === $confirmPass) {
+        // パスワードをハッシュ化
+        $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
+
         $stmt = $pdo->prepare("UPDATE bizdiverse SET name = :name, mail = :mail, pass = :pass WHERE mail = :oldMail");
         $stmt->bindValue(':name', $newName, PDO::PARAM_STR);
         $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
-        $stmt->bindValue(':pass', $newPass, PDO::PARAM_STR);
+        $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
         $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
         $stmt->execute();
 
@@ -45,9 +55,10 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
     <form method="POST">
         <label>名前：</label><input type="text" name="name" value="<?php echo $userData['name']; ?>"><br>
         <label>Eメール：</label><input type="email" name="mail" value="<?php echo $userData['mail']; ?>"><br>
-        <label>パスワード：</label><input type="password" name="pass" value="<?php echo $userData['pass']; ?>"><br>
+        <label>パスワード：</label><input type="password" name="pass"><br>
         <label>パスワード確認：</label><input type="password" name="confirm_pass"><br>
-        <input type="submit" value="更新">
+        <input type="submit" value="更新"><br>
+        <input type="submit" name="logout" value="ログアウト">
     </form>
 </body>
 </html>
