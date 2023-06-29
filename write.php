@@ -23,15 +23,16 @@ require "database.php";
 
 // 1. SQL文を用意
 $stmt = $pdo->prepare("INSERT INTO
-                        bizdiverse(id, name, kana, email, tel, birthday, types, techo, info, zipcode, address1, address2, address3, pass)
+                        bizdiverse(id, name, kana, mail, tel, birthday, types, techo, info, zipcode, address1, address2, address3, pass)
                         VALUES (
-                        NULL, :name, :kana, :email, :tel, :birthday, :types, :techo, :info, :zipcode, :address1, :address2, :address3,:pass)");
+                        NULL, :name, :kana, :mail, :tel, :birthday, :types, :techo, :info, :zipcode, :address1, :address2, :address3,:pass)");
+
+$stmt->bindValue(':mail', $email, PDO::PARAM_STR);
 
 
 //  2. バインド変数を用意
 $stmt->bindValue(':name', $name, PDO::PARAM_STR);
 $stmt->bindValue(':kana', $kana, PDO::PARAM_STR);
-$stmt->bindValue(':email', $email, PDO::PARAM_STR);
 $stmt->bindValue(':tel', $tel, PDO::PARAM_STR);
 $stmt->bindValue(':birthday', $birthday, PDO::PARAM_STR);
 $stmt->bindValue(':types', $types, PDO::PARAM_STR);
