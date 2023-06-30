@@ -22,8 +22,31 @@ if ($mail === $_SESSION['mail'] && $code === $savedCode) {
     // ログイン後のリダイレクト先を指定（a.phpにリダイレクトする場合）
     header('Location:info2.php');
     exit();
-} else {
-    // 認証エラーの場合は適切な処理を行う（例: エラーメッセージの表示など）
-    echo 'ログイン失敗';
 }
 ?>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>認証エラー</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <?php
+                        // 認証エラーの場合は適切な処理を行う（例: エラーメッセージの表示など）
+                        echo '<p class="text-danger">認証番号が異なっているか、すでにこのコードを使って認証が完了しています。</p>';
+                        ?>
+                        <button onclick="location.href='forgot1.php'" class="btn btn-primary">認証コード発行に戻る</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

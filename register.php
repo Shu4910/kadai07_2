@@ -55,7 +55,8 @@
         <p style="margin-bottom: 0px;">名前とふりがなを記入してください。</p>
         </div>
         <div id="form" class="step_flex">
-        <form action="write.php" method="post" id="myForm">
+            
+<form action="write.php" method="post" id="myForm" onsubmit="return checkPasswordMatch();">
                     名前: <input type="text" id="name" name="name">
                     <br>
             <div class="each-form">
@@ -146,15 +147,15 @@
 
     <div class="each-form step4" style="display:none">
         <div class="fukidashi_text">
-        <p style="margin-bottom: 0px;">最後にお住まいの地域とパスワードを入力してください。<br>※郵便番号を入力すると、自動的に入力されます。</p>
+        <p style="margin-bottom: 0px;">住まいの地域とパスワードを入力してください。</p>
         </div>
         <table>
         <tbody>
             <tr>
-                <th>郵便番号</th>
+                <th>郵便番号 </th>
                 <td class="zipcode-cell">
                     <input id="zipcode" class="zipcode" type="text" name="zipcode" value="" placeholder="例)8120012">
-                    <button id="search" type="button">住所検索</button>
+                    <button id="search" type="button">自動で住所を入力</button>
                     <p id="error"></p>
                 </td>
             </tr>
@@ -175,16 +176,19 @@
             </tr>
         </tbody>
         </table>
-
         
         <div class="each-form">
-            パスワード: <input type="pass" id="pass" name="pass">
+            パスワード: <input type="password" id="pass" name="pass">
+            <br>
+        </div>
+        <div class="each-form"> <!-- new line -->
+            パスワード(確認): <input type="password" id="confirm_pass" name="confirm_pass"> <!-- new line -->
             <br>
         </div>
 
         <div class="pager_wrap" style="margin-top: 100px;">
             <div class="pager_inner">
-                <div class="button-group"> <!-- Add this div -->
+                <div class="button-group"> 
                     <button type="button" id="back_btn3" class="back_step_btn"><span>戻る</span></button>
                     <input type="submit" value="送信" class="submit-button">
                 </div>
@@ -196,6 +200,15 @@
 
     <script src="js/main.js"></script>
     <script src="js/index.js"></script>
+
+    <script>
+function checkPasswordMatch() {
+    var password = document.getElementById("pass").value;
+    var confirmPassword = document.getElementById("confirm_pass").value;
+
+}
+</script>
+
 
     <script>
         $(document).on("keydown", ":input:not(textarea)", function(event) {
@@ -262,9 +275,9 @@
   });
 </script>
 
-
 <script src="https://cdn.jsdelivr.net/npm/fetch-jsonp@1.1.3/build/fetch-jsonp.min.js"></script>
 <script src="js/enter.js"></script>
+
 
 <footer>BizDiverse</footer>
 </div>

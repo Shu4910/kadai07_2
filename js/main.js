@@ -30,13 +30,24 @@ $(document).ready(function() {
     });
 
     $('#myForm').submit(function(){
-        if(isStep4 && ($('#zipcode').val() == "" || $('#address1').val() == "" || $('#address2').val() == "" || $('#address3').val() == "")){
-            alert('お住まいの地域を入力してください。');  // 変更：条件を満たしたときだけアラートを表示
-            return false;
-        }else{
-            alert('登録が完了しました！');  // 変更：条件を満たしたときだけアラートを表示
+        var password = $('#pass').val();
+        var confirmPassword = $('#confirm_pass').val();
+    
+        // パスワードとパスワード(確認)が一致しているかチェック
+        if (password !== confirmPassword) {
+            alert('パスワードが一致していません。');
+            return false;  // 送信をキャンセル
         }
+    
+        if(isStep4 && ($('#zipcode').val() == "" || $('#address1').val() == "" || $('#address2').val() == "" || $('#address3').val() == "")){
+            alert('お住まいの地域を入力してください。');
+            return false;
+        }
+    
+        alert('登録が完了しました！');
     });
+
+    
 
     $('#back_btn1').click(function() {
     $('.step2').hide();
