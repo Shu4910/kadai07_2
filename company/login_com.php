@@ -1,16 +1,23 @@
 <?php
 session_start(); // セッションを開始
-require 'database.php'; // データベース接続のスクリプト
+
+// 2. DB接続
+try {
+    //pass:MAMP='root',XAMPP=''
+    $pdo = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
+} catch (PDOException $e) {
+    exit('DBConnectError'.$e->getMessage());
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $mail = $_POST['mail'];
+    $com_email = $_POST['com_email'];
     $pass = $_POST['pass'];
 
     // メールアドレスに一致するユーザーを検索
-    $stmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail");
-    $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+    $stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE com_email = :com_email");
+    $stmt->bindValue(':com_email', $com_email, PDO::PARAM_STR);
     $stmt->execute();
-
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // ユーザーの存在を確認
@@ -22,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // ユーザーが存在し、パスワードが一致するかを確認
     if ($user && password_verify($pass, $user['pass'])) {
-        $_SESSION['mail'] = $user['mail']; // ユーザーをログイン状態にする
-        header('Location: dash.php'); // ユーザーをダッシュボードまたはホームページにリダイレクト
+        $_SESSION['com_email'] = $user['com_email']; // ユーザーをログイン状態にする
+        header('Location: dash_com.php'); // ユーザーをダッシュボードまたはホームページにリダイレクト
         exit;
     } else {
         echo "Password not verified.<br/>";

@@ -66,8 +66,8 @@ if ($status === false) {
     $error = $stmt->errorInfo();
     exit('ErrorMessage:'.$error[2]);
 } else {
-    // Redirect to index.php
-    header('Location: index.php');
+    // Redirect to index2.php
+    header('Location: index2.php');
     exit;
 }
 ?>

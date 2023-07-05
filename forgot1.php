@@ -17,7 +17,7 @@
                 <h2 class="text-center mb-4">Forgot Password</h2>
                 <div class="card">
     <div class="card-body">
-        <form method="post" action="forgot.php" onsubmit="alert('認証コードが送信されました。'); return false;">
+        <form method="post" action="forgot.php" onsubmit="alert('認証コードが送信されました。');">
             <div class="form-group">
                 <label for="email">Email：</label>
                 <input type="email" class="form-control" id="email" name="email" required>
@@ -33,7 +33,7 @@
                     </form>
                 </div>
                 <div class="text-center mt-4">
-                    <form action="index.php">
+                    <form action="index2.php">
                         <button type="submit" class="btn btn-link">戻る</button>
                     </form>
                 </div>

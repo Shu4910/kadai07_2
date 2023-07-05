@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログアウトが押された場合
     if (isset($_POST['logout'])) {
         session_destroy();
-        header('Location: index.php');
+        header('Location: index2.php');
         exit;
     }
     
