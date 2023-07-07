@@ -13,7 +13,6 @@ try {
 $com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
 $msg = '';
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログアウトが押された場合
     if (isset($_POST['logout'])) {
@@ -24,39 +23,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['update'])) {
         // All the other form fields
         $newMail = $_POST['com_email'];
-        $newPass = $_POST['pass'];
         $prefecture = $_POST['prefecture'];
         $area = $_POST['area'];
-        $newPass = $_POST['pass'];
-        $confirmPass = $_POST['confirm_pass'];
-        $cities = is_array($_POST['city']) ? implode(",", $_POST['city']) : $_POST['city'];
+        $cities = isset($_POST['city']) ? (is_array($_POST['city']) ? implode(",", $_POST['city']) : $_POST['city']) : '';
 
+        // Prepare the update statement with all the fields
+        $stmt = $pdo->prepare("UPDATE bizdiverse_company SET com_email = :com_email, prefecture = :prefecture, area = :area, city = :city WHERE com_email = :oldMail");
+        $stmt->bindValue(':com_email', $newMail, PDO::PARAM_STR);
+        $stmt->bindValue(':oldMail', $com_email, PDO::PARAM_STR);
+        $stmt->bindValue(':prefecture', $prefecture, PDO::PARAM_STR);
+        $stmt->bindValue(':area', $area, PDO::PARAM_STR);
+        $stmt->bindValue(':city', $cities, PDO::PARAM_STR);
+        $stmt->execute();
 
-        
-
-        if ($newPass === $confirmPass) {
-            // パスワードをハッシュ化
-            $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
-
-            // Prepare the update statement with all the fields
-            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET com_email = :com_email, pass = :pass, prefecture = :prefecture, area = :area, city = :city WHERE com_email = :oldMail");
-            $stmt->bindValue(':com_email', $newMail, PDO::PARAM_STR);
-            $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
-            $stmt->bindValue(':oldMail', $com_email, PDO::PARAM_STR);
-            $stmt->bindValue(':prefecture', $prefecture, PDO::PARAM_STR);
-            $stmt->bindValue(':area', $area, PDO::PARAM_STR);
-            $stmt->bindValue(':city', $cities, PDO::PARAM_STR);
-            $stmt->execute();
-            
-
-            $_SESSION['com_email'] = $newMail; // Update the session email
-            $com_email = $newMail; // Update the local email variable
-            $msg = '登録を更新しました。';
-        } else {
-            $msg = 'パスワードが一致しません。';
-        }
+        $_SESSION['com_email'] = $newMail; // Update the session email
+        $com_email = $newMail; // Update the local email variable
+        $msg = '登録を更新しました。';
     }
 }
+
+
+
 
 $stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE com_email = :com_email");
 $stmt->bindValue(':com_email', $com_email, PDO::PARAM_STR);
@@ -92,34 +79,46 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 <input type="email" class="form-control" id="com_email" name="com_email" value="<?php echo htmlspecialchars($userData['com_email'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
-                                <label for="pass">パスワード：</label>
-                                <input type="password" class="form-control" id="pass" name="pass" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirm_pass">パスワード確認：</label>
-                                <input type="password" class="form-control" id="confirm_pass" name="confirm_pass" required>
-                            </div>
-                            <div class="form-group">
-            <label for="prefecture">都道府県:</label>
-            <select class="form-control" id="prefecture" name="prefecture">
-                <option value="">選択してください</option>
-                <option value="tokyo">東京都</option>
-                <option value="kanagawa">神奈川県</option>
-                <option value="saitama">埼玉県</option>
-            </select>
-        </div>
-        <div class="form-group">
-        <select class="form-control" id="area" name="area">
-                <option value="">選択してください</option>
-            </select>
-        </div>
+    <label for="prefecture">都道府県:</label>
+    <select class="form-control" id="prefecture" name="prefecture" required>
+        <option value="">選択してください</option>
+        <option value="tokyo" <?php if($userData['prefecture'] == "tokyo") echo "selected";?>>東京都</option>
+        <option value="kanagawa" <?php if($userData['prefecture'] == "kanagawa") echo "selected";?>>神奈川県</option>
+        <option value="saitama" <?php if($userData['prefecture'] == "saitama") echo "selected";?>>埼玉県</option>
+        <!-- 他の都道府県もここに追加 -->
+    </select>
+</div>
 
-
-        <div class="form-group">
+<div class="form-group">
+    <label for="area">エリア:</label>
+    <select class="form-control" id="area" name="area" required>
+        <option value="">選択してください</option>
+        <option value="inside" <?php if($userData['area'] == "inside") echo "selected";?>>23区内</option>
+        <option value="outside" <?php if($userData['area'] == "outside") echo "selected";?>>23区外</option>
+        <!-- 他のエリアもここに追加 -->
+    </select>
+</div>
+<div class="form-group">
     <p>都市選択:</p>
     <div id="city">
-        <!-- Default option is blank. Update this with JS -->
+        <!-- PHPで都市のチェックボックスを動的に生成 -->
+        <?php
+        $cities = explode(',', $userData['city']);
+        $cityMappings = [
+            "chiyoda" => "千代田区",
+            "minato" => "港区",
+            "hachi" => "八王子市",
+            "tachi" => "立川市",
+            // 他の都市もこの形式で追加していきます
+        ];
+        foreach ($cities as $city) {
+            echo '<input type="checkbox" id="'.$city.'" name="city[]" value="'.$city.'" checked> <label for="'.$city.'">'.$cityMappings[$city].'</label><br>';
+        }
+        ?>
     </div>
+</div>
+
+
 </div>
 
 
@@ -127,7 +126,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                             <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
                         </form>
                         <form method="POST" style="margin-top: 10px;">
-                            <button type="submit" name="logout" class="btn btn-secondary btn-block">ログアウト</button>
+                            <button type="submit" name="logout" class="btn btn-secondary btn-block">ホーム画面に戻る</button>
                         </form>
                     </div>
                 </div>
@@ -161,19 +160,14 @@ $(document).ready(function(){
     } 
     else if(area == 'outside'){
         cityOptions = '<input type="checkbox" id="hachi" name="city[]" value="hachi"> <label for="hachi">八王子</label><br>' +
-                      '<input type="checkbox" id="minato" name="city[]" value="minato"> <label for="minato">港区</label><br>' //+ ... 東京23区の全ての区をここにリストアップしてください
+                      '<input type="checkbox" id="tachi" name="city[]" value="tachi"> <label for="minato">立川市</label><br>' //+ ... 東京23区の全ての区をここにリストアップしてください
     } 
     else {
         cityOptions = '';
     }
     $('#city').html(cityOptions);
 });
-
 });
-
-
-
-
 </script>
 
 
