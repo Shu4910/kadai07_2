@@ -63,7 +63,7 @@ INSERT INTO `bizdiverse` (`id`, `name`, `kana`, `mail`, `tel`, `birthday`, `type
 --
 
 CREATE TABLE `bizdiverse_company` (
-  `id_com` int(12) NOT NULL,
+  `company_id` int(12) NOT NULL,
   `houjin` varchar(64) NOT NULL,
   `tanto` varchar(64) NOT NULL,
   `com_email` varchar(64) NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE `bizdiverse_company` (
 -- テーブルのデータのダンプ `bizdiverse_company`
 --
 
-INSERT INTO `bizdiverse_company` (`id_com`, `houjin`, `tanto`, `com_email`, `com_tel`, `types`, `pass`, `content`, `zipcode`, `address1`, `address2`, `address3`, `address4`, `address5`, `prefecture`, `area`, `city`) VALUES
+INSERT INTO `bizdiverse_company` (`company_id`, `houjin`, `tanto`, `com_email`, `com_tel`, `types`, `pass`, `content`, `zipcode`, `address1`, `address2`, `address3`, `address4`, `address5`, `prefecture`, `area`, `city`) VALUES
 (2, 'aaa', 'adfa', 'hidehide@hide.co.jp', 0, '企業', '$2y$10$ON5s4cnQXIvujYwLNz55sea/6WpzND/LTc47m4elyUvuT4FDjaTju', '', 2340031, 'aa', 'adafa', 'fdasfa', '', '', '', '', ''),
 (3, 'aaa', 'dafa', 'sz91hs@gmail.com', 2147483647, '企業', '$2y$10$6XaHiFjsyuybKoQx7cYydeXm4AV3SVC/JQGQfNN2.38UM8yiS1Jgu', 'pipi', 1020072, '東京都', '千代田区', '飯田橋', '', '', 'tokyo', 'inside', 'chiyoda,minato');
 
@@ -134,7 +134,7 @@ ALTER TABLE `bizdiverse`
 -- テーブルのインデックス `bizdiverse_company`
 --
 ALTER TABLE `bizdiverse_company`
-  ADD PRIMARY KEY (`id_com`);
+  ADD PRIMARY KEY (`company_id`);
 
 --
 -- テーブルのインデックス `messages`
@@ -166,7 +166,7 @@ ALTER TABLE `bizdiverse`
 -- テーブルの AUTO_INCREMENT `bizdiverse_company`
 --
 ALTER TABLE `bizdiverse_company`
-  MODIFY `id_com` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `company_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- テーブルの AUTO_INCREMENT `messages`
@@ -188,14 +188,14 @@ ALTER TABLE messages
 -- テーブルの制約 `messages`
 --
 ALTER TABLE `messages`
-  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`company_send_id`) REFERENCES `bizdiverse_company` (`id_com`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`company_send_id`) REFERENCES `bizdiverse_company` (`company_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`user_send_id`) REFERENCES `bizdiverse` (`id`) ON UPDATE CASCADE;
 
 --
 -- テーブルの制約 messages
 --
 ALTER TABLE messages
-  ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`com_sess_id`) REFERENCES `bizdiverse_company` (`id_com`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`com_sess_id`) REFERENCES `bizdiverse_company` (`company_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `sessions_ibfk_2` FOREIGN KEY (`user_sess_id`) REFERENCES `bizdiverse` (`id`) ON UPDATE CASCADE;
 COMMIT;
 

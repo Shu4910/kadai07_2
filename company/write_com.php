@@ -34,8 +34,8 @@ if ($exists) {
                            SET houjin = :houjin, tanto = :tanto, com_email = :com_email, com_tel = :com_tel, 
                                types = :types, zipcode = :zipcode, address1 = :address1, 
                                address2 = :address2, address3 = :address3, pass = :pass 
-                           WHERE id_com = :id_com");
-    $stmt->bindValue(':id_com', $exists['id_com'], PDO::PARAM_INT);
+                           WHERE company_id = :company_id");
+    $stmt->bindValue(':company_id', $exists['company_id'], PDO::PARAM_INT);
 } else {
     // Record does not exist, insert new one
     $stmt = $pdo->prepare("INSERT INTO bizdiverse_company

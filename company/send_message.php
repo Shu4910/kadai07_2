@@ -30,12 +30,12 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
             
 
             // Get sender_id based on email
-            $stmt = $conn->prepare("SELECT id_com FROM bizdiverse_company WHERE com_email = ?");
+            $stmt = $conn->prepare("SELECT company_id FROM bizdiverse_company WHERE com_email = ?");
             $stmt->bind_param("s", $com_email);
             $stmt->execute();
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
-            $sender_id = $row['id_com'];
+            $sender_id = $row['company_id'];
 
             $message_body = $_POST['message_body'];
 

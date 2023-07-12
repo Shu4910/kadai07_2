@@ -2,9 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-
-<style>
+    <style>
         .message-company,
         .message-user {
             color: white;
@@ -16,6 +14,7 @@
 
         .message-company {
             background-color: #8A8A8A;
+            text-align: right;
         }
 
         .message-user {
@@ -101,10 +100,10 @@
         <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
         <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
         <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
-        <input type="hidden" name="sender_type" value="company">
+        <input type="hidden" name="sender_type" value="user">
         <input type="submit" value="Send" class="btn btn-primary">
     </form>
 
-    <button onclick="location.href='com_chat.php'" class="btn btn-secondary mt-3">Back</button>
+    <button onclick="location.href='chat_non.php'" class="btn btn-secondary mt-3">Back</button>
 </body>
 </html>
