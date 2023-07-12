@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+    <style>
+        .chat-container {
+            width: 400px;
+            height: 400px;
+            border: 1px solid #000;
+            overflow: auto;
+        }
+        .chat-message {
+            max-width: 60%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .outgoing {
+            background-color: #d3d3d3;
+            margin-left: auto;
+            margin-right: 0;
+        }
+        .incoming {
+            background-color: #7db9e8;
+            margin-left: 0;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container" class="chat-container"></div>
+    <input type="text" id="message">
+    <button onclick="sendMessage()">Send</button>
+    <button onclick="goBack()">Back</button>
+
+    <script>
+        var conn = new WebSocket('ws://localhost:8080');
+
+        conn.onopen = function(e) {
+            console.log("Connection established!");
+        };
+
+        conn.onmessage = function(e) {
+            var chatContainer = document.getElementById('chat-container');
+            var chatMessage = document.createElement('div');
+            chatMessage.className = 'chat-message incoming';
+            chatMessage.innerText = e.data;
+            chatContainer.appendChild(chatMessage);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        };
+
+        function sendMessage() {
+            var message = document.getElementById('message').value;
+            conn.send(message);
+            if (message instanceof Blob) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var textMessage = e.target.result;
+            conn.send(textMessage);
+        };
+        reader.readAsText(message);
+    }
+            var chatContainer = document.getElementById('chat-container');
+            var chatMessage = document.createElement('div');
+            chatMessage.className = 'chat-message outgoing';
+            chatMessage.innerText = message;
+            chatContainer.appendChild(chatMessage);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            document.getElementById('message').value = '';
+        }
+
+        function goBack() {
+            window.location.href = 'dash.php';
+        }
+    </script>
+</body>
+</html>

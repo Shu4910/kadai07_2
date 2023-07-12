@@ -108,10 +108,10 @@ CREATE TABLE `messages` (
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `sessions`
+-- テーブルの構造 messages
 --
 
-CREATE TABLE `sessions` (
+CREATE TABLE messages (
   `session_id` int(128) NOT NULL,
   `com_sess_id` int(128) NOT NULL,
   `user_sess_id` int(128) NOT NULL,
@@ -145,9 +145,9 @@ ALTER TABLE `messages`
   ADD KEY `messages_ibfk_2` (`user_send_id`);
 
 --
--- テーブルのインデックス `sessions`
+-- テーブルのインデックス messages
 --
-ALTER TABLE `sessions`
+ALTER TABLE messages
   ADD PRIMARY KEY (`session_id`),
   ADD KEY `com_sess_id` (`com_sess_id`),
   ADD KEY `sessions_ibfk_2` (`user_sess_id`);
@@ -175,9 +175,9 @@ ALTER TABLE `messages`
   MODIFY `message_id` int(128) NOT NULL AUTO_INCREMENT;
 
 --
--- テーブルの AUTO_INCREMENT `sessions`
+-- テーブルの AUTO_INCREMENT messages
 --
-ALTER TABLE `sessions`
+ALTER TABLE messages
   MODIFY `session_id` int(128) NOT NULL AUTO_INCREMENT;
 
 --
@@ -192,9 +192,9 @@ ALTER TABLE `messages`
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`user_send_id`) REFERENCES `bizdiverse` (`id`) ON UPDATE CASCADE;
 
 --
--- テーブルの制約 `sessions`
+-- テーブルの制約 messages
 --
-ALTER TABLE `sessions`
+ALTER TABLE messages
   ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`com_sess_id`) REFERENCES `bizdiverse_company` (`id_com`) ON UPDATE CASCADE,
   ADD CONSTRAINT `sessions_ibfk_2` FOREIGN KEY (`user_sess_id`) REFERENCES `bizdiverse` (`id`) ON UPDATE CASCADE;
 COMMIT;

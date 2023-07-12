@@ -4,6 +4,7 @@ session_start(); // セッションを開始
 require 'database.php'; // データベース接続のスクリプト
 
 $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
+$_SESSION['mail'] = $_SESSION['mail'];
 $msg = '';
 
 $stmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail");
@@ -28,7 +29,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
   <button type="submit">スカウト条件設定画面</button>
 </form>
 
-<form action="scout_line.php" method="get">
+<form action="chat_js.html" method="get">
   <button type="submit">スカウト受信画面</button>
 </form>
 
