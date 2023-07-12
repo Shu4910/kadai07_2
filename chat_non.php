@@ -1,37 +1,25 @@
 <?php
-$current_user = get_user($_SESSION['user_id']);
-$destination_user = get_user($_GET['user_id']);
-$messages = get_messages($current_user['id'], $destination_user['id']);
+
+
+
+$dbh = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
+
+// SQLを準備
+$sql = "SELECT DISTINCT session_id FROM messages ORDER BY session_id";
+
+// SQLを実行
+$stmt = $dbh->query($sql);
+
+// 全ての結果をフェッチ（取得）する
+$sessions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// session_idを表示
+foreach ($sessions as $session) {
+    $session_id = $session['session_id'];
+    echo "<a href='message_details.php?session_id=$session_id'>$session_id</a>";
+    echo '<br>' . PHP_EOL;
+}
 ?>
 
-<body>
-　<div class="message">
-    <h2 class="center"><?= $destination_user['name'] ?></h2>
-    <?php foreach ($messages as $message) :?>
-        <div class="my_message">
-        <?php if ($message['user_id'] == $current_user['id']) : ?>
-            <div class="mycomment right">
-            <span class="message_created_at"><?=  convert_to_fuzzy_time($message['created_at']) ?></span><p><?= $message['text'] ?></p><img src="../user/image/<?= $current_user['image'] ?>" class="message_user_img">
-            </div>
-        <?php else : ?>
-            <div class="left"><img src="../user/image/<?= $destination_user['image'] ?>" class="message_user_img">
-            <div class="says"><?= $message['text'] ?></div><span class="message_created_at"><?=  convert_to_fuzzy_time($message['created_at']) ?></span>
-            <?php endif; ?>
-            </div>
-    <?php endforeach ?>
 
-    <div class="message_process">
-    　<h2 class="message_title">メッセージ</h2>
-    　<form method="post" action="../message/message_add.php" enctype="multipart/form-data">
-        <textarea class="textarea form-control" placeholder="メッセージを入力ください" name="text"></textarea>
-        <input type="hidden" name="destination_user_id" value="<?= $destination_user['id'] ?>">
-        <div class="message_btn">
-            <div class="message_image">
-                <input type="file" name="image" class="my_image" accept="image/*" multiple>
-            </div>
-            <button class="btn btn-outline-primary" type="submit" name="post" value="post" id="post">投稿</button>
-        </div>
-    　</form>
-    </div>
-　</div>
-</body>
+<button onclick="location.href='dash.php'">Back</button>

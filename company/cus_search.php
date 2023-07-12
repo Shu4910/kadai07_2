@@ -47,3 +47,7 @@ if ($result_company->num_rows > 0) {
 
 $conn->close();
 ?>
+
+
+
+<button onclick="location.href='dash_com.php'">Back</button>

@@ -29,7 +29,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
   <button type="submit">スカウト条件設定画面</button>
 </form>
 
-<form action="chat_js.html" method="get">
+<form action="chat_non.php" method="get">
   <button type="submit">スカウト受信画面</button>
 </form>
 

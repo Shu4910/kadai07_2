@@ -39,6 +39,10 @@
                 <div class="text-center mt-4">
                 <p> <a href="forgot1.php">パスワードを忘れた</a></p>
                 </div>
+                
+                <div class="text-center mt-4">
+                    <p> <a href="index.php">もとに戻る</a></p>
+                </div>
             </div>
         </div>
     </div>

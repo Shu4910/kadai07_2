@@ -59,6 +59,7 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
 
         $conn->close();
         ?>
+<button onclick="location.href='cus_search.php'">Back</button>
 
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

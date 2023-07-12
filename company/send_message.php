@@ -27,6 +27,7 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
 
             // Get the form data
             $receiver_id = $_GET['id'];
+            
 
             // Get sender_id based on email
             $stmt = $conn->prepare("SELECT id_com FROM bizdiverse_company WHERE com_email = ?");
@@ -40,11 +41,11 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
 
             // Generate a unique session_id
             $session_id = $sender_id . "_" . $receiver_id;
+            echo "Session ID: " . $session_id; // Add this line
 
             // Prepare and bind
             $stmt = $conn->prepare("INSERT INTO messages (session_id, company_send_id, user_send_id, message_body) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("siis", $session_id, $sender_id, $receiver_id, $message_body);
-
+            $stmt->bind_param("ssis", $session_id, $sender_id, $receiver_id, $message_body);
 
             // Set parameters and execute
             $stmt->execute();
@@ -64,5 +65,8 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
             <?php
         }
     ?>
+<button onclick="location.href='cus_search.php'">Back</button>
+<button onclick="location.href='dash_com.php'">ホームに戻る</button>
+
 </body>
 </html>

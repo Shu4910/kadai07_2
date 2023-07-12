@@ -36,6 +36,11 @@
                 <div class="text-center mt-4">
                     <p> <a href="reg_com.php">会員登録する<br>※パスワードを忘れた場合もこちらから再登録できます</a></p>
                 </div>
+                <div class="text-center mt-4">
+                    <p> <a href="../index.php">もとに戻る</a></p>
+                </div>
+
+                
             </div>
         </div>
     </div>
