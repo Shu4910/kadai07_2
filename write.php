@@ -51,7 +51,7 @@ $stmt->bindValue(':birthday', $birthday, PDO::PARAM_STR);
 $stmt->bindValue(':types', $types, PDO::PARAM_STR);
 $stmt->bindValue(':techo', $techo, PDO::PARAM_STR);
 $stmt->bindValue(':info', $info, PDO::PARAM_STR);
-$stmt->bindValue(':zipcode', $zipcode, PDO::PARAM_STR);
+$stmt->bindValue(':zipcode', $zipcode, PDO::PARAM_INT);
 $stmt->bindValue(':address1', $address1, PDO::PARAM_STR);
 $stmt->bindValue(':address2', $address2, PDO::PARAM_STR);
 $stmt->bindValue(':address3', $address3, PDO::PARAM_STR);
