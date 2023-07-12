@@ -67,14 +67,14 @@ if ($status === false) {
     exit('ErrorMessage:'.$error[2]);
 } else {
     // Redirect to index2.php
-    header('Location: index2.php');
+    header('Location: index_user.php');
     exit;
 }
 ?>
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf8_unicode_ci">
     <title>File書き込み</title>
 </head>
 
