@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- ホスト: 127.0.0.1
--- 生成日時: 2023-07-05 16:58:56
+-- ホスト: localhost
+-- 生成日時: 2023 年 7 月 12 日 16:22
 -- サーバのバージョン： 10.4.28-MariaDB
 -- PHP のバージョン: 8.2.4
 
@@ -32,7 +32,7 @@ CREATE TABLE `bizdiverse` (
   `name` varchar(64) NOT NULL,
   `kana` varchar(64) NOT NULL,
   `mail` varchar(128) NOT NULL,
-  `tel` int(12) NOT NULL,
+  `tel` varchar(128) NOT NULL,
   `birthday` date NOT NULL,
   `types` varchar(64) NOT NULL,
   `techo` varchar(64) NOT NULL,
@@ -42,19 +42,21 @@ CREATE TABLE `bizdiverse` (
   `address2` varchar(64) NOT NULL,
   `address3` varchar(64) NOT NULL,
   `pass` varchar(64) NOT NULL,
-  `prefecture` varchar(64) NOT NULL,
-  `area` varchar(64) NOT NULL,
-  `city` varchar(64) NOT NULL
+  `prefecture` varchar(64) DEFAULT NULL,
+  `area` varchar(64) DEFAULT NULL,
+  `city` varchar(64) DEFAULT NULL,
+  `content` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- テーブルのデータのダンプ `bizdiverse`
 --
 
-INSERT INTO `bizdiverse` (`id`, `name`, `kana`, `mail`, `tel`, `birthday`, `types`, `techo`, `info`, `zipcode`, `address1`, `address2`, `address3`, `pass`, `prefecture`, `area`, `city`) VALUES
-(2, 'Shu', 'しゅう', 'test@test.jp', 2147483647, '2023-06-25', '身体障害', '-', '全ての情報', 8820035, '宮崎県', '延岡市', '日の出町', '$2y$10$Zcqmi9D22JIoamQUHnpkT.S9S/sPIh/RNCzP679uyXoRkS7fzP0JS', '', '', ''),
-(9, 'テスト', 'ぱぱ', 'komaki@beyondborders.jp', 2147483647, '1992-09-10', '精神', '-', '全ての情報', 8820034, '宮崎県', '延岡市', '昭和町', '$2y$10$xrPms/tAD0KDiwJMhBLTR.HnwKokbpN.FELHzhQo.Z903mLUENR6u', '', '', ''),
-(18, '小牧秀太郎あ', '', 'sz91hs@gmail.com', 0, '0000-00-00', '', '', '', 0, '', '', '', '$2y$10$YrmNvq7.dpbYMc25JcztgO.ap0A0msWKjZcITaEE7w/b9cKatCyr6', 'tokyo', 'inside', 'chiyoda,minato');
+INSERT INTO `bizdiverse` (`id`, `name`, `kana`, `mail`, `tel`, `birthday`, `types`, `techo`, `info`, `zipcode`, `address1`, `address2`, `address3`, `pass`, `prefecture`, `area`, `city`, `content`) VALUES
+(2, 'Shu', 'しゅう', 'test@test.jp', '2147483647', '2023-06-25', '身体障害', '-', '全ての情報', 8820035, '宮崎県', '延岡市', '日の出町', '$2y$10$Zcqmi9D22JIoamQUHnpkT.S9S/sPIh/RNCzP679uyXoRkS7fzP0JS', '', '', 'chiyoda', ''),
+(9, 'テスト', 'ぱぱ', 'komaki@beyondborders.jp', '2147483647', '1992-09-10', '精神', '-', '全ての情報', 8820034, '宮崎県', '延岡市', '昭和町', '$2y$10$xrPms/tAD0KDiwJMhBLTR.HnwKokbpN.FELHzhQo.Z903mLUENR6u', '', '', 'chiyoda', ''),
+(18, '小牧秀太郎', 'あああ', 'sz91hs@gmail.com', '08058039058', '1992-09-10', '精神', '-', '全ての情報', 2140031, '神奈川県', '川崎市多摩区', '東生田', '$2y$10$t6FsNb0i2bQ2JnzXxjZwPuSWUmOIC.PCm/HivlT8TAXbsN4Ry60Ea', 'tokyo', 'inside', 'chiyoda', 'ああ'),
+(19, '小牧秀太郎', 'ああ', 'sz83hs@yahoo.co.jp', '08058039048', '1992-09-10', '精神', '-', '全ての情報', 1020072, '東京都', '千代田区', '飯田橋', '$2y$10$Lbb/vNzxecFVgsCqS.Zknehh8gEMhVHI930sfNJFc2X32fsEuyvzq', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -97,28 +99,41 @@ INSERT INTO `bizdiverse_company` (`company_id`, `houjin`, `tanto`, `com_email`, 
 --
 
 CREATE TABLE `messages` (
-  `message_id` int(128) NOT NULL,
-  `session_id` int(64) NOT NULL,
+  `id` int(128) NOT NULL,
+  `session_id` varchar(64) NOT NULL,
   `company_send_id` int(64) NOT NULL,
   `user_send_id` int(64) NOT NULL,
   `message_body` text NOT NULL,
-  `send_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `send_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `sender_type` enum('user','company') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
 --
--- テーブルの構造 messages
+-- テーブルのデータのダンプ `messages`
 --
 
-CREATE TABLE messages (
-  `session_id` int(128) NOT NULL,
-  `com_sess_id` int(128) NOT NULL,
-  `user_sess_id` int(128) NOT NULL,
-  `session_start` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `session_end` datetime NOT NULL,
-  `expires_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+INSERT INTO `messages` (`id`, `session_id`, `company_send_id`, `user_send_id`, `message_body`, `send_at`, `sender_type`) VALUES
+(1, '2_18', 2, 18, 'aaaa', '2023-07-12 05:23:10', 'user'),
+(2, '3_9', 3, 9, 'ふぁふぁｄｆ', '2023-07-12 05:23:37', 'user'),
+(3, '3_2', 3, 2, 'っっっふぁ', '2023-07-12 05:23:53', 'user'),
+(4, '3_18', 3, 18, 'あああ', '2023-07-12 05:23:46', 'user'),
+(5, '0', 32, 18, 'あああ', '2023-07-12 05:19:59', 'user'),
+(6, '3_18', 3, 18, 'あああ', '2023-07-12 05:24:00', 'user'),
+(7, '3_18', 3, 18, 'あああ', '2023-07-12 02:21:12', 'user'),
+(8, '3_18', 3, 18, 'あああ', '2023-07-12 02:28:15', 'user'),
+(9, '3_9', 3, 9, 'ふぁｄふぁ', '2023-07-12 02:29:03', 'user'),
+(10, '3_9', 3, 9, 'あああ', '2023-07-12 03:43:11', 'user'),
+(11, '3_18', 3, 18, 'aaa', '2023-07-12 04:27:11', 'company'),
+(12, '3_18', 0, 0, 'あああ', '2023-07-12 04:33:00', 'company'),
+(13, '3_18', 0, 0, 'いふぃいふぁ', '2023-07-12 04:33:04', 'company'),
+(14, '3_18', 0, 0, 'ああ', '2023-07-12 04:38:36', 'company'),
+(15, '3_18', 0, 0, 'あああ', '2023-07-12 05:41:35', 'company'),
+(16, '3_18', 0, 0, 'あああ', '2023-07-12 05:44:06', 'company'),
+(17, '3_18', 0, 0, 'テスト', '2023-07-12 05:44:25', 'company'),
+(18, '3_18', 0, 0, 'テスト', '2023-07-12 05:44:58', 'user'),
+(19, '3_18', 0, 0, 'あああ', '2023-07-12 05:51:57', 'user'),
+(20, '3_18', 0, 0, 'あああ', '2023-07-12 05:53:35', 'user'),
+(21, '3_18', 3, 18, 'あああ', '2023-07-12 06:10:21', 'user');
 
 --
 -- ダンプしたテーブルのインデックス
@@ -131,26 +146,10 @@ ALTER TABLE `bizdiverse`
   ADD PRIMARY KEY (`id`);
 
 --
--- テーブルのインデックス `bizdiverse_company`
---
-ALTER TABLE `bizdiverse_company`
-  ADD PRIMARY KEY (`company_id`);
-
---
 -- テーブルのインデックス `messages`
 --
 ALTER TABLE `messages`
-  ADD PRIMARY KEY (`message_id`),
-  ADD KEY `company_send_id` (`company_send_id`),
-  ADD KEY `messages_ibfk_2` (`user_send_id`);
-
---
--- テーブルのインデックス messages
---
-ALTER TABLE messages
-  ADD PRIMARY KEY (`session_id`),
-  ADD KEY `com_sess_id` (`com_sess_id`),
-  ADD KEY `sessions_ibfk_2` (`user_sess_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- ダンプしたテーブルの AUTO_INCREMENT
@@ -160,43 +159,13 @@ ALTER TABLE messages
 -- テーブルの AUTO_INCREMENT `bizdiverse`
 --
 ALTER TABLE `bizdiverse`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- テーブルの AUTO_INCREMENT `bizdiverse_company`
---
-ALTER TABLE `bizdiverse_company`
-  MODIFY `company_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- テーブルの AUTO_INCREMENT `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(128) NOT NULL AUTO_INCREMENT;
-
---
--- テーブルの AUTO_INCREMENT messages
---
-ALTER TABLE messages
-  MODIFY `session_id` int(128) NOT NULL AUTO_INCREMENT;
-
---
--- ダンプしたテーブルの制約
---
-
---
--- テーブルの制約 `messages`
---
-ALTER TABLE `messages`
-  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`company_send_id`) REFERENCES `bizdiverse_company` (`company_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`user_send_id`) REFERENCES `bizdiverse` (`id`) ON UPDATE CASCADE;
-
---
--- テーブルの制約 messages
---
-ALTER TABLE messages
-  ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`com_sess_id`) REFERENCES `bizdiverse_company` (`company_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `sessions_ibfk_2` FOREIGN KEY (`user_sess_id`) REFERENCES `bizdiverse` (`id`) ON UPDATE CASCADE;
+  MODIFY `id` int(128) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
