@@ -15,11 +15,11 @@
         }
 
         .message-company {
-            background-color: #8A8A8A;
+            background-color: #00B900;
         }
 
         .message-user {
-            background-color: #00B900;
+            background-color: #8A8A8A;
         }
 
         .message-container {
@@ -34,11 +34,11 @@
                 width: 70%;
             }
 
-            .message-company {
+            .message-user {
                 margin-left: auto;
             }
 
-            .message-user {
+            .message-company {
                 margin-right: auto;
             }
         }
@@ -59,9 +59,17 @@
 
 </head>
 <body class="p-3">
-    <?php
+<?php
+    session_start(); // セッションを開始
+
     if (isset($_GET['session_id'])) {
         $session_id = $_GET['session_id'];
+
+        
+        // session_idをcompany_send_idとuser_send_idに分割
+        $ids = explode('_', $session_id);
+        $company_send_id = $ids[0];
+        $user_send_id = $ids[1];
 
         $dbh = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
 
@@ -75,7 +83,21 @@
 
         // 全ての結果をフェッチ（取得）する
         $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+        
+        // 最新のメッセージのIDを取得
+        $last_message_id = end($messages)['id'];
+
+        // last_idカラムに最新のメッセージIDを保存
+        $sql = "UPDATE messages SET last_id = :last_id WHERE session_id = :session_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(':last_id', $last_message_id);
+        $stmt->bindParam(':session_id', $session_id);
+        $stmt->execute();
     ?>
+
+
 
     <div class="message-container">
         <?php foreach ($messages as $message): ?>
@@ -93,7 +115,8 @@
     }
     ?>
 
-    <form method="post" action="sm_detail.php">
+
+    <form method="post" action="sm_detail_com.php">
         <div class="form-group">
             <label for="message_body">Message:</label>
             <textarea class="form-control" id="message_body" name="message_body" rows="3"></textarea>
@@ -105,6 +128,11 @@
         <input type="submit" value="Send" class="btn btn-primary">
     </form>
 
+    
+
     <button onclick="location.href='com_chat.php'" class="btn btn-secondary mt-3">Back</button>
+
+
+
 </body>
 </html>

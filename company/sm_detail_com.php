@@ -63,7 +63,7 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
 
         $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Extract only the email column
 
-        $subject = "New";
+        $subject = "New_company";
         $message = "新着メッセージがあります。チャットを確認してください。\n\nメッセージ内容: " . $message_body;
 
 $mailer = new PHPMailer(true);
