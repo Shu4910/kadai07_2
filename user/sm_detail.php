@@ -1,18 +1,31 @@
 <?php
 session_start(); // セッションを開始
 
-function loadEnv()
-{
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+// .envファイルのパスを設定
+$dotenvPath = __DIR__ . '/../.env';
+if (file_exists($dotenvPath)) {
+    $dotenv = Dotenv\Dotenv::createImmutable(dirname($dotenvPath));
     $dotenv->load();
+} else {
+    // .envファイルが見つからない場合はエラー処理を行うか、適切なデフォルト値をセットします
+    // エラー処理の例: die(".envファイルが見つかりません。");
 }
 
 
-require 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
+function loadEnv()
+{
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv->load();
+}
+
 
 loadEnv();
 
