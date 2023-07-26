@@ -1,13 +1,6 @@
 <?php
 session_start(); // セッションを開始
-
-try {
-    //pass:MAMP='root',XAMPP=''
-    $pdo = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
-} catch (PDOException $e) {
-
-    exit('DBConnectError'.$e->getMessage());
-}
+require '../database.php';
 
 
 $com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
@@ -41,9 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $msg = '登録を更新しました。';
     }
 }
-
-
-
 
 $stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE com_email = :com_email");
 $stmt->bindValue(':com_email', $com_email, PDO::PARAM_STR);

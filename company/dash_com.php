@@ -14,7 +14,10 @@
                 <button type="submit" class="btn btn-primary btn-block mb-2">基本情報修正画面</button>
             </form>
             <form action="com_scout_set.php" method="get">
-                <button type="submit" class="btn btn-primary btn-block mb-2">条件設定画面</button>
+                <button type="submit" class="btn btn-primary btn-block mb-2">エリア条件設定画面</button>
+            </form>
+            <form action="com_kodawari.php" method="get">
+                <button type="submit" class="btn btn-primary btn-block mb-2">こだわり条件設定画面</button>
             </form>
             <form action="cus_search.php" method="get">
                 <button type="submit" class="btn btn-primary btn-block mb-2">会員検索画面</button>
