@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<form action="index_user.php" method="get">
+<form action="user/index_user.php" method="get">
   <button type="submit">個人用ログイン画面</button>
 </form>
 

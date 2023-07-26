@@ -1,7 +1,6 @@
 <?php
 session_start(); // セッションを開始
-
-require 'database.php'; // データベース接続のスクリプト
+require '../database.php';
 
 $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 $msg = '';
@@ -148,7 +147,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                             <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
                         </form>
                         <form method="POST" style="margin-top: 10px;">
-                            <button type="submit" name="logout" class="btn btn-secondary btn-block">ログアウト</button>
+                            <button type="submit" name="logout" class="btn btn-secondary btn-block">戻る</button>
                         </form>
                     </div>
                 </div>
