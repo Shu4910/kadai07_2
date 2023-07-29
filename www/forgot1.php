@@ -27,6 +27,7 @@
     </div>
 </div>
 
+
                 <div class="text-center mt-4">
                     <form action="forgot2.php">
                         <button type="submit" class="btn btn-link">認証画面に移動する</button>
