@@ -33,7 +33,7 @@
                     </form>
                 </div>
                 <div class="text-center mt-4">
-                    <form action="index2.php">
+                    <form action="user/index_user.php">
                         <button type="submit" class="btn btn-link">戻る</button>
                     </form>
                 </div>

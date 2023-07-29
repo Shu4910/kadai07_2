@@ -3,11 +3,12 @@ session_start(); // セッションを開始
 
 function loadEnv()
 {    
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../..');
     $dotenv->load();
 }
 
-require '../vendor/autoload.php';
+require '../../vendor/autoload.php';
+
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;

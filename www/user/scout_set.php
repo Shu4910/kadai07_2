@@ -1,7 +1,7 @@
 <?php
 session_start(); // セッションを開始
 
-require '../database.php';
+require '../../database.php';
 
 
 $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
@@ -39,33 +39,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['update'])) {
         // All the other form fields
-        $newMail = $_POST['mail'];
+        $newMail = empty($_POST['mail']) ? $mail : $_POST['mail']; // Check if the new email is empty
         $newPass = $_POST['pass'];
         $prefecture = $_POST['prefecture'];
         $area = $_POST['area'];
-        $newPass = $_POST['pass'];
-        $confirmPass = $_POST['confirm_pass'];
         $cities = is_array($_POST['city']) ? implode(",", $_POST['city']) : $_POST['city'];
 
-        if ($newPass === $confirmPass) {
+        
+        // 既存のパスワードの取得
+        $stmt = $pdo->prepare("SELECT pass FROM bizdiverse WHERE mail = :mail");
+        $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+        $stmt->execute();
+        $existingPass = $stmt->fetchColumn();
+
+        // 既存のパスワードと新しいパスワードが一致するかチェック
+        if (password_verify($newPass, $existingPass)) {
             // パスワードをハッシュ化
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
 
-            // Prepare the update statement with all the fields
-            $stmt = $pdo->prepare("UPDATE bizdiverse SET mail = :mail, pass = :pass, prefecture = :prefecture, area = :area, city = :city WHERE mail = :oldMail");
-            $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
-            $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
-            $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
-            $stmt->bindValue(':prefecture', $prefecture, PDO::PARAM_STR);
-            $stmt->bindValue(':area', $area, PDO::PARAM_STR);
-            $stmt->bindValue(':city', $cities, PDO::PARAM_STR);
-            $stmt->execute();
+            // ...
 
             $_SESSION['mail'] = $newMail; // Update the session email
             $mail = $newMail; // Update the local email variable
             $msg = '登録を更新しました。';
         } else {
-            $msg = 'パスワードが一致しません。';
+            $msg = 'パスワードが間違っています。';
         }
     }
 }
@@ -94,17 +92,13 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
             <div class="card">
                 <div class="card-body">
                     <form method="POST">
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="mail">Eメール：</label>
                             <input type="email" class="form-control" id="mail" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>" required>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label for="pass">パスワード：</label>
                             <input type="password" class="form-control" id="pass" name="pass" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm_pass">パスワード確認：</label>
-                            <input type="password" class="form-control" id="confirm_pass" name="confirm_pass" required>
                         </div>
                         <div class="form-group">
                             <label for="prefecture">都道府県:</label>

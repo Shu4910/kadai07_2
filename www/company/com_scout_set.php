@@ -1,6 +1,6 @@
 <?php
 session_start(); // セッションを開始
-require '../database.php';
+require '../../database.php';
 
 
 $com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得

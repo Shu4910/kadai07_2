@@ -1,6 +1,6 @@
 <?php
 session_start(); // セッションを開始
-require '../database.php';
+require '../../database.php';
 
 $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 $msg = '';
@@ -27,9 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newAddress2 = $_POST['address2'];
         $newAddress3 = $_POST['address3'];
         $newPass = $_POST['pass'];
-        $confirmPass = $_POST['confirm_pass'];
 
-        if ($newPass === $confirmPass) {
+        // DBの現在のパスワードを取得
+        $stmt = $pdo->prepare("SELECT pass FROM bizdiverse WHERE mail = :mail");
+        $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+        $stmt->execute();
+        $currentPass = $stmt->fetchColumn();
+
+        // 入力されたパスワードがDBのパスワードと一致する場合
+        if (password_verify($newPass, $currentPass)) {
             // パスワードをハッシュ化
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
 
@@ -55,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mail = $newMail; // Update the local email variable
             $msg = '登録を更新しました。';
         } else {
-            $msg = 'パスワードが一致しません。';
+            $msg = 'パスワードが間違っています。';
         }
     }
 }
@@ -136,15 +142,12 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 <label for="address3">住所3：</label>
                                 <input type="text" class="form-control" id="address3" name="address3" value="<?php echo htmlspecialchars($userData['address3'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
+
                             <div class="form-group">
-                                <label for="pass">パスワード：</label>
-                                <input type="password" class="form-control" id="pass" name="pass" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirm_pass">パスワード確認：</label>
-                                <input type="password" class="form-control" id="confirm_pass" name="confirm_pass" required>
-                            </div>
-                            <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
+                            <label for="pass">パスワード：</label>
+                            <input type="password" class="form-control" id="pass" name="pass" required>
+                        </div>
+                        <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
                         </form>
                         <form method="POST" style="margin-top: 10px;">
                             <button type="submit" name="logout" class="btn btn-secondary btn-block">戻る</button>

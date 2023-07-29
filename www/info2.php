@@ -1,7 +1,7 @@
 <?php
 session_start(); // セッションを開始
 
-require 'database.php'; // データベース接続のスクリプト
+require '../database.php'; // データベース接続のスクリプト
 
 $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 $msg = '';
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログアウトが押された場合
     if (isset($_POST['logout'])) {
         session_destroy();
-        header('Location: index2.php');
+        header('Location: user/index_user.php');
         exit;
     }
     

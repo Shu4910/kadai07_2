@@ -18,7 +18,7 @@ $confirm_pass = $_POST["confirm_pass"]; // 追加
 $pass = password_hash($pass, PASSWORD_DEFAULT);
 
 // 2. DB接続
-require "database.php";
+require "../database.php";
 
 // Check if record exists
 $checkStmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail OR tel = :tel");
@@ -67,7 +67,7 @@ if ($status === false) {
     exit('ErrorMessage:'.$error[2]);
 } else {
     // Redirect to index2.php
-    header('Location: index_user.php');
+    header('Location: user/index_user.php');
     exit;
 }
 ?>

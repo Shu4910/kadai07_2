@@ -1,6 +1,6 @@
 <?php
 session_start(); // セッションを開始
-require '../database.php';
+require '../../database.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mail = $_POST['mail'];

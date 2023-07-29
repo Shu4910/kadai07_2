@@ -102,6 +102,13 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/fetch-jsonp@1.1.3/build/fetch-jsonp.min.js"></script>
+    
+    <script>
+        document.getElementById('back_btn3').addEventListener('click', function() {
+            window.location.href = "index_com.php";
+        });
+    </script>
+
     <script>
         // This function is now called every time the value of the input field with id "zipcode" is changed
         document.getElementById('zipcode').addEventListener('input', function () {

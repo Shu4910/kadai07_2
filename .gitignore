@@ -3,3 +3,5 @@ vendor/
 composer.json
 composer.lock
 database_sakura.php
+db.php
+database.php

@@ -2,10 +2,10 @@
 session_start(); // セッションを開始
 
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 // .envファイルのパスを設定
-$dotenvPath = __DIR__ . '/../.env';
+$dotenvPath = __DIR__ . '/../../.env';
 if (file_exists($dotenvPath)) {
     $dotenv = Dotenv\Dotenv::createImmutable(dirname($dotenvPath));
     $dotenv->load();
@@ -22,7 +22,7 @@ use PHPMailer\PHPMailer\Exception;
 
 function loadEnv()
 {
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
     $dotenv->load();
 }
 
