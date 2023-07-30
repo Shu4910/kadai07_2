@@ -15,12 +15,9 @@ $confirm_pass = $_POST["confirm_pass"]; // 追加
 $pass = password_hash($pass, PASSWORD_DEFAULT);
 
 // 2. DB接続
-try {
-    //pass:MAMP='root',XAMPP=''
-    $pdo = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
-} catch (PDOException $e) {
-    exit('DBConnectError'.$e->getMessage());
-}
+require '../../database.php'; // require.phpファイルを2つ上の階層から読み込み
+
+
 
 
 // Check if record exists

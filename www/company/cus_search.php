@@ -13,12 +13,9 @@
     <div class="container">
         <h1 class="my-3">User Details</h1>
         <?php
+        
+        require '../../dbconfig.php'; // require.phpファイルを2つ上の階層から読み込み
         session_start(); // セッションを開始
-
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "bizdiverse";
 
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);

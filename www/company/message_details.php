@@ -71,7 +71,7 @@
         $company_send_id = $ids[0];
         $user_send_id = $ids[1];
 
-        $dbh = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
+        require '../../database_dbh.php';
 
         // SQLを準備
         $sql = "SELECT * FROM messages WHERE session_id = :session_id ORDER BY send_at";

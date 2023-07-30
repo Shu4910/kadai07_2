@@ -13,9 +13,14 @@
     <div class="container">
         <h1 class="my-3">Session Details</h1>
         <?php
+        
         session_start();
 
         $dbh = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
+require '../../database.php';
+
+
+
 
         $com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
 

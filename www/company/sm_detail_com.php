@@ -26,7 +26,7 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $company_send_id = $ids[0];
     $user_send_id = $ids[1];
 
-    $dbh = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
+    require '../../database_dbh.php';
 
     $sql = "INSERT INTO messages (session_id, user_send_id, message_body, send_at, sender_type) VALUES (:session_id, :user_send_id, :message_body, NOW(), :sender_type)";
     $stmt = $dbh->prepare($sql);

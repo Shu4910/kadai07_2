@@ -12,10 +12,7 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
 <body>
     <?php
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $dbname = "bizdiverse";
+            require '../../dbconfig.php'; // require.phpファイルを2つ上の階層から読み込み
 
             // Create connection
             $conn = new mysqli($servername, $username, $password, $dbname);
@@ -50,10 +47,19 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
             // Set parameters and execute
             $stmt->execute();
 
+            // Get the auto-generated ID
+$last_id = $conn->insert_id;
+
+// Update the last_id column for the messages with the same session_id
+$update_stmt = $conn->prepare("UPDATE messages SET last_id = ? WHERE session_id = ?");
+$update_stmt->bind_param("is", $last_id, $session_id);
+$update_stmt->execute();
+
             echo "Message sent successfully";
 
             $stmt->close();
-            $conn->close();
+$update_stmt->close(); // Add this line
+$conn->close();
         } else {
             // Show the form
             ?>

@@ -16,11 +16,8 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
 <body>
     <div class="container my-4">
         <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "bizdiverse";
-
+        require '../../dbconfig.php'; // require.phpファイルを2つ上の階層から読み込み
+ 
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -49,9 +46,10 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
                 echo '</div>';
                 // Update the following line
                 echo '    <a href="send_message.php?id='.$row["id"].'" class="btn btn-primary">スカウトを打つ</a>';
+                echo '    <a href="cus_search.php?id='.$row["id"].'" class="btn btn-primary">戻る</a>';
+                
                 echo '  </div>';
                 echo '</div>';
-                echo 'Company email from session: ' . $com_email; // added line to display com_email
             }
         } else {
             echo "No results for id: " . $id . "<br>";
@@ -59,7 +57,8 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
 
         $conn->close();
         ?>
-<button onclick="location.href='cus_search.php'">Back</button>
+
+
 
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
