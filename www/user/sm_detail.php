@@ -40,7 +40,8 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $company_send_id = $ids[0];
     $user_send_id = $ids[1];
 
-    $dbh = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
+    require '../../database_dbh.php';
+
 
     // SQLを準備
     $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, message_body, send_at, sender_type) VALUES (:session_id, :user_send_id, :company_send_id, :message_body, NOW(), :sender_type)";
@@ -93,7 +94,7 @@ try {
     $mailer->setFrom('postmaster@komaki0910.sakura.ne.jp', 'Test'); // 送信元メールアドレスと送信者名
 
     // メッセージ内容にURLを添付
-    $url = "https://example.com/message_details.php?session_id=$session_id";
+    $url = "http://komaki0910.sakura.ne.jp/user/message_details.php?session_id=$session_id";
     $message .= "\n\nメッセージやり取りページ: <a href='$url'>$url</a>";
 
     // メール内容

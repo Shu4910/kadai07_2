@@ -15,12 +15,8 @@
         <?php
         
         session_start();
-
-        $dbh = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
-require '../../database.php';
-
-
-
+        
+        require '../../database_dbh.php';
 
         $com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
 

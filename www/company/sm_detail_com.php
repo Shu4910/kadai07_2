@@ -72,7 +72,7 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
             $mailer->Username = $_ENV['SMTP_USER'];
             $mailer->Password = $_ENV['SMTP_PASS']; 
             $mailer->setFrom('postmaster@komaki0910.sakura.ne.jp', 'Test');
-            $url = "https://example.com/message_details.php?session_id=$session_id";
+            $url = "http://komaki0910.sakura.ne.jp/company/message_details.php?session_id=$session_id";
             $message .= "\n\nメッセージやり取りページ: <a href='$url'>$url</a>";
             $mailer->isHTML(true);
             $mailer->Subject = $subject;
