@@ -32,7 +32,7 @@
 <body>
 
 <div class="container mt-5">
-        <div class="service-title">精神障害者特化型<br>スカウトメディアサービス</div> <!-- クラスを追加 -->
+        <div class="service-title">精神障害者特化型<br>スカウトメディアサービスpass</div> <!-- クラスを追加 -->
         <h2 class="text-center mb-4">BizDiverse</h2>
 
 
