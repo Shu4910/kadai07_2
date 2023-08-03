@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newAddress2 = $_POST['address2'];
         $newAddress3 = $_POST['address3'];
         $newPass = $_POST['pass'];
-        $confirmPass = $_POST['confirm_pass'];
 
         // DBの現在のパスワードを取得
         $stmt = $pdo->prepare("SELECT pass FROM bizdiverse WHERE mail = :mail");
@@ -147,10 +146,6 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                             <div class="form-group">
                             <label for="pass">パスワード：</label>
                             <input type="password" class="form-control" id="pass" name="pass" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirm_pass">新しいパスワードの確認：</label>
-                                <input type="password" class="form-control" id="confirm_pass" name="confirm_pass" required>
                             </div>
                         <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
                         </form>
