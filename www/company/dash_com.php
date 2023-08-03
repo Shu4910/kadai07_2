@@ -5,11 +5,11 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 <body>
-
-<div class="container my-5">
-    <div class="row">
+<div class="container mt-5">
+    <div class="justify-content-center">
         <div class="col-sm-4">
             <form action="info_com.php" method="get">
                 <button type="submit" class="btn btn-primary btn-block mb-2">基本情報修正画面</button>
@@ -33,21 +33,11 @@
                 <button type="submit" class="btn btn-primary btn-block mb-2">数値</button>
             </form>
         </div>
+
         <div class="col-sm-8">
             <?php
-            $host = 'localhost';
-            $db   = 'bizdiverse';
-            $user = 'root';
-            $pass = '';
-            $charset = 'utf8';
-
-            $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-            $opt = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
-            $pdo = new PDO($dsn, $user, $pass, $opt);
+            
+            include '../../database_sakura_dbh.php';
 
             // 全体の総数を取得
             $query = 'SELECT COUNT(DISTINCT user_send_id) as total_unique_user_count, COUNT(*) as total_message_count FROM messages WHERE company_send_id = 3';

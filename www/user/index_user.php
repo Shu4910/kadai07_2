@@ -1,16 +1,15 @@
 <!doctype html>
 <html lang="en">
-  <head>
+    <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">   
     <title>Login Page</title>
-  </head>
-  <body>
+    </head>
+    <body>
     <div class="container mt-5">
             <!-- エラーメッセージの表示 -->
         <?php if (!empty($msg)) { echo '<p style="color:red;">' . $msg . '</p>'; } ?>

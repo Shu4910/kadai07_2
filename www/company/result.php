@@ -1,17 +1,5 @@
 <?php
-$host = 'localhost';
-$db   = 'bizdiverse';
-$user = 'root';
-$pass = '';
-$charset = 'utf8';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$opt = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-$pdo = new PDO($dsn, $user, $pass, $opt);
+include '../../database_sakura_dbh.php';
 
 // 全体の総数を取得
 $query = 'SELECT COUNT(DISTINCT user_send_id) as total_unique_user_count, COUNT(*) as total_message_count FROM messages WHERE company_send_id = 3';
