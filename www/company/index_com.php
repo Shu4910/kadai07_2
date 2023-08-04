@@ -17,7 +17,7 @@
 
         <div class="row justify-content-center">
             <div class="col-md-5">
-                <h2 class="text-center mb-4">BizDiverse<br> 企業用ログインページ</h2>
+                <h2 class="text-center mb-4">BizDiverse企業用<br> ログインページ</h2>
                 <div class="card">
                     <div class="card-body">
                         <form action="login_com.php" method="post">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <p> <a href="reg_com.php">会員登録する<br>※パスワードを忘れた場合もこちらから再登録できます</a></p>
+                    <p> <a href="reg_com.php">会員登録する</a></p>
                 </div>
                 <div class="text-center mt-4">
                     <p> <a href="../index.php">もとに戻る</a></p>
@@ -44,7 +44,10 @@
             </div>
         </div>
     </div>
-
+    <!-- フッターにサービス名を追加 -->
+<footer class="text-center mb-4">
+    <p>&copy; BizDiverse</p>
+</footer><!-- フッターにサービス名を追加 -->
 
 
 
