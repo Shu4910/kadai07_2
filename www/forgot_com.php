@@ -10,7 +10,7 @@ $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
 // フォームからメールアドレスを取得
-$userEmail = $_POST['email'];
+$userEmail = $_POST['mail'];
 
 // PHPMailerのインスタンスを作成
 $mailer = new PHPMailer();
@@ -45,14 +45,14 @@ session_start();
 $_SESSION['code'] = $code;
 $_SESSION['expiration'] = $expiration;
 // ここにメールアドレスをセッションに保存
-$_SESSION['email'] = $userEmail;
+$_SESSION['mail'] = $userEmail;
 
 // メール送信
 if ($mailer->send()) {
     // セッションにメール送信成功のフラグを保存
     $_SESSION['mail_sent'] = true;
     // リダイレクト先を設定
-    header('Location: forgot2.php');
+    header('Location: forgot2_com.php');
     exit(); // 必ずリダイレクト後はexit()を呼び出してください
 } else {
     echo 'メールの送信に失敗しました。エラー: ' . $mailer->ErrorInfo;

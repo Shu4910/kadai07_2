@@ -26,11 +26,14 @@
             <form action="com_chat.php" method="get">
                 <button type="submit" class="btn btn-primary btn-block mb-2">スカウトやり取り画面</button>
             </form>
-            <form action="index_com.php" method="get">
-                <button type="submit" class="btn btn-primary btn-block mb-2">ログアウト</button>
-            </form>
             <form action="result.php" method="get">
                 <button type="submit" class="btn btn-primary btn-block mb-2">数値</button>
+            </form>
+            <form action="pass_com.php" method="get">
+                <button type="submit" class="btn btn-primary btn-block mb-2">パスワードを変更する</button>
+            </form>
+            <form action="index_com.php" method="get">
+                <button type="submit" class="btn btn-primary btn-block mb-2">ログアウト</button>
             </form>
         </div>
 

@@ -44,6 +44,12 @@
                 </form>
             </div>
             <div class="mb-3"> <!-- カラムのサイズを変更 -->
+                <!-- スカウト受信画面のボタン -->
+                <form action="pass.php" method="get">
+                    <button class="btn btn-primary btn-block" type="submit">パスワード変更</button>
+                </form>
+            </div>
+            <div class="mb-3"> <!-- カラムのサイズを変更 -->
                 <!-- ログアウトのボタン -->
                 <form action="../index.php">
                     <button class="btn btn-primary btn-block" type="submit">ログアウト</button>
