@@ -32,7 +32,7 @@
                     </form>
                 </div>
                 <div class="text-center mt-4">
-                    <form action="company/index_user.php">
+                    <form action="company/index_com.php">
                         <button type="submit" class="btn btn-link">戻る</button>
                     </form>
                 </div>
