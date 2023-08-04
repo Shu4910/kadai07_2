@@ -8,7 +8,7 @@
     <style>
         
         .btn {
-            width: 30%;
+            width: 60%;
             }
 
     </style>
