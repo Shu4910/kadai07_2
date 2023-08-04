@@ -88,6 +88,7 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
 
             $mailer->send();
             echo 'Message has been sent';
+            header("Location: message_details.php?session_id=$session_id");
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mailer->ErrorInfo}";
         }
