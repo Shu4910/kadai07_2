@@ -6,6 +6,8 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Message Sending</title>
     <meta charset="utf-8">
 </head>
