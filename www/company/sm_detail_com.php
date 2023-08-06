@@ -59,7 +59,7 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
         $company = $stmt->fetch(PDO::FETCH_ASSOC);
         $company_name = $company['houjin'];
 
-        $subject = "New_Message(BizDiverse)";
+        $subject = "New_Message_from_company(BizDiverse)";
         $message = "新着メッセージがあります。" . "企業名: " . $company_name . "\n\nメッセージ内容: " . $message_body;
         
         $mailer = new PHPMailer(true);

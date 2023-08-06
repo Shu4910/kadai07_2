@@ -91,7 +91,7 @@ try {
     $mailer->Password = $_ENV['SMTP_PASS']; // SMTP認証のパスワード
 
     // 送信元と宛先の設定
-    $mailer->setFrom('postmaster@komaki0910.sakura.ne.jp', 'Test'); // 送信元メールアドレスと送信者名
+    $mailer->setFrom('postmaster@komaki0910.sakura.ne.jp', 'User reply'); // 送信元メールアドレスと送信者名
 
     // メッセージ内容にURLを添付
     $url = "http://komaki0910.sakura.ne.jp/user/message_details.php?session_id=$session_id";
