@@ -19,6 +19,7 @@ loadEnv();
 if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $session_id = $_POST['session_id'];
     $message_body = $_POST['message_body'];
+    $sender_type = 'company';  // sender_type を 'company' に固定
     $sender_type = $_POST['sender_type'];
 
     $ids = explode('_', $session_id);
