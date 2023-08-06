@@ -67,15 +67,26 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $stmt->execute();
 
     // If last_id was updated (a new message arrived), send a notification email
-    if($stmt->rowCount() > 0) {
-        // Fetch the email associated with the user_send_id and company_send_id
-        $sql = "SELECT mail FROM bizdiverse WHERE id = :user_send_id UNION SELECT com_email FROM bizdiverse_company WHERE company_id = :company_send_id";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindParam(':user_send_id', $user_send_id);
-        $stmt->bindParam(':company_send_id', $company_send_id);
-        $stmt->execute();
+    // if($stmt->rowCount() > 0) {
+    //     $sql = "SELECT mail FROM bizdiverse WHERE id = :user_send_id UNION SELECT com_email FROM bizdiverse_company WHERE company_id = :company_send_id";
+    //     $stmt = $dbh->prepare($sql);
+    //     $stmt->bindParam(':user_send_id', $user_send_id);
+    //     $stmt->bindParam(':company_send_id', $company_send_id);
+    //     $stmt->execute();
 
-        $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Extract only the email column
+    //     $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Extract only the email column
+
+
+// If last_id was updated (a new message arrived), send a notification email
+if($stmt->rowCount() > 0) {
+    // Fetch the email associated with the company_send_id
+    $sql = "SELECT com_email FROM bizdiverse_company WHERE company_id = :company_send_id";
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindParam(':company_send_id', $company_send_id);
+    $stmt->execute();
+
+    $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Extract only the email column
+
 
         $subject = "New";
         $message = "新着メッセージがあります。チャットを確認してください。\n\nメッセージ内容: " . $message_body;
