@@ -70,8 +70,8 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
             $mailer->SMTPAuth = true; 
             $mailer->Username = $_ENV['SMTP_USER'];
             $mailer->Password = $_ENV['SMTP_PASS']; 
-            $mailer->setFrom('postmaster@komaki0910.sakura.ne.jp', 'Test');
-            $url = "http://komaki0910.sakura.ne.jp/company/message_details.php?session_id=$session_id";
+            $mailer->setFrom('postmaster@komaki0910.sakura.ne.jp', 'BizDiverse');
+            $url = "http://komaki0910.sakura.ne.jp/user/message_details.php?session_id=$session_id";
             $message .= "\n\nメッセージやり取りページ: <a href='$url'>$url</a>";
             $mailer->isHTML(true);
             $mailer->Subject = $subject;
@@ -93,25 +93,26 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
             echo "Message could not be sent. Mailer Error: {$mailer->ErrorInfo}";
         }
 
-        $sid = $_ENV['TWILIO_SID'];
-        $token = $_ENV['TWILIO_AUTH_TOKEN'];
-        $twilio_number = $_ENV['TWILIO_PHONE_NUMBER'];
-        $twilio = new Client($sid, $token);
+
+        //SMS送信
+        // $sid = $_ENV['TWILIO_SID'];
+        // $token = $_ENV['TWILIO_AUTH_TOKEN'];
+        // $twilio_number = $_ENV['TWILIO_PHONE_NUMBER'];
+        // $twilio = new Client($sid, $token);
     
-        $sms_body = "（BizDiverse）新着メッセージが届いています。";
+        // $sms_body = "（BizDiverse）新着メッセージが届いています。";
+        // $phoneNumbers = array_column($contacts, 'tel');
 
-        $phoneNumbers = array_column($contacts, 'tel');
-
-        foreach($phoneNumbers as $phoneNumber) {
-            $internationalPhoneNumber = '+81' . substr($phoneNumber, 1);
-            $twilio->messages->create(
-                $internationalPhoneNumber,
-                [
-                    'from' => $twilio_number,
-                    'body' => $sms_body
-                ]
-            );
-        }
+        // foreach($phoneNumbers as $phoneNumber) {
+        //     $internationalPhoneNumber = '+81' . substr($phoneNumber, 1);
+        //     $twilio->messages->create(
+        //         $internationalPhoneNumber,
+        //         [
+        //             'from' => $twilio_number,
+        //             'body' => $sms_body
+        //         ]
+        //     );
+        // }
     }
     header("Location: message_details.php?session_id=$session_id");
 } else {

@@ -89,21 +89,14 @@ try {
     $mailer->SMTPAuth = true; // SMTP認証を使用するかどうか
     $mailer->Username = $_ENV['SMTP_USER']; // SMTP認証のユーザー名
     $mailer->Password = $_ENV['SMTP_PASS']; // SMTP認証のパスワード
-
-    // 送信元と宛先の設定
-    $mailer->setFrom('postmaster@komaki0910.sakura.ne.jp', 'User reply'); // 送信元メールアドレスと送信者名
-
-    // メッセージ内容にURLを添付
-    $url = "http://komaki0910.sakura.ne.jp/user/message_details.php?session_id=$session_id";
+    $mailer->setFrom('postmaster@komaki0910.sakura.ne.jp', 'User_reply(BizDiverse)'); // 送信元メールアドレスと送信者名
+    $url = "http://komaki0910.sakura.ne.jp/company/message_details.php?session_id=$session_id";
     $message .= "\n\nメッセージやり取りページ: <a href='$url'>$url</a>";
-
-    // メール内容
     $mailer->isHTML(true);
     $mailer->Subject = $subject;
     $mailer->Body    = $message;
     $mailer->AltBody = strip_tags($message);
 
-    // 受信先 (com_email のみを取得)
     $comEmails = array_filter($emails, function ($email) {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     });
@@ -117,11 +110,6 @@ try {
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mailer->ErrorInfo}";
 }
-
-
-
-
-
     }
 
     header("Location: message_details.php?session_id=$session_id");
