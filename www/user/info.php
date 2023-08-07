@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newPass = $_POST['pass'];
 
         // DBの現在のパスワードを取得
-        $stmt = $pdo->prepare("SELECT pass FROM bizdiverse_user WHERE mail = :mail");
+        $stmt = $pdo->prepare("SELECT pass FROM bizdiverse WHERE mail = :mail");
         $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
         $stmt->execute();
         $currentPass = $stmt->fetchColumn();
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
 
             // Prepare the update statement with all the fields
-            $stmt = $pdo->prepare("UPDATE bizdiverse_user SET name = :name, kana = :kana, mail = :mail, tel = :tel, birthday = :birthday, types = :types, techo = :techo, info = :info, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3, pass = :pass WHERE mail = :oldMail");
+            $stmt = $pdo->prepare("UPDATE bizdiverse SET name = :name, kana = :kana, mail = :mail, tel = :tel, birthday = :birthday, types = :types, techo = :techo, info = :info, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3, pass = :pass WHERE mail = :oldMail");
             $stmt->bindValue(':name', $newName, PDO::PARAM_STR);
             $stmt->bindValue(':kana', $newKana, PDO::PARAM_STR);
             $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$stmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail");
+$stmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail");
 $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
 $stmt->execute();
 

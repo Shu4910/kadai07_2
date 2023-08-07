@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // パスワードをハッシュ化
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
 
-            $stmt = $pdo->prepare("UPDATE bizdiverse_user SET name = :name, mail = :mail, pass = :pass WHERE mail = :oldMail");
+            $stmt = $pdo->prepare("UPDATE bizdiverse SET name = :name, mail = :mail, pass = :pass WHERE mail = :oldMail");
             $stmt->bindValue(':name', $newName, PDO::PARAM_STR);
             $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
             $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$stmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail");
+$stmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail");
 $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
 $stmt->execute();
 

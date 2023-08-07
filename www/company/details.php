@@ -27,7 +27,7 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
         }
 
         $id = $_GET['id']; // Get details of the person with the specified id
-        $sql = "SELECT * FROM bizdiverse_user WHERE id = '$id'";
+        $sql = "SELECT * FROM bizdiverse WHERE id = '$id'";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {

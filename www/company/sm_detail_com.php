@@ -44,7 +44,7 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $stmt->execute();
 
     if($stmt->rowCount() > 0) {
-        $sql = "SELECT mail, tel FROM bizdiverse_user WHERE id = :user_send_id";
+        $sql = "SELECT mail, tel FROM bizdiverse WHERE id = :user_send_id";
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':user_send_id', $user_send_id);
         $stmt->execute();

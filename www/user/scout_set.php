@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         
         // 既存のパスワードの取得
-        $stmt = $pdo->prepare("SELECT pass FROM bizdiverse_user WHERE mail = :mail");
+        $stmt = $pdo->prepare("SELECT pass FROM bizdiverse WHERE mail = :mail");
         $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
         $stmt->execute();
         $existingPass = $stmt->fetchColumn();
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$stmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail");
+$stmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail");
 $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
 $stmt->execute();
 
