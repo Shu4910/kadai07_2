@@ -19,23 +19,45 @@
         require '../../dbconfig.php'; // require.phpファイルを2つ上の階層から読み込み
         session_start(); // セッションを開始
 
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
+        
+        // $conn = new mysqli($servername, $username, $password, $dbname);
+        // if ($conn->connect_error) {
+        //     die("Connection failed: " . $conn->connect_error);
+        // }
+        
+        // $mail = $_SESSION['mail']; // セッションからメールアドレスを取得 変わらない　
+        
+        // $sql_company = "SELECT city FROM bizdiverse_company WHERE mail = '$mail'";
+        // $result_company = $conn->query($sql_company);
+        
 
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+        
+
+        require '../../dbconfig2.php';
+        try {
+        $pdo = new PDO($dsn, $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+        die("Connection failed: " . $e->getMessage());
         }
 
-        $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 
-        // Get city from bizdiverse_company with specified mail
-        $sql_company = "SELECT city FROM bizdiverse_company WHERE mail = '$mail'";
-        $result_company = $conn->query($sql_company);
+        $mail = $_SESSION['mail']; // セッションからメールアドレスを取得 変わらない　
+
+        $mail = $_SESSION['mail']; 
+
+        $stmt = $pdo->prepare("SELECT work, jigyousho, city FROM bizdiverse_company WHERE mail = :mail");
+        $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result_company = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
         ?>
 
+
         <ul class="list-group">
-        <?php
+        <!-- <?php
         if ($result_company->num_rows > 0) {
             $row_company = $result_company->fetch_assoc();
             $cities = explode(',', $row_company["city"]); // Split cities by comma
@@ -60,7 +82,60 @@
         } else {
             echo "<li class='list-group-item'>No city found in bizdiverse_company with mail: " . $mail . "</li>";
         }
-        ?>
+        ?> -->
+
+                
+<?php      
+if (count($result_company) > 0) {
+    $uniqueResults = []; // Array to store unique results
+    foreach ($result_company as $row_company) {
+        $cities = explode(',', $row_company["city"]); // Split cities by comma
+        $works = explode(',', $row_company["work"]); // Split works by comma
+        $jigyoushos = explode(',', $row_company["jigyousho"]); // Split jigyoushos by comma 
+
+        // Process for each city, work, and jigyousho
+        foreach ($cities as $city) {
+            foreach ($works as $work) {
+                foreach ($jigyoushos as $jigyousho) {
+                    $city = trim($city);
+                    $work = trim($work);
+                    $jigyousho = trim($jigyousho);
+
+                    // Get users from bizdiverse_user that their city, work and jigyousho matches
+                    $stmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE city LIKE :city AND work LIKE :work AND jigyousho LIKE :jigyousho");
+                    $stmt->bindValue(':city', '%'.$city.'%', PDO::PARAM_STR);
+                    $stmt->bindValue(':work', '%'.$work.'%', PDO::PARAM_STR);
+                    $stmt->bindValue(':jigyousho', '%'.$jigyousho.'%', PDO::PARAM_STR);
+                    $stmt->execute();
+                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    if (count($result) > 0) {
+                        // output data of each row
+                        foreach ($result as $row) {
+                            // If the id does not exist in the uniqueResults array
+                            if (!array_key_exists($row['id'], $uniqueResults)) {
+                                $uniqueResults[$row['id']] = $row; // Add the row to the uniqueResults array
+                                echo "<a href='details.php?id=".$row["id"]."' class='list-group-item list-group-item-action'>id: " . $row["id"]. " - Name: " . $row["name"]. " - Email: " . $row["mail"]. " - City: " . $row["city"]. " - Work: " . $row["work"]. " - Jigyousho: " . $row["jigyousho"]. "</a>";
+                            }
+                        }
+                    } else {
+                        echo "<li class='list-group-item'>0 results for city: " . $city . ", work: " . $work . ", jigyousho: " . $jigyousho . "</li>";
+                    }
+                }
+            }
+        }
+    }
+} else {
+    echo "<li class='list-group-item'>No attributes found in bizdiverse_company with mail: " . $mail . "</li>";
+}
+?>
+
+
+
+
+
+
+
         </ul>
 
         <button class="btn btn-primary my-3" onclick="location.href='dash_com.php'">Back</button>

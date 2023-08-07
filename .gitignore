@@ -7,5 +7,7 @@ db.php
 database.php
 database_com.php
 dbconfig.php
+dbconfig2.php
+
 database_dbh.php
 database_sakura_dbh.php
