@@ -71,7 +71,7 @@ CREATE TABLE `bizdiverse_company` (
   `houjin` varchar(64) NOT NULL,
   `tanto` varchar(64) NOT NULL,
   `mail` varchar(64) NOT NULL,
-  `com_tel` varchar(128) NOT NULL,
+  `tel` varchar(128) NOT NULL,
   `types` varchar(64) NOT NULL,
   `pass` varchar(64) NOT NULL,
   `content` text NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE `bizdiverse_company` (
 -- テーブルのデータのダンプ `bizdiverse_company`
 --
 
-INSERT INTO `bizdiverse_company` (`company_id`, `houjin`, `tanto`, `mail`, `com_tel`, `types`, `pass`, `content`, `zipcode`, `address1`, `address2`, `address3`, `address4`, `address5`, `prefecture`, `area`, `city`) VALUES
+INSERT INTO `bizdiverse_company` (`company_id`, `houjin`, `tanto`, `mail`, `tel`, `types`, `pass`, `content`, `zipcode`, `address1`, `address2`, `address3`, `address4`, `address5`, `prefecture`, `area`, `city`) VALUES
 (2, '株式会社BEYOND BORDERS', 'aa', 'sz91hs@gmail.com', '08058039058', '企業', '$2y$10$TbBZVYiXIz2qwCmDHDM29eld0sBC9ieCalNAOjWlodX.g9s0167p2', 'あああああ', 1020072, '東京都', '千代田区', '飯田橋', '', '', 'tokyo', 'outside', 'hachi'),
 (4, '株式会社ゼネラルパートナーズ', 'こまきテスト', 'komaki@beyondborders.jp', '8058039058', '就労移行', '$2y$10$hXPNFKE/pHfJYp/IHzi7Y.pMg24yj./5nQnIvJvZwYriC6NMGFqqm', 'ああああああ', 2140031, '神奈川県', '川崎市多摩区', '東生田', '', '', 'tokyo', 'inside', 'chiyoda'),
 (5, '株式会社BEYOND BORDERS', 'あああa', 'sz91hs@gmail.com', '8058039058', '企業', '$2y$10$.97qir6GzUyOjBa3HbaqTuQPX/0hZauhiaMP6WfmZnuZ0lNmtoceu', 'aaa', 1020072, '２－５－３', 'スカイコート九段下８０５号室', '飯田橋', '', '', 'tokyo', 'outside', 'hachi'),

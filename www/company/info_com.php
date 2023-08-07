@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newHoujin = $_POST['houjin'];
         $newTanto = $_POST['tanto'];
         $newMail = $_POST['mail'];
-        $newTel = $_POST['com_tel'];
+        $newTel = $_POST['tel'];
         $newTypes = $_POST['types'];
         $newContent = $_POST['content'];
         $newZipcode = $_POST['zipcode'];
@@ -30,11 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // パスワードをハッシュ化
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
 
-            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, tanto = :tanto, mail = :mail, com_tel = :com_tel, types = :types, pass = :pass, content = :content, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3 WHERE mail = :oldMail");
+            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, tanto = :tanto, mail = :mail, tel = :tel, types = :types, pass = :pass, content = :content, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3 WHERE mail = :oldMail");
             $stmt->bindValue(':houjin', $newHoujin, PDO::PARAM_STR);
             $stmt->bindValue(':tanto', $newTanto, PDO::PARAM_STR);
             $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
-            $stmt->bindValue(':com_tel', $newTel, PDO::PARAM_INT);
+            $stmt->bindValue(':tel', $newTel, PDO::PARAM_INT);
             $stmt->bindValue(':types', $newTypes, PDO::PARAM_STR);
             $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
             $stmt->bindValue(':content', $newContent, PDO::PARAM_STR);
@@ -95,8 +95,8 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 <input type="email" class="form-control" id="mail" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
-                                <label for="com_tel">電話番号：</label>
-                                <input type="text" class="form-control" id="com_tel" name="com_tel" value="<?php echo htmlspecialchars($userData['com_tel'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                <label for="tel">電話番号：</label>
+                                <input type="text" class="form-control" id="tel" name="tel" value="<?php echo htmlspecialchars($userData['tel'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="types">タイプ：</label>
