@@ -44,8 +44,8 @@
                 // Trim spaces
                 $city = trim($city);
 
-                // Get users from bizdiverse that their city matches with $city
-                $sql = "SELECT * FROM bizdiverse WHERE city LIKE '%$city%'";
+                // Get users from bizdiverse_user that their city matches with $city
+                $sql = "SELECT * FROM bizdiverse_user WHERE city LIKE '%$city%'";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {

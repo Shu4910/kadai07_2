@@ -6,7 +6,7 @@ $mail = $_SESSION['mail']; // セッションからメールアドレスを取�
 $msg = '';
 
 // ユーザデータの取得
-$stmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail");
+$stmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail");
 $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
 $stmt->execute();
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
 
             // Prepare the update statement with all the fields
-            $stmt = $pdo->prepare("UPDATE bizdiverse SET work = :work, jigyousho = :jigyousho, pass = :pass WHERE mail = :oldMail");
+            $stmt = $pdo->prepare("UPDATE bizdiverse_user SET work = :work, jigyousho = :jigyousho, pass = :pass WHERE mail = :oldMail");
             $stmt->bindValue(':work', $newWork, PDO::PARAM_STR);
             $stmt->bindValue(':jigyousho', $newJigyousho, PDO::PARAM_STR);
             $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->execute();
             $msg = '登録を更新しました。';
 
-            $stmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail");
+            $stmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail");
             $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
             $stmt->execute();
             header("Location: " . $_SERVER['PHP_SELF']);
