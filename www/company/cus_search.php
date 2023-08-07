@@ -84,10 +84,10 @@
         }
         ?> -->
 
-                
 <?php      
 if (count($result_company) > 0) {
     $uniqueResults = []; // Array to store unique results
+    $noResultFlag = false; // Flag to indicate if there are any results
     foreach ($result_company as $row_company) {
         $cities = explode(',', $row_company["city"]); // Split cities by comma
         $works = explode(',', $row_company["work"]); // Split works by comma
@@ -110,6 +110,7 @@ if (count($result_company) > 0) {
                     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                     if (count($result) > 0) {
+                        $noResultFlag = true; // There are results, set flag to true
                         // output data of each row
                         foreach ($result as $row) {
                             // If the id does not exist in the uniqueResults array
@@ -118,12 +119,13 @@ if (count($result_company) > 0) {
                                 echo "<a href='details.php?id=".$row["id"]."' class='list-group-item list-group-item-action'>id: " . $row["id"]. " - Name: " . $row["name"]. " - Email: " . $row["mail"]. " - City: " . $row["city"]. " - Work: " . $row["work"]. " - Jigyousho: " . $row["jigyousho"]. "</a>";
                             }
                         }
-                    } else {
-                        echo "<li class='list-group-item'>0 results for city: " . $city . ", work: " . $work . ", jigyousho: " . $jigyousho . "</li>";
                     }
                 }
             }
         }
+    }
+    if ($noResultFlag === false) { // If no results were found for all cities, works, and jigyoushos
+        echo "<li class='list-group-item'>0 results</li>";
     }
 } else {
     echo "<li class='list-group-item'>No attributes found in bizdiverse_company with mail: " . $mail . "</li>";
