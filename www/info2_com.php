@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if (isset($_POST['update'])) {
         $newName = $_POST['houjin'];
-        $newMail = $_POST['com_email'];
+        $newMail = $_POST['mail'];
         $newPass = $_POST['pass'];
         $confirmPass = $_POST['confirm_pass'];
 
@@ -24,14 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // パスワードをハッシュ化
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
 
-            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, com_email = :com_email, pass = :pass WHERE com_email = :oldMail");
+            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, mail = :mail, pass = :pass WHERE mail = :oldMail");
             $stmt->bindValue(':houjin', $newName, PDO::PARAM_STR);
-            $stmt->bindValue(':com_email', $newMail, PDO::PARAM_STR);
+            $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
             $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
             $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
             $stmt->execute();
 
-            $_SESSION['com_email'] = $newMail; // Update the session email
+            $_SESSION['mail'] = $newMail; // Update the session email
             $mail = $newMail; // Update the local email variable
             $msg = '登録を更新しました。';
         } else {
@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE com_email = :com_email");
-$stmt->bindValue(':com_email', $mail, PDO::PARAM_STR);
+$stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE mail = :mail");
+$stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
 $stmt->execute();
 
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -76,7 +76,7 @@ if ($userData === false) {
                             </div>
                             <div class="form-group">
                                 <label for="mail">Eメール：</label>
-                                <input type="email" class="form-control" id="com_email" name="com_email" value="<?php echo $userData['com_email']; ?>" required>
+                                <input type="email" class="form-control" id="mail" name="mail" value="<?php echo $userData['mail']; ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="pass">パスワード：</label>

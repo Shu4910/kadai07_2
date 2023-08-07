@@ -7,12 +7,12 @@ require '../../database.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $com_email = $_POST['com_email'];
+    $mail = $_POST['mail'];
     $pass = $_POST['pass'];
 
     // メールアドレスに一致するユーザーを検索
-    $stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE com_email = :com_email");
-    $stmt->bindValue(':com_email', $com_email, PDO::PARAM_STR);
+    $stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE mail = :mail");
+    $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // ユーザーが存在し、パスワードが一致するかを確認
     if ($user && password_verify($pass, $user['pass'])) {
-        $_SESSION['com_email'] = $user['com_email']; // ユーザーをログイン状態にする
+        $_SESSION['mail'] = $user['mail']; // ユーザーをログイン状態にする
         header('Location: dash_com.php'); // ユーザーをダッシュボードまたはホームページにリダイレクト
         exit;
     } else {

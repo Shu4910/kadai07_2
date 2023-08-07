@@ -27,10 +27,10 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        $com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
+        $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 
         // Get city from bizdiverse_company with specified mail
-        $sql_company = "SELECT city FROM bizdiverse_company WHERE com_email = '$com_email'";
+        $sql_company = "SELECT city FROM bizdiverse_company WHERE mail = '$mail'";
         $result_company = $conn->query($sql_company);
         ?>
 
@@ -58,7 +58,7 @@
                 }
             }
         } else {
-            echo "<li class='list-group-item'>No city found in bizdiverse_company with mail: " . $com_email . "</li>";
+            echo "<li class='list-group-item'>No city found in bizdiverse_company with mail: " . $mail . "</li>";
         }
         ?>
         </ul>

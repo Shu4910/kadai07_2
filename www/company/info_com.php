@@ -2,7 +2,7 @@
 session_start(); // セッションを開始
 require '../../database.php';
 
-$com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
+$mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 $msg = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['update'])) {
         $newHoujin = $_POST['houjin'];
         $newTanto = $_POST['tanto'];
-        $newMail = $_POST['com_email'];
+        $newMail = $_POST['mail'];
         $newTel = $_POST['com_tel'];
         $newTypes = $_POST['types'];
         $newContent = $_POST['content'];
@@ -30,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // パスワードをハッシュ化
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
 
-            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, tanto = :tanto, com_email = :com_email, com_tel = :com_tel, types = :types, pass = :pass, content = :content, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3 WHERE com_email = :oldMail");
+            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, tanto = :tanto, mail = :mail, com_tel = :com_tel, types = :types, pass = :pass, content = :content, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3 WHERE mail = :oldMail");
             $stmt->bindValue(':houjin', $newHoujin, PDO::PARAM_STR);
             $stmt->bindValue(':tanto', $newTanto, PDO::PARAM_STR);
-            $stmt->bindValue(':com_email', $newMail, PDO::PARAM_STR);
+            $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
             $stmt->bindValue(':com_tel', $newTel, PDO::PARAM_INT);
             $stmt->bindValue(':types', $newTypes, PDO::PARAM_STR);
             $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
@@ -42,11 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindValue(':address1', $newAddress1, PDO::PARAM_STR);
             $stmt->bindValue(':address2', $newAddress2, PDO::PARAM_STR);
             $stmt->bindValue(':address3', $newAddress3, PDO::PARAM_STR);
-            $stmt->bindValue(':oldMail', $com_email, PDO::PARAM_STR);
+            $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
             $stmt->execute();
 
-            $_SESSION['com_email'] = $newMail; // Update the session email
-            $com_email = $newMail; // Update the local email variable
+            $_SESSION['mail'] = $newMail; // Update the session email
+            $mail = $newMail; // Update the local email variable
             $msg = '登録を更新しました。';
         } else {
             $msg = 'パスワードが一致しません。';
@@ -54,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE com_email = :com_email");
-$stmt->bindValue(':com_email', $com_email, PDO::PARAM_STR);
+$stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE mail = :mail");
+$stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
 $stmt->execute();
 
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -91,8 +91,8 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 <input type="text" class="form-control" id="tanto" name="tanto" value="<?php echo htmlspecialchars($userData['tanto'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
-                                <label for="com_email">Eメール：</label>
-                                <input type="email" class="form-control" id="com_email" name="com_email" value="<?php echo htmlspecialchars($userData['com_email'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                <label for="mail">Eメール：</label>
+                                <input type="email" class="form-control" id="mail" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="com_tel">電話番号：</label>

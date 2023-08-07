@@ -2,7 +2,7 @@
 // 1. POSTデータ取得
 $houjin = $_POST["houjin"];
 $tanto = $_POST["tanto"];
-$com_email = $_POST["com_email"];
+$mail = $_POST["mail"];
 $com_tel = $_POST["com_tel"];
 $types = $_POST["types"];
 $zipcode = $_POST["zipcode"];
@@ -21,14 +21,14 @@ require '../../database.php'; // require.phpファイルを2つ上の階層か�
 
 
 // Check if record exists
-$checkStmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE com_email = :com_email OR com_tel = :com_tel");
-$checkStmt->execute(['com_email' => $com_email, 'com_tel' => $com_tel]);
+$checkStmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE mail = :mail OR com_tel = :com_tel");
+$checkStmt->execute(['mail' => $mail, 'com_tel' => $com_tel]);
 $exists = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
 if ($exists) {
     // Record exists, update it
     $stmt = $pdo->prepare("UPDATE bizdiverse_company
-                           SET houjin = :houjin, tanto = :tanto, com_email = :com_email, com_tel = :com_tel, 
+                           SET houjin = :houjin, tanto = :tanto, mail = :mail, com_tel = :com_tel, 
                                types = :types, zipcode = :zipcode, address1 = :address1, 
                                address2 = :address2, address3 = :address3, pass = :pass 
                            WHERE company_id = :company_id");
@@ -36,15 +36,15 @@ if ($exists) {
 } else {
     // Record does not exist, insert new one
     $stmt = $pdo->prepare("INSERT INTO bizdiverse_company
-                            (houjin, tanto, com_email, com_tel, types, zipcode, address1, address2, address3, pass)
+                            (houjin, tanto, mail, com_tel, types, zipcode, address1, address2, address3, pass)
                            VALUES
-                            (:houjin, :tanto, :com_email, :com_tel, :types, :zipcode, :address1, :address2, :address3, :pass)");
+                            (:houjin, :tanto, :mail, :com_tel, :types, :zipcode, :address1, :address2, :address3, :pass)");
 }
 
 // Bind variables
 $stmt->bindValue(':houjin', $houjin, PDO::PARAM_STR);
 $stmt->bindValue(':tanto', $tanto, PDO::PARAM_STR);
-$stmt->bindValue(':com_email', $com_email, PDO::PARAM_STR);
+$stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
 $stmt->bindValue(':com_tel', $com_tel, PDO::PARAM_STR);
 $stmt->bindValue(':types', $types, PDO::PARAM_STR);
 $stmt->bindValue(':zipcode', $zipcode, PDO::PARAM_STR);

@@ -1,6 +1,6 @@
 <?php
 session_start(); // セッションを開始
-$com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
+$mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 ?>
 
 <!DOCTYPE html>
@@ -29,8 +29,8 @@ $com_email = $_SESSION['com_email']; // セッションからメールアドレ�
             
 
             // Get sender_id based on email
-            $stmt = $conn->prepare("SELECT company_id FROM bizdiverse_company WHERE com_email = ?");
-            $stmt->bind_param("s", $com_email);
+            $stmt = $conn->prepare("SELECT company_id FROM bizdiverse_company WHERE mail = ?");
+            $stmt->bind_param("s", $mail);
             $stmt->execute();
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();

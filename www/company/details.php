@@ -1,6 +1,6 @@
 <?php
 session_start(); // セッションを開始
-$com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
+$mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 ?>
 
 <!DOCTYPE html>

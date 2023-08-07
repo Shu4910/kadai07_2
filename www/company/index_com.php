@@ -23,7 +23,7 @@
                         <form action="login_com.php" method="post">
                             <div class="form-group">
                                 <label for="mail">Eメール</label>
-                                <input type="email" class="form-control" id="com_email" name="com_email" required>
+                                <input type="email" class="form-control" id="mail" name="mail" required>
                             </div>
                             <div class="form-group">
                                 <label for="pass">パスワード</label>

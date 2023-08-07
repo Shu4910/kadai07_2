@@ -16,7 +16,7 @@ $jigyoushos = !empty($userData['jigyousho']) ? explode(',', $userData['jigyousho
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログアウトが押された場合
     if (isset($_POST['logout'])) {
-        header('Location: dash.php');
+        header('Location: dash_com.php');
         exit;
     }
 

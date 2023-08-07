@@ -2,7 +2,7 @@
 session_start(); // セッションを開始
 require '../../database.php';
 
-$com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
+$mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 $msg = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (isset($_POST['update'])) {
-        $newMail = $_POST['com_email'];
+        $newMail = $_POST['mail'];
         $newPass = $_POST['pass'];
         $confirmPass = $_POST['confirm_pass'];
 
@@ -21,14 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // パスワードをハッシュ化
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
             
-            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET com_email = :com_email, pass = :pass WHERE com_email = :oldMail");
-            $stmt->bindValue(':com_email', $newMail, PDO::PARAM_STR);
+            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET mail = :mail, pass = :pass WHERE mail = :oldMail");
+            $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
             $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
-            $stmt->bindValue(':oldMail', $com_email, PDO::PARAM_STR);
+            $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
             $stmt->execute();
 
-            $_SESSION['com_email'] = $newMail; // Update the session email
-            $com_email = $newMail; // Update the local email variable
+            $_SESSION['mail'] = $newMail; // Update the session email
+            $mail = $newMail; // Update the local email variable
             $msg = '登録を更新しました。';
         } else {
             $msg = 'パスワードが一致しません。';
@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE com_email = :com_email");
-$stmt->bindValue(':com_email', $com_email, PDO::PARAM_STR);
+$stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE mail = :mail");
+$stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
 $stmt->execute();
 
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -65,8 +65,8 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                     <div class="card-body">
                         <form method="POST">
                             <div class="form-group">
-                                <label for="com_email">Eメール：</label>
-                                <input type="email" class="form-control" id="com_email" name="com_email" value="<?php echo htmlspecialchars($userData['com_email'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                <label for="mail">Eメール：</label>
+                                <input type="email" class="form-control" id="mail" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="pass">新しいパスワード：</label>

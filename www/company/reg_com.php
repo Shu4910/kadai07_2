@@ -41,8 +41,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="com_email">メールアドレス:</label>
-                                    <input type="email" class="form-control" id="com_email" name="com_email">
+                                    <label for="mail">メールアドレス:</label>
+                                    <input type="email" class="form-control" id="mail" name="mail">
                                 </div>
 
                                 <div class="form-group">
@@ -147,7 +147,7 @@
         window.onload = function() {
     document.getElementById('myForm').onsubmit = function() {
         // 入力項目のIDを配列に格納
-        let fields = ['houjin', 'tanto', 'com_email', 'com_tel', 'types', 'zipcode', 'address1', 'address2', 'address3', 'pass', 'confirm_pass'];
+        let fields = ['houjin', 'tanto', 'mail', 'com_tel', 'types', 'zipcode', 'address1', 'address2', 'address3', 'pass', 'confirm_pass'];
 
         for (let i = 0; i < fields.length; i++) {
             // 入力項目を取得

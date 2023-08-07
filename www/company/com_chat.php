@@ -20,10 +20,10 @@
         
         require '../../database_dbh.php';
 
-        $com_email = $_SESSION['com_email']; // セッションからメールアドレスを取得
+        $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 
         // ログインしているユーザーのcompany_idを取得
-        $sql_company = "SELECT company_id FROM bizdiverse_company WHERE com_email = '$com_email'";
+        $sql_company = "SELECT company_id FROM bizdiverse_company WHERE mail = '$mail'";
         $stmt_company = $dbh->query($sql_company);
         $company = $stmt_company->fetch(PDO::FETCH_ASSOC);
         $company_id = $company['company_id'];
