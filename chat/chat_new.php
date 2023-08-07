@@ -3,7 +3,7 @@ session_start();
 
 try {
     //pass:MAMP='root',XAMPP=''
-    $pdo = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
+    $pdo = new PDO('mysql:dbname=bizdiverse_user;charset=utf8;host=localhost', 'root', '');
 } catch (PDOException $e) {
 
     exit('DBConnectError'.$e->getMessage());
@@ -26,7 +26,7 @@ class Chat implements MessageComponentInterface {
         $this->clients = new \SplObjectStorage;
 
         // PDOを使ってDBに接続
-        $this->db = new PDO('mysql:dbname=bizdiverse;charset=utf8;host=localhost', 'root', '');
+        $this->db = new PDO('mysql:dbname=bizdiverse_user;charset=utf8;host=localhost', 'root', '');
     }
 
     public function onOpen(ConnectionInterface $conn) {

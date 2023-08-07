@@ -22,10 +22,10 @@
         $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 
         // メールアドレスと一致したbizdiverseのidを取得
-        $sql_bizdiverse = "SELECT id FROM bizdiverse WHERE mail = '$mail'";
+        $sql_bizdiverse = "SELECT id FROM bizdiverse_user WHERE mail = '$mail'";
         $stmt_bizdiverse = $dbh->query($sql_bizdiverse);
-        $bizdiverse = $stmt_bizdiverse->fetch(PDO::FETCH_ASSOC);
-        $id = $bizdiverse['id'];
+        $bizdiverse_user = $stmt_bizdiverse->fetch(PDO::FETCH_ASSOC);
+        $id = $bizdiverse_user['id'];
 
         // SQLを準備
         $sql = "SELECT DISTINCT session_id, user_send_id, company_send_id FROM messages WHERE user_send_id = '$id' OR company_send_id = '$id' ORDER BY session_id";

@@ -21,13 +21,13 @@ $pass = password_hash($pass, PASSWORD_DEFAULT);
 require "../database.php";
 
 // Check if record exists
-$checkStmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail OR tel = :tel");
+$checkStmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail OR tel = :tel");
 $checkStmt->execute(['mail' => $email, 'tel' => $tel]);
 $exists = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
 if ($exists) {
     // Record exists, update it
-    $stmt = $pdo->prepare("UPDATE bizdiverse 
+    $stmt = $pdo->prepare("UPDATE bizdiverse_user 
                            SET name = :name, kana = :kana, mail = :mail, tel = :tel, 
                                birthday = :birthday, types = :types, techo = :techo, 
                                info = :info, zipcode = :zipcode, address1 = :address1, 
@@ -36,7 +36,7 @@ if ($exists) {
     $stmt->bindValue(':id', $exists['id'], PDO::PARAM_INT);
 } else {
     // Record does not exist, insert new one
-    $stmt = $pdo->prepare("INSERT INTO bizdiverse
+    $stmt = $pdo->prepare("INSERT INTO bizdiverse_user
                             (name, kana, mail, tel, birthday, types, techo, info, zipcode, address1, address2, address3, pass)
                            VALUES
                             (:name, :kana, :mail, :tel, :birthday, :types, :techo, :info, :zipcode, :address1, :address2, :address3, :pass)");

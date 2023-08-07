@@ -18,16 +18,16 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- データベース: `bizdiverse`
+-- データベース: `bizdiverse_user`
 --
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `bizdiverse`
+-- テーブルの構造 `bizdiverse_user`
 --
 
-CREATE TABLE `bizdiverse` (
+CREATE TABLE `bizdiverse_user` (
   `id` int(12) NOT NULL,
   `name` varchar(64) NOT NULL,
   `kana` varchar(64) NOT NULL,
@@ -52,10 +52,10 @@ CREATE TABLE `bizdiverse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- テーブルのデータのダンプ `bizdiverse`
+-- テーブルのデータのダンプ `bizdiverse_user`
 --
 
-INSERT INTO `bizdiverse` (`id`, `name`, `kana`, `mail`, `tel`, `birthday`, `types`, `techo`, `info`, `zipcode`, `address1`, `address2`, `address3`, `pass`, `prefecture`, `area`, `city`, `content`, `work`, `area_detail`, `jigyousho`) VALUES
+INSERT INTO `bizdiverse_user` (`id`, `name`, `kana`, `mail`, `tel`, `birthday`, `types`, `techo`, `info`, `zipcode`, `address1`, `address2`, `address3`, `pass`, `prefecture`, `area`, `city`, `content`, `work`, `area_detail`, `jigyousho`) VALUES
 (2, '小牧秀太郎', 'あああ', 'komaki@beyondborders.jp', '09038835911', '1992-09-10', '精神', '無し', '全ての情報', 1020072, '東京都', '千代田区', '飯田橋', '$2y$10$LY26zquvthRMiHnf7.XS0el3r4QXTP9NG5Ihe3AharlMYDiV/EJjy', '', '', 'chiyoda', '', NULL, NULL, NULL),
 (18, '小牧秀太郎', 'あああああ', 'sz91hs@gmail.com', '08058039058', '1992-09-10', '精神', '2級', '全ての情報', 2140031, '神奈川県', '川崎市多摩区', '東生田あ', '$2y$10$27mjTZ4xhQkenVSC7iSw2e33cSH/lVG6V/tbufhOGeU6haYuOb1Ai', 'tokyo', 'inside', 'chiyoda,minato,hachi', 'ああ', 'WEBデザイナー,ITエンジニア,DTP・CADオペレーター', 'あ', '同じ障害種別の通所者が多い,当事者職員がいる'),
 (19, '小牧秀太郎', 'ああ', 'sz83hs@yahoo.co.jp', '08058039048', '1992-09-10', '精神', '-', '全ての情報', 1020072, '東京都', '千代田区', '飯田橋', '$2y$10$RcMojsqdjSYzeaPdZ7nJU./2GUfUGi5gBSHU34vJNmM3aCWWJwW8S', 'tokyo', 'inside', 'chiyoda,minato', NULL, NULL, NULL, NULL);
@@ -260,9 +260,9 @@ INSERT INTO `messages` (`id`, `session_id`, `company_send_id`, `user_send_id`, `
 --
 
 --
--- テーブルのインデックス `bizdiverse`
+-- テーブルのインデックス `bizdiverse_user`
 --
-ALTER TABLE `bizdiverse`
+ALTER TABLE `bizdiverse_user`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -282,9 +282,9 @@ ALTER TABLE `messages`
 --
 
 --
--- テーブルの AUTO_INCREMENT `bizdiverse`
+-- テーブルの AUTO_INCREMENT `bizdiverse_user`
 --
-ALTER TABLE `bizdiverse`
+ALTER TABLE `bizdiverse_user`
   MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --

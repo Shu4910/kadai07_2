@@ -68,7 +68,7 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
 
     // If last_id was updated (a new message arrived), send a notification email
     // if($stmt->rowCount() > 0) {
-    //     $sql = "SELECT mail FROM bizdiverse WHERE id = :user_send_id UNION SELECT com_email FROM bizdiverse_company WHERE company_id = :company_send_id";
+    //     $sql = "SELECT mail FROM bizdiverse_user WHERE id = :user_send_id UNION SELECT com_email FROM bizdiverse_company WHERE company_id = :company_send_id";
     //     $stmt = $dbh->prepare($sql);
     //     $stmt->bindParam(':user_send_id', $user_send_id);
     //     $stmt->bindParam(':company_send_id', $company_send_id);

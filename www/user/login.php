@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass = $_POST['pass'];
 
     // メールアドレスに一致するユーザーを検索
-    $stmt = $pdo->prepare("SELECT * FROM bizdiverse WHERE mail = :mail");
+    $stmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail");
     $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
     $stmt->execute();
 
