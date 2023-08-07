@@ -37,6 +37,7 @@
             </form>
         </div>
 
+        <!--
         <div class="col-sm-8">
             <?php
             
@@ -81,6 +82,7 @@
             echo "</table>";
             ?>
         </div>
+        -->
     </div>
 </div>
 
