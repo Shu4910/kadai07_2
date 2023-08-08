@@ -15,20 +15,22 @@ $prefectureOptions = [
     // 他の都道府県もここに追加
 ];
 
-$areaOptions = [
-    "" => "選択してください",
-    "inside" => "23区内",
-    "outside" => "23区外"
-    // 他のエリアもここに追加
+$prefectureCityMapping = [
+    "tokyo" => [
+        "chiyoda" => "千代田区",
+        "minato" => "港区",
+    ],
+    "kanagawa" => [
+        "hachi" => "八王子",
+        "tachi" => "立川市"
+    ],
+    "saitama" => [
+        "pu" => "pu",
+        "pi" => "pi"
+    ],
+    // 他の都道府県と都市のマッピングもここに追加
 ];
 
-$cityMappings = [
-    "chiyoda" => "千代田区",
-    "minato" => "港区",
-    "hachi" => "八王子",
-    "tachi" => "立川市"
-    // 他の都市もここに追加
-];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログアウトが押された場合
@@ -42,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newMail = empty($_POST['mail']) ? $mail : $_POST['mail']; // Check if the new email is empty
         $newPass = $_POST['pass'];
         $prefecture = $_POST['prefecture'];
-        $area = $_POST['area'];
+        // $area = $_POST['area'];
         $cities = is_array($_POST['city']) ? implode(",", $_POST['city']) : $_POST['city'];
 
         
@@ -57,7 +59,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // パスワードをハッシュ化
             $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
 
-            // ...
+                // ここでDBへの更新処理を追加
+    $updateStmt = $pdo->prepare("
+    UPDATE bizdiverse_user 
+    SET mail = :newMail, pass = :hashedPass, prefecture = :prefecture, city = :cities 
+    WHERE mail = :mail
+");
+$updateStmt->bindValue(':newMail', $newMail, PDO::PARAM_STR);
+$updateStmt->bindValue(':hashedPass', $hashedPass, PDO::PARAM_STR);
+$updateStmt->bindValue(':prefecture', $prefecture, PDO::PARAM_STR);
+$updateStmt->bindValue(':cities', $cities, PDO::PARAM_STR);
+$updateStmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+$updateStmt->execute();
 
             $_SESSION['mail'] = $newMail; // Update the session email
             $mail = $newMail; // Update the local email variable
@@ -112,7 +125,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 ?>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="area">エリア:</label>
                             <select class="form-control" id="area" name="area">
                                 <?php
@@ -122,17 +135,25 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 }
                                 ?>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <p>都市選択:</p>
                             <div id="city">
                                 <?php
                                 $selectedCities = explode(',', $userData['city']);
-                                foreach ($cityMappings as $value => $label) {
-                                    $checked = in_array($value, $selectedCities) ? 'checked' : '';
-                                    echo '<input type="checkbox" id="' . $value . '" name="city[]" value="' . $value . '" ' . $checked . '>
-                                    <label for="' . $value . '">' . $label . '</label><br>';
+                                // foreach ($prefectureCityMapping as $value => $label) {
+                                //     $checked = in_array($value, $selectedCities) ? 'checked' : '';
+                                //     echo '<input type="checkbox" id="' . $value . '" name="city[]" value="' . $value . '" ' . $checked . '>
+                                //     <label for="' . $value . '">' . $label . '</label><br>';
+                                // }
+                                foreach ($prefectureCityMapping as $prefecture => $cities) {
+                                    foreach ($cities as $cityValue => $cityLabel) {
+                                        $checked = in_array($cityValue, $selectedCities) ? 'checked' : '';
+                                        echo '<input type="checkbox" id="' . $cityValue . '" name="city[]" value="' . $cityValue . '" ' . $checked . '>
+                                        <label for="' . $cityValue . '">' . $cityLabel . '</label><br>';
+                                    }
                                 }
+
                                 ?>
                             </div>
                         </div>
@@ -155,37 +176,61 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
 <script>
 $(document).ready(function(){
-    $('#prefecture').change(function(){
-        var prefecture = $(this).val();
-        if (prefecture == 'tokyo') {
-            $('#area').html('<option value="">選択してください</option><option value="inside">23区内</option><option value="outside">23区外</option>');
-        } else {
-            $('#area').html('<option value="">選択してください</option>');
-        }
-        $('#city').html(''); // Reset city options
-    });
+    
+    // 都道府県に基づく都市の情報を更新する関数
+    function updateCityOptions() {
+        var prefecture = $('#prefecture').val();
 
-    $('#area').change(function(){
-        var area = $(this).val();
+        // 既に選択されている都市を取得
+        var selectedCities = [];
+        $('input[name="city[]"]:checked').each(function(){
+            selectedCities.push($(this).val());
+        });
+
         var cityOptions = '';
-        if (area === 'inside') {
-            <?php
-            $insideCities = ["chiyoda", "minato"];
-            foreach ($insideCities as $city) {
-                echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\"> <label for=\"" . $city . "\">" . $cityMappings[$city] . "</label><br>';\n";
-            }
-            ?>
-        } else if (area === 'outside') {
-            <?php
-            $outsideCities = ["hachi", "tachi"];
-            foreach ($outsideCities as $city) {
-                echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\"> <label for=\"" . $city . "\">" . $cityMappings[$city] . "</label><br>';\n";
-            }
-            ?>
+        switch (prefecture) {
+            case 'tokyo':
+                <?php
+                foreach ($prefectureCityMapping['tokyo'] as $city => $label) {
+                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
+                }
+                ?>
+                break;
+            case 'kanagawa':
+                <?php
+                foreach ($prefectureCityMapping['kanagawa'] as $city => $label) {
+                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
+                }
+                ?>
+                break;
+
+            case 'saitama':
+                <?php
+                foreach ($prefectureCityMapping['saitama'] as $city => $label) {
+                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
+                }
+                ?>
+                break;
+
+
+            // 他の都道府県の場合もここに追加
+            default:
+                cityOptions = ''; // 何も選択されていない場合は都市のオプションを空にする
+                break;
         }
         $('#city').html(cityOptions);
+    }
+    
+    // 都道府県が変更されたときのイベントハンドラ
+    $('#prefecture').change(function(){
+        updateCityOptions();
     });
+    
+    // ページが読み込まれたときに関数を呼び出して都市の情報を初期化
+    updateCityOptions();
 });
+
+
 </script>
 
 </body>
