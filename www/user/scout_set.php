@@ -9,22 +9,22 @@ $msg = '';
 
 $prefectureOptions = [
     "" => "選択してください",
-    "tokyo" => "東京都",
-    "kanagawa" => "神奈川県",
-    "saitama" => "埼玉県"
+    "東京都" => "東京都",
+    "神奈川県" => "神奈川県",
+    "埼玉県" => "埼玉県"
     // 他の都道府県もここに追加
 ];
 
 $prefectureCityMapping = [
-    "tokyo" => [
-        "chiyoda" => "千代田区",
-        "minato" => "港区",
+    "東京都" => [
+        "千代田区" => "千代田区",
+        "港区" => "港区",
     ],
-    "kanagawa" => [
-        "hachi" => "八王子",
-        "tachi" => "立川市"
+    "神奈川県" => [
+        "八王子" => "八王子",
+        "立川市" => "立川市"
     ],
-    "saitama" => [
+    "埼玉県" => [
         "pu" => "pu",
         "pi" => "pi"
     ],
@@ -189,24 +189,24 @@ $(document).ready(function(){
 
         var cityOptions = '';
         switch (prefecture) {
-            case 'tokyo':
+            case "東京都":
                 <?php
-                foreach ($prefectureCityMapping['tokyo'] as $city => $label) {
+                foreach ($prefectureCityMapping["東京都"] as $city => $label) {
                     echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
                 }
                 ?>
                 break;
-            case 'kanagawa':
+            case '神奈川県':
                 <?php
-                foreach ($prefectureCityMapping['kanagawa'] as $city => $label) {
+                foreach ($prefectureCityMapping['神奈川県'] as $city => $label) {
                     echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
                 }
                 ?>
                 break;
 
-            case 'saitama':
+            case '埼玉県':
                 <?php
-                foreach ($prefectureCityMapping['saitama'] as $city => $label) {
+                foreach ($prefectureCityMapping['埼玉県'] as $city => $label) {
                     echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
                 }
                 ?>

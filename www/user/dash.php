@@ -38,6 +38,12 @@
                 </form>
             </div>
             <div class="mb-3"> <!-- カラムのサイズを変更 -->
+                <!-- 基本情報修正画面のボタン -->
+                <form action="user_resume.php" method="get">
+                    <button class="btn btn-primary btn-block" type="submit">レジュメ編集</button>
+                </form>
+            </div>
+            <div class="mb-3"> <!-- カラムのサイズを変更 -->
                 <!-- スカウト受信画面のボタン -->
                 <form action="chat_non.php" method="get">
                     <button class="btn btn-primary btn-block" type="submit">スカウト受信画面</button>
