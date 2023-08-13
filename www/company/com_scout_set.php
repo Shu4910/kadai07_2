@@ -6,6 +6,31 @@ require '../../database.php';
 $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 $msg = '';
 
+$prefectureOptions = [
+    "" => "選択してください",
+    "東京都" => "東京都",
+    "神奈川県" => "神奈川県",
+    "埼玉県" => "埼玉県"
+    // 他の都道府県もここに追加
+];
+
+$prefectureCityMapping = [
+    "東京都" => [
+        "千代田区" => "千代田区",
+        "港区" => "港区",
+    ],
+    "神奈川県" => [
+        "八王子" => "八王子",
+        "立川市" => "立川市"
+    ],
+    "埼玉県" => [
+        "pu" => "pu",
+        "pi" => "pi"
+    ],
+    // 他の都道府県と都市のマッピングもここに追加
+];
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログアウトが押された場合
     if (isset($_POST['logout'])) {
@@ -15,17 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['update'])) {
         // All the other form fields
-        $newMail = $_POST['mail'];
+        $newMail = empty($_POST['mail']) ? $mail : $_POST['mail']; // Check if the new email is empty
         $prefecture = $_POST['prefecture'];
-        $area = $_POST['area'];
+        // $area = $_POST['area'];
         $cities = isset($_POST['city']) ? (is_array($_POST['city']) ? implode(",", $_POST['city']) : $_POST['city']) : '';
 
         // Prepare the update statement with all the fields
-        $stmt = $pdo->prepare("UPDATE bizdiverse_company SET mail = :mail, prefecture = :prefecture, area = :area, city = :city WHERE mail = :oldMail");
+        $stmt = $pdo->prepare("UPDATE bizdiverse_company SET mail = :mail, prefecture = :prefecture, city = :city WHERE mail = :oldMail");
         $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
         $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
         $stmt->bindValue(':prefecture', $prefecture, PDO::PARAM_STR);
-        $stmt->bindValue(':area', $area, PDO::PARAM_STR);
         $stmt->bindValue(':city', $cities, PDO::PARAM_STR);
         $stmt->execute();
 
@@ -58,107 +82,119 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 <body>
 
 <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <h2 class="text-center mb-4">登録情報</h2>
-                <?php if (!empty($msg)) { echo '<div class="alert alert-danger">' . htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') . '</div>'; } ?>
-                <div class="card">
-                    <div class="card-body">
-                        <form method="POST">
-                            <div class="form-group">
-                                <label for="mail">Eメール：</label>
-                                <input type="email" class="form-control" id="mail" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>" required>
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <h2 class="text-center mb-4">登録情報</h2>
+            <?php if (!empty($msg)) { echo '<div class="alert alert-danger">' . htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') . '</div>'; } ?>
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="pass">パスワード：</label>
+                            <input type="password" class="form-control" id="pass" name="pass" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prefecture">都道府県:</label>
+                            <select class="form-control" id="prefecture" name="prefecture">
+                                <?php
+                                foreach ($prefectureOptions as $value => $label) {
+                                    $selected = ($userData['prefecture'] === $value) ? 'selected' : '';
+                                    echo '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <p>都市選択:</p>
+                            <div id="city">
+                                <?php
+                                $selectedCities = explode(',', $userData['city']);
+                                foreach ($prefectureCityMapping as $prefecture => $cities) {
+                                    foreach ($cities as $cityValue => $cityLabel) {
+                                        $checked = in_array($cityValue, $selectedCities) ? 'checked' : '';
+                                        echo '<input type="checkbox" id="' . $cityValue . '" name="city[]" value="' . $cityValue . '" ' . $checked . '>
+                                        <label for="' . $cityValue . '">' . $cityLabel . '</label><br>';
+                                    }
+                                }
+
+                                ?>
                             </div>
-                            <div class="form-group">
-    <label for="prefecture">都道府県:</label>
-    <select class="form-control" id="prefecture" name="prefecture" required>
-        <option value="">選択してください</option>
-        <option value="tokyo" <?php if($userData['prefecture'] == "tokyo") echo "selected";?>>東京都</option>
-        <option value="kanagawa" <?php if($userData['prefecture'] == "kanagawa") echo "selected";?>>神奈川県</option>
-        <option value="saitama" <?php if($userData['prefecture'] == "saitama") echo "selected";?>>埼玉県</option>
-        <!-- 他の都道府県もここに追加 -->
-    </select>
-</div>
-
-<div class="form-group">
-    <label for="area">エリア:</label>
-    <select class="form-control" id="area" name="area" required>
-        <option value="">選択してください</option>
-        <option value="inside" <?php if($userData['area'] == "inside") echo "selected";?>>23区内</option>
-        <option value="outside" <?php if($userData['area'] == "outside") echo "selected";?>>23区外</option>
-        <!-- 他のエリアもここに追加 -->
-    </select>
-</div>
-<div class="form-group">
-    <p>都市選択:</p>
-    <div id="city">
-        <!-- PHPで都市のチェックボックスを動的に生成 -->
-        <?php
-        $cities = explode(',', $userData['city']);
-        $cityMappings = [
-            "chiyoda" => "千代田区",
-            "minato" => "港区",
-            "hachi" => "八王子市",
-            "tachi" => "立川市",
-            // 他の都市もこの形式で追加していきます
-        ];
-        foreach ($cities as $city) {
-            echo '<input type="checkbox" id="'.$city.'" name="city[]" value="'.$city.'" checked> <label for="'.$city.'">'.$cityMappings[$city].'</label><br>';
-        }
-        ?>
-    </div>
-</div>
-
-
-</div>
-
-
-
-                            <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
-                        </form>
-                        <form method="POST" style="margin-top: 10px;">
-                            <button type="submit" name="logout" class="btn btn-secondary btn-block">ホーム画面に戻る</button>
-                        </form>
-                    </div>
+                        </div>
+                        <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
+                    </form>
+                    <form method="POST" style="margin-top: 10px;">
+                        <button type="submit" name="logout" class="btn btn-secondary btn-block">戻る</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
-        <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script>
 $(document).ready(function(){
-    $('#prefecture').change(function(){
-        var prefecture = $(this).val();
-        if(prefecture == 'tokyo'){
-            $('#area').html('<option value="">選択してください</option><option value="inside">23区内</option><option value="outside">23区外</option>');
-        } else {
-            $('#area').html('<option value="">選択してください</option>');
+    
+    // 都道府県に基づく都市の情報を更新する関数
+    function updateCityOptions() {
+        var prefecture = $('#prefecture').val();
+
+        // 既に選択されている都市を取得
+        var selectedCities = [];
+        $('input[name="city[]"]:checked').each(function(){
+            selectedCities.push($(this).val());
+        });
+
+        var cityOptions = '';
+        switch (prefecture) {
+            case "東京都":
+                <?php
+                foreach ($prefectureCityMapping["東京都"] as $city => $label) {
+                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
+                }
+                ?>
+                break;
+            case '神奈川県':
+                <?php
+                foreach ($prefectureCityMapping['神奈川県'] as $city => $label) {
+                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
+                }
+                ?>
+                break;
+
+            case '埼玉県':
+                <?php
+                foreach ($prefectureCityMapping['埼玉県'] as $city => $label) {
+                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
+                }
+                ?>
+                break;
+
+
+            // 他の都道府県の場合もここに追加
+            default:
+                cityOptions = ''; // 何も選択されていない場合は都市のオプションを空にする
+                break;
         }
-    });
-    $('#area').change(function(){
-    var area = $(this).val();
-    var cityOptions = '';
-    if(area == 'inside'){
-        cityOptions = '<input type="checkbox" id="chiyoda" name="city[]" value="chiyoda"> <label for="chiyoda">千代田区</label><br>' +
-                      '<input type="checkbox" id="minato" name="city[]" value="minato"> <label for="minato">港区</label><br>' //+ ... 東京23区の全ての区をここにリストアップしてください
-    } 
-    else if(area == 'outside'){
-        cityOptions = '<input type="checkbox" id="hachi" name="city[]" value="hachi"> <label for="hachi">八王子</label><br>' +
-                      '<input type="checkbox" id="tachi" name="city[]" value="tachi"> <label for="minato">立川市</label><br>' //+ ... 東京23区の全ての区をここにリストアップしてください
-    } 
-    else {
-        cityOptions = '';
+        $('#city').html(cityOptions);
     }
-    $('#city').html(cityOptions);
+    
+    // 都道府県が変更されたときのイベントハンドラ
+    $('#prefecture').change(function(){
+        updateCityOptions();
+    });
+    
+    // ページが読み込まれたときに関数を呼び出して都市の情報を初期化
+    updateCityOptions();
 });
-});
+
+
 </script>
 
 

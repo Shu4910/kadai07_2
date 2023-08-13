@@ -106,10 +106,6 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
             <div class="card">
                 <div class="card-body">
                     <form method="POST">
-                        <!-- <div class="form-group">
-                            <label for="mail">Eメール：</label>
-                            <input type="email" class="form-control" id="mail" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>" required>
-                        </div> -->
                         <div class="form-group">
                             <label for="pass">パスワード：</label>
                             <input type="password" class="form-control" id="pass" name="pass" required>
@@ -125,27 +121,11 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 ?>
                             </select>
                         </div>
-                        <!-- <div class="form-group">
-                            <label for="area">エリア:</label>
-                            <select class="form-control" id="area" name="area">
-                                <?php
-                                foreach ($areaOptions as $value => $label) {
-                                    $selected = ($userData['area'] === $value) ? 'selected' : '';
-                                    echo '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
-                                }
-                                ?>
-                            </select>
-                        </div> -->
                         <div class="form-group">
                             <p>都市選択:</p>
                             <div id="city">
                                 <?php
                                 $selectedCities = explode(',', $userData['city']);
-                                // foreach ($prefectureCityMapping as $value => $label) {
-                                //     $checked = in_array($value, $selectedCities) ? 'checked' : '';
-                                //     echo '<input type="checkbox" id="' . $value . '" name="city[]" value="' . $value . '" ' . $checked . '>
-                                //     <label for="' . $value . '">' . $label . '</label><br>';
-                                // }
                                 foreach ($prefectureCityMapping as $prefecture => $cities) {
                                     foreach ($cities as $cityValue => $cityLabel) {
                                         $checked = in_array($cityValue, $selectedCities) ? 'checked' : '';
