@@ -20,38 +20,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+
     if (isset($_POST['update'])) {
         // All the other form fields
         $newWork = isset($_POST['work']) ? (is_array($_POST['work']) ? implode(',', $_POST['work']) : $_POST['work']) : '';
         $newJigyousho = isset($_POST['jigyousho']) ? (is_array($_POST['jigyousho']) ? implode(',', $_POST['jigyousho']) : $_POST['jigyousho']) : '';
-        $newPass = $_POST['pass'];
 
-        // 入力されたパスワードと既存のパスワードを比較
-        if (password_verify($newPass, $userData['pass'])) {
-            // パスワードが一致した場合のみ更新
-            $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
+        // Prepare the update statement with all the fields
+        $stmt = $pdo->prepare("UPDATE bizdiverse_user SET work = :work, jigyousho = :jigyousho WHERE mail = :oldMail");
+        $stmt->bindValue(':work', $newWork, PDO::PARAM_STR);
+        $stmt->bindValue(':jigyousho', $newJigyousho, PDO::PARAM_STR);
+        $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
+        $stmt->execute();
+        $msg = '登録を更新しました。';
 
-            // Prepare the update statement with all the fields
-            $stmt = $pdo->prepare("UPDATE bizdiverse_user SET work = :work, jigyousho = :jigyousho, pass = :pass WHERE mail = :oldMail");
-            $stmt->bindValue(':work', $newWork, PDO::PARAM_STR);
-            $stmt->bindValue(':jigyousho', $newJigyousho, PDO::PARAM_STR);
-            $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
-            $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
-            $stmt->execute();
-            $msg = '登録を更新しました。';
-
-            $stmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail");
-            $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
-            $stmt->execute();
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
-            $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-            $works = !empty($userData['work']) ? explode(',', $userData['work']) : [];
-            $jigyoushos = !empty($userData['jigyousho']) ? explode(',', $userData['jigyousho']) : [];
-        } else {
-            // パスワードが一致しない場合はエラーメッセージを表示
-            $msg = 'パスワードが一致しません。';
-        }
+        $stmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail");
+        $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+        $stmt->execute();
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        $works = !empty($userData['work']) ? explode(',', $userData['work']) : [];
+        $jigyoushos = !empty($userData['jigyousho']) ? explode(',', $userData['jigyousho']) : [];
     }
 }
 ?>
@@ -129,10 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <label><input type="checkbox" name="jigyousho[]" value="スキルアップカリキュラムが充実" <?php if (in_array('スキルアップカリキュラムが充実', $jigyoushos)) echo 'checked'; ?>> スキルアップカリキュラムが充実</label>
     </div>
     </div>
-                            <div class="form-group">
-                                <label for="pass">パスワード：</label>
-                                <input type="password" class="form-control" id="pass" name="pass" required>
-                            </div>
                             <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
                         </form>
                         <form method="POST" style="margin-top: 10px;">

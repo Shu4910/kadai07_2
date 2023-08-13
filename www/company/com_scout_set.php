@@ -18,18 +18,19 @@ $prefectureCityMapping = [
     "東京都" => [
         "千代田区" => "千代田区",
         "港区" => "港区",
-    ],
-    "神奈川県" => [
-        "八王子" => "八王子",
+        "八王子市" => "八王子市",
         "立川市" => "立川市"
     ],
+    "神奈川県" => [
+        "川崎市" => "川崎市",
+        "横浜市" => "横浜市"
+    ],
     "埼玉県" => [
-        "pu" => "pu",
-        "pi" => "pi"
+        "さいたま市" => "さいたま市",
+        "川口市" => "川口市"
     ],
     // 他の都道府県と都市のマッピングもここに追加
 ];
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログアウトが押された場合
@@ -42,11 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // All the other form fields
         $newMail = empty($_POST['mail']) ? $mail : $_POST['mail']; // Check if the new email is empty
         $prefecture = $_POST['prefecture'];
-        // $area = $_POST['area'];
         $cities = isset($_POST['city']) ? (is_array($_POST['city']) ? implode(",", $_POST['city']) : $_POST['city']) : '';
 
         // Prepare the update statement with all the fields
-        $stmt = $pdo->prepare("UPDATE bizdiverse_company SET mail = :mail, prefecture = :prefecture, city = :city WHERE mail = :oldMail");
+        $stmt = $pdo->prepare("UPDATE bizdiverse_company 
+        SET mail = :mail, prefecture = :prefecture, city = :city 
+        WHERE mail = :oldMail");
         $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
         $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
         $stmt->bindValue(':prefecture', $prefecture, PDO::PARAM_STR);
@@ -89,10 +91,6 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
             <div class="card">
                 <div class="card-body">
                     <form method="POST">
-                        <div class="form-group">
-                            <label for="pass">パスワード：</label>
-                            <input type="password" class="form-control" id="pass" name="pass" required>
-                        </div>
                         <div class="form-group">
                             <label for="prefecture">都道府県:</label>
                             <select class="form-control" id="prefecture" name="prefecture">

@@ -5,6 +5,7 @@ require '../../database.php';
 $mail = $_SESSION['mail']; // セッションからメールアドレスを取得
 $msg = '';
 
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログアウトが押された場合
     if (isset($_POST['logout'])) {
@@ -15,32 +16,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['update'])) {
         // All the other form fields
         $newMail = $_POST['mail'];
-        $newPass = $_POST['pass'];
         $newContent = $_POST['content'];
 
+        $canUpdate = false;
 
-        // DBの現在のパスワードを取得
-        $stmt = $pdo->prepare("SELECT pass FROM bizdiverse_user WHERE mail = :mail");
-        $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
-        $stmt->execute();
-        $currentPass = $stmt->fetchColumn();
+        // If password is provided, verify it
+        if (!empty($newPass)) {
+            // DBの現在のパスワードを取得
+            $stmt = $pdo->prepare("SELECT pass FROM bizdiverse_user WHERE mail = :mail");
+            $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+            $stmt->execute();
+            $currentPass = $stmt->fetchColumn();
 
-        // 入力されたパスワードがDBのパスワードと一致する場合
-        if (password_verify($newPass, $currentPass)) {
-            // パスワードをハッシュ化
-            $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
+            // 入力されたパスワードがDBのパスワードと一致する場合
+            if (password_verify($newPass, $currentPass)) {
+                $canUpdate = true;
+            } else {
+                $msg = 'パスワードが間違っています。';
+            }
+        } else {
+            // No password provided, just update
+            $canUpdate = true;
+        }
 
+        if ($canUpdate) {
             // Prepare the update statement with all the fields
-            $stmt = $pdo->prepare("UPDATE bizdiverse_user SET content = :content WHERE mail = :mail");
-            $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
+            $stmt = $pdo->prepare("UPDATE bizdiverse_user SET mail = :newMail, content = :content WHERE mail = :mail");
+            $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+            $stmt->bindValue(':newMail', $newMail, PDO::PARAM_STR);
             $stmt->bindValue(':content', $newContent, PDO::PARAM_STR);
             $stmt->execute();
 
             $_SESSION['mail'] = $newMail; // Update the session email
             $mail = $newMail; // Update the local email variable
             $msg = '登録を更新しました。';
-        } else {
-            $msg = 'パスワードが間違っています。';
         }
     }
 }
@@ -80,10 +89,6 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                             <div class="form-group">
                 <label for="content">内容:</label>
                 <textarea class="form-control" id="content" name="content" style="height: 300px;" required><?php echo htmlspecialchars($userData['content'], ENT_QUOTES, 'UTF-8'); ?></textarea>
-                            </div>
-                            <div class="form-group">
-                            <label for="pass">パスワード：</label>
-                            <input type="password" class="form-control" id="pass" name="pass" required>
                             </div>
                         <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
                         </form>

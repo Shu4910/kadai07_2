@@ -23,20 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newAddress1 = $_POST['address1'];
         $newAddress2 = $_POST['address2'];
         $newAddress3 = $_POST['address3'];
-        $newPass = $_POST['pass'];
-        $confirmPass = $_POST['confirm_pass'];
 
-        if ($newPass === $confirmPass) {
-            // パスワードをハッシュ化
-            $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
-
-            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, tanto = :tanto, mail = :mail, tel = :tel, types = :types, pass = :pass, content = :content, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3 WHERE mail = :oldMail");
+            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, tanto = :tanto, mail = :mail, tel = :tel, types = :types, content = :content, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3 WHERE mail = :oldMail");
             $stmt->bindValue(':houjin', $newHoujin, PDO::PARAM_STR);
             $stmt->bindValue(':tanto', $newTanto, PDO::PARAM_STR);
             $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
             $stmt->bindValue(':tel', $newTel, PDO::PARAM_INT);
             $stmt->bindValue(':types', $newTypes, PDO::PARAM_STR);
-            $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
             $stmt->bindValue(':content', $newContent, PDO::PARAM_STR);
             $stmt->bindValue(':zipcode', $newZipcode, PDO::PARAM_INT);
             $stmt->bindValue(':address1', $newAddress1, PDO::PARAM_STR);
@@ -48,9 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['mail'] = $newMail; // Update the session email
             $mail = $newMail; // Update the local email variable
             $msg = '登録を更新しました。';
-        } else {
-            $msg = 'パスワードが一致しません。';
-        }
     }
 }
 
@@ -121,14 +111,6 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                             <div class="form-group">
                                 <label for="address3">住所3：</label>
                                 <input type="text" class="form-control" id="address3" name="address3" value="<?php echo htmlspecialchars($userData['address3'], ENT_QUOTES, 'UTF-8'); ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="pass">新しいパスワード：</label>
-                                <input type="password" class="form-control" id="pass" name="pass" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirm_pass">新しいパスワードの確認：</label>
-                                <input type="password" class="form-control" id="confirm_pass" name="confirm_pass" required>
                             </div>
                             <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
                         </form>

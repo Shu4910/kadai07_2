@@ -26,43 +26,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newAddress1 = $_POST['address1'];
         $newAddress2 = $_POST['address2'];
         $newAddress3 = $_POST['address3'];
-        $newPass = $_POST['pass'];
 
-        // DBの現在のパスワードを取得
-        $stmt = $pdo->prepare("SELECT pass FROM bizdiverse_user WHERE mail = :mail");
-        $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
+        // Prepare the update statement without the password field
+        $stmt = $pdo->prepare("UPDATE bizdiverse_user SET name = :name, kana = :kana, mail = :mail, tel = :tel, birthday = :birthday, types = :types, techo = :techo, info = :info, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3 WHERE mail = :oldMail");
+        $stmt->bindValue(':name', $newName, PDO::PARAM_STR);
+        $stmt->bindValue(':kana', $newKana, PDO::PARAM_STR);
+        $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
+        $stmt->bindValue(':tel', $newTel, PDO::PARAM_STR);
+        $stmt->bindValue(':birthday', $newBirthday, PDO::PARAM_STR);
+        $stmt->bindValue(':types', $newTypes, PDO::PARAM_STR);
+        $stmt->bindValue(':techo', $newTecho, PDO::PARAM_STR);
+        $stmt->bindValue(':info', $newInfo, PDO::PARAM_STR);
+        $stmt->bindValue(':zipcode', $newZipcode, PDO::PARAM_STR);
+        $stmt->bindValue(':address1', $newAddress1, PDO::PARAM_STR);
+        $stmt->bindValue(':address2', $newAddress2, PDO::PARAM_STR);
+        $stmt->bindValue(':address3', $newAddress3, PDO::PARAM_STR);
+        $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
         $stmt->execute();
-        $currentPass = $stmt->fetchColumn();
 
-        // 入力されたパスワードがDBのパスワードと一致する場合
-        if (password_verify($newPass, $currentPass)) {
-            // パスワードをハッシュ化
-            $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
-
-            // Prepare the update statement with all the fields
-            $stmt = $pdo->prepare("UPDATE bizdiverse_user SET name = :name, kana = :kana, mail = :mail, tel = :tel, birthday = :birthday, types = :types, techo = :techo, info = :info, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3, pass = :pass WHERE mail = :oldMail");
-            $stmt->bindValue(':name', $newName, PDO::PARAM_STR);
-            $stmt->bindValue(':kana', $newKana, PDO::PARAM_STR);
-            $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
-            $stmt->bindValue(':tel', $newTel, PDO::PARAM_STR);
-            $stmt->bindValue(':birthday', $newBirthday, PDO::PARAM_STR);
-            $stmt->bindValue(':types', $newTypes, PDO::PARAM_STR);
-            $stmt->bindValue(':techo', $newTecho, PDO::PARAM_STR);
-            $stmt->bindValue(':info', $newInfo, PDO::PARAM_STR);
-            $stmt->bindValue(':zipcode', $newZipcode, PDO::PARAM_STR);
-            $stmt->bindValue(':address1', $newAddress1, PDO::PARAM_STR);
-            $stmt->bindValue(':address2', $newAddress2, PDO::PARAM_STR);
-            $stmt->bindValue(':address3', $newAddress3, PDO::PARAM_STR);
-            $stmt->bindValue(':pass', $hashedPass, PDO::PARAM_STR);
-            $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
-            $stmt->execute();
-
-            $_SESSION['mail'] = $newMail; // Update the session email
-            $mail = $newMail; // Update the local email variable
-            $msg = '登録を更新しました。';
-        } else {
-            $msg = 'パスワードが間違っています。';
-        }
+        $_SESSION['mail'] = $newMail; // Update the session email
+        $mail = $newMail; // Update the local email variable
+        $msg = '登録を更新しました。';
     }
 }
 
@@ -72,6 +56,8 @@ $stmt->execute();
 
 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -99,7 +85,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($userData['name'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
-                                <label for="kana">カナ：</label>
+                                <label for="kana">ニックネーム：</label>
                                 <input type="text" class="form-control" id="kana" name="kana" value="<?php echo htmlspecialchars($userData['kana'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
@@ -142,11 +128,11 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 <label for="address3">住所3：</label>
                                 <input type="text" class="form-control" id="address3" name="address3" value="<?php echo htmlspecialchars($userData['address3'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
-
+<!-- 
                             <div class="form-group">
                             <label for="pass">パスワード：</label>
                             <input type="password" class="form-control" id="pass" name="pass" required>
-                            </div>
+                            </div> -->
                         <button type="submit" name="update" class="btn btn-primary btn-block">更新</button>
                         </form>
                         <form method="POST" style="margin-top: 10px;">

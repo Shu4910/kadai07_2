@@ -57,10 +57,10 @@
         <div id="form" class="step_flex">
             
 <form action="write.php" method="post" id="myForm" onsubmit="return checkPasswordMatch();">
-                    名前: <input type="text" id="name" name="name">
+                    名前（公開されません）: <input type="text" id="name" name="name">
                     <br>
             <div class="each-form">
-                    フリガナ：<input type="text" id="kana" name="kana">
+                    ニックネーム（公開されます）：<input type="text" id="kana" name="kana">
                     </div>
             
                     <div class="pager_wrap" style="margin-top: 100px;">
