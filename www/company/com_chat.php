@@ -76,12 +76,12 @@ $jigyousho = $user['jigyousho'];
 
 ?>
 <a href="message_details.php?session_id=<?= $session_id ?>" class="list-group-item list-group-item-action">
-    <p>ニックネーム: <?= $kana ?></p>
-    <p>障害種別: <?= $types ?></p>  <!-- Typeも表示 -->
-    <p>エリア: <?= $city ?></p>  <!-- Typeも表示 -->
-    <p>希望職種・こだわり条件: <?= $work ?></p>  <!-- Typeも表示 -->
-    <p>企業・施設条件: <?= $jigyousho ?></p>  <!-- Typeも表示 -->
-    <p>やり取り: <?= $send_at ?></p> <!-- この行を追加 -->
+    ニックネーム: <?= $kana ?><br>
+    障害種別: <?= $types ?><br>  <!-- Typeも表示 -->
+    エリア: <?= $city ?><br>  <!-- Typeも表示 -->
+    希望職種・こだわり条件: <?= $work ?><br>  <!-- Typeも表示 -->
+    企業・施設条件: <?= $jigyousho ?><br>  <!-- Typeも表示 -->
+    やり取り: <?= $send_at ?> <!-- この行を追加 -->
             </a>
             <?php endforeach; ?>
         </ul>
