@@ -96,10 +96,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                 <div class="card">
                     <div class="card-body">
                         <form method="POST">
-                            <div class="form-group">
-                                <label for="mail">Eメール：</label>
-                                <input type="email" class="form-control" id="mail" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>" required>
-                            </div>
+                            <input type="hidden" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>">
                             <div class="form-group">
                                 <label for="pass">新しいパスワード：</label>
                                 <input type="password" class="form-control" id="pass" name="pass" required>
@@ -118,7 +115,10 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
-
+    <!-- フッターにサービス名を追加 -->
+    <footer class="text-center mb-4 pt-3">
+    <p>&copy; BizDiverse</p>
+</footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

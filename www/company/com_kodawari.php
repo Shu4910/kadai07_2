@@ -19,12 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: dash_com.php');
         exit;
     }
-
-    if (isset($_POST['update'])) {
-        // All the other form fields
-        $newWork = isset($_POST['work']) ? (is_array($_POST['work']) ? implode(',', $_POST['work']) : $_POST['work']) : '';
-        $newJigyousho = isset($_POST['jigyousho']) ? (is_array($_POST['jigyousho']) ? implode(',', $_POST['jigyousho']) : $_POST['jigyousho']) : '';
-
+        if (isset($_POST['update'])) {
+            // All the other form fields
+            $newWork = isset($_POST['work']) ? (is_array($_POST['work']) ? implode(',', $_POST['work']) : $_POST['work']) : '';
+            $newJigyousho = isset($_POST['jigyousho']) ? (is_array($_POST['jigyousho']) ? implode(',', $_POST['jigyousho']) : $_POST['jigyousho']) : '';
+        
             // Prepare the update statement with all the fields
             $stmt = $pdo->prepare("UPDATE bizdiverse_company SET work = :work, jigyousho = :jigyousho WHERE mail = :oldMail");
             $stmt->bindValue(':work', $newWork, PDO::PARAM_STR);
@@ -32,16 +31,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
             $stmt->execute();
             $msg = '登録を更新しました。';
-
+        
             $stmt = $pdo->prepare("SELECT * FROM bizdiverse_company WHERE mail = :mail");
             $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
             $stmt->execute();
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
             $userData = $stmt->fetch(PDO::FETCH_ASSOC);
             $works = !empty($userData['work']) ? explode(',', $userData['work']) : [];
             $jigyoushos = !empty($userData['jigyousho']) ? explode(',', $userData['jigyousho']) : [];
+        
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit; // この位置に移動します
         }
+        
     }
 ?>
 
@@ -128,6 +129,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
+        <!-- フッターにサービス名を追加 -->
+<footer class="text-center mb-4 pt-3">
+    <p>&copy; BizDiverse</p>
+</footer>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

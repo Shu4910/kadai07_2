@@ -111,5 +111,9 @@
     </form>
 
     <button onclick="location.href='chat_non.php'" class="btn btn-secondary mt-3">Back</button>
+        <!-- フッターにサービス名を追加 -->
+<footer class="text-center mb-4 pt-3">
+    <p>&copy; BizDiverse</p>
+</footer>
 </body>
 </html>

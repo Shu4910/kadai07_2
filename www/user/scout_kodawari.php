@@ -129,7 +129,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
-
+    <!-- フッターにサービス名を追加 -->
+    <footer class="text-center mb-4 pt-3">
+    <p>&copy; BizDiverse</p>
+</footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

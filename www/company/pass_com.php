@@ -53,21 +53,18 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>登録情報</title>
+    <title>パスワード変更</title>
 </head>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-5">
-                <h2 class="text-center mb-4">登録情報</h2>
+                <h2 class="text-center mb-4">パスワード変更</h2>
                 <?php if (!empty($msg)) { echo '<div class="alert alert-danger">' . $msg . '</div>'; } ?>
                 <div class="card">
                     <div class="card-body">
                         <form method="POST">
-                            <div class="form-group">
-                                <label for="mail">Eメール：</label>
-                                <input type="email" class="form-control" id="mail" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>" required>
-                            </div>
+                            <input type="hidden" name="mail" value="<?php echo htmlspecialchars($userData['mail'], ENT_QUOTES, 'UTF-8'); ?>">
                             <div class="form-group">
                                 <label for="pass">新しいパスワード：</label>
                                 <input type="password" class="form-control" id="pass" name="pass" required>
@@ -86,6 +83,11 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+        <!-- フッターにサービス名を追加 -->
+        <footer class="text-center mb-4 pt-3">
+    <p>&copy; BizDiverse</p>
+</footer>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

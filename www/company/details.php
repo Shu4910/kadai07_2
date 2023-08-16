@@ -38,10 +38,11 @@ $mail = $_SESSION['mail']; // セッションからメールアドレスを取�
                 echo '    Details for ID: ' . $row["id"];
                 echo '  </div>';
                 echo '  <div class="card-body">';
-                echo '    <h5 class="card-title">' . $row["name"] . '</h5>';
-                echo '    <p class="card-text">Email: ' . $row["mail"] . '</p>';
-                echo '    <p class="card-text">City: ' . $row["city"] . '</p>';
-                echo '    <p class="card-text">Content: ' . nl2br($row["content"]) . '</p>';
+                echo '    <p class="card-text">ニックネーム: ' . $row["kana"] . '</p>';
+                echo '    <p class="card-text">希望エリア: ' . $row["city"] . '</p>';
+                echo '    <p class="card-text">希望職種・こだわり条件: ' . $row["work"] . '</p>';
+                echo '    <p class="card-text">施設条件: ' . $row["jigyousho"] . '</p>';
+                echo '    <p class="card-text">レジュメ: ' . nl2br($row["content"]) . '</p>';
                 echo '  </div>';
                 echo '</div>';
                 // Update the following line

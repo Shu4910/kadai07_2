@@ -90,5 +90,9 @@ if ($last_message) {
         
         <button class="btn btn-primary my-3" onclick="location.href='dash.php'">Back</button>
     </div>
+        <!-- フッターにサービス名を追加 -->
+<footer class="text-center mb-4 pt-3">
+    <p>&copy; BizDiverse</p>
+</footer>
 </body>
 </html>

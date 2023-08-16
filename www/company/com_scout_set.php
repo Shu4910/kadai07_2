@@ -76,7 +76,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html>
 <head>
-    <title>都道府県と市区町村の選択</title>
+    <title>エリア設定</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="form.js"></script>
@@ -86,7 +86,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <h2 class="text-center mb-4">登録情報</h2>
+            <h2 class="text-center mb-4">エリア設定</h2>
             <?php if (!empty($msg)) { echo '<div class="alert alert-danger">' . htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') . '</div>'; } ?>
             <div class="card">
                 <div class="card-body">
@@ -128,6 +128,10 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
         </div>
     </div>
 </div>
+    <!-- フッターにサービス名を追加 -->
+    <footer class="text-center mb-4 pt-3">
+    <p>&copy; BizDiverse</p>
+</footer>
 
 
 <!-- Optional JavaScript -->

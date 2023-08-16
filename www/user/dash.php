@@ -16,7 +16,7 @@
 </head>
 
 <body> 
-    <div class="text-center　container mt-5">
+    <div class="text-center container mt-5">
     <h2 class="text-center mb-4">BizDiverse</h2>
     <div class="text-center"> <!-- ここを追加 -->
             <div class="mb-3"> <!-- カラムのサイズを変更 -->
