@@ -22,19 +22,23 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $sender_type = 'company';  // sender_type を 'company' に固定
     $sender_type = $_POST['sender_type'];
 
+
     $ids = explode('_', $session_id);
-    $company_send_id = $ids[0];
-    $user_send_id = $ids[1];
+$company_send_id = $ids[0];
+$user_send_id = $ids[1];
 
-    require '../../database_dbh.php';
+require '../../database_dbh.php';
 
-    $sql = "INSERT INTO messages (session_id, user_send_id, message_body, send_at, sender_type) VALUES (:session_id, :user_send_id, :message_body, NOW(), :sender_type)";
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':session_id', $session_id);
-    $stmt->bindParam(':user_send_id', $user_send_id);
-    $stmt->bindParam(':message_body', $message_body);
-    $stmt->bindParam(':sender_type', $sender_type);
-    $stmt->execute();
+$sql = "INSERT INTO messages (session_id, company_send_id, user_send_id, message_body, send_at, sender_type) VALUES (:session_id, :company_send_id, :user_send_id, :message_body, NOW(), :sender_type)";
+$stmt = $dbh->prepare($sql);
+$stmt->bindParam(':session_id', $session_id);
+$stmt->bindParam(':company_send_id', $company_send_id);
+$stmt->bindParam(':user_send_id', $user_send_id);
+$stmt->bindParam(':message_body', $message_body);
+$stmt->bindParam(':sender_type', $sender_type);
+$stmt->execute();
+
+
 
     $last_message_id = $dbh->lastInsertId();
     $sql = "UPDATE messages SET last_id = :last_id WHERE session_id = :session_id";
