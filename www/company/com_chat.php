@@ -63,24 +63,24 @@ foreach ($sessions as $session):
     $send_at = formatDate($session['send_at']); // こちらを追加
 
                // user_send_idに対応するニックネーム(kana)とtypesを取得
-$sql_user = "SELECT kana, types, city,work, jigyousho FROM bizdiverse_user WHERE id = :user_send_id";
+$sql_user = "SELECT kana, types, techo,work, jigyousho,techo_num FROM bizdiverse_user WHERE id = :user_send_id";
 $stmt_user = $dbh->prepare($sql_user);
 $stmt_user->bindParam(':user_send_id', $user_send_id);
 $stmt_user->execute();
 $user = $stmt_user->fetch(PDO::FETCH_ASSOC);
 $kana = $user['kana'];
 $types = $user['types']; 
-$city = $user['city'];
+$techo = $user['techo'];
+$techo_num = $user['techo_num'];
 $work = $user['work'];
 $jigyousho = $user['jigyousho'];
+
 
 ?>
 <a href="message_details.php?session_id=<?= $session_id ?>" class="list-group-item list-group-item-action">
     ニックネーム: <?= $kana ?><br>
     障害種別: <?= $types ?><br>  <!-- Typeも表示 -->
-    エリア: <?= $city ?><br>  <!-- Typeも表示 -->
-    希望職種・こだわり条件: <?= $work ?><br>  <!-- Typeも表示 -->
-    企業・施設条件: <?= $jigyousho ?><br>  <!-- Typeも表示 -->
+    手帳: <?= $techo ?><br>  <!-- Typeも表示 -->
     やり取り: <?= $send_at ?> <!-- この行を追加 -->
             </a>
             <?php endforeach; ?>

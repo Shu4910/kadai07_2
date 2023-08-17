@@ -115,7 +115,7 @@
                 <option name="types"> 精神 </option>
                 <option name="types"> 身体 </option>
                 <option name="types"> 発達 </option>
-                <option name="types"> 知的 </option>
+                <option name="types"> その他 </option>
             </select>
                 <br>
         <div class="each-form">
