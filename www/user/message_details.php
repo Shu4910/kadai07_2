@@ -105,7 +105,7 @@
     
     <div class="d-flex justify-content-center"> <!-- ここに "justify-content-center" を追加 -->
         <input type="submit" value="Send" class="btn btn-primary mr-2">
-        <button onclick="location.href='chat_non.php'" class="btn btn-secondary">Back</button>
+        <button type="button" class="btn btn-secondary" onclick="goBack();">Back</button>
     </div>
 </form>
 
@@ -117,14 +117,17 @@
     <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
     <input type="hidden" name="sender_type" value="user">
     <div class="text-center">
-    
     <button type="submit" class="btn btn-info mb-3" onclick="return confirmSubmit();">名前・連絡先を公開</button>
     </div>
-    
 </form>
 <script>
+        // バックボタンのクリック時に戻る関数を追加
+        function goBack() {
+            window.location.href = 'chat_non.php';
+        }
+
         document.getElementById("contactForm").addEventListener("submit", function(event) {
-            if (!confirm('本当に公開しますか？一度、公開する元には戻せません。')) {
+            if (!confirm('本当に公開しますか？公開すると、元には戻せません。')) {
                 event.preventDefault();
             }
         });
