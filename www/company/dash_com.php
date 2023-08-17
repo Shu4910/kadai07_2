@@ -25,6 +25,12 @@
             </div>
             <div class="mb-3"> <!-- カラムのサイズを変更 -->
                 <!-- エリア条件設定画面のボタン -->
+                <form action="com_scout_handi.php" method="get">
+                    <button class="btn btn-primary btn-block" type="submit">障害種別画面</button>
+                </form>
+            </div>
+            <div class="mb-3"> <!-- カラムのサイズを変更 -->
+                <!-- エリア条件設定画面のボタン -->
                 <form action="com_scout_set.php" method="get">
                     <button class="btn btn-primary btn-block" type="submit">エリア条件設定画面</button>
                 </form>
