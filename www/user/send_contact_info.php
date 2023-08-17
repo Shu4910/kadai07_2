@@ -30,9 +30,8 @@ function loadEnv()
 loadEnv();
 
 
-if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
+if (isset($_POST['session_id'])) {
     $session_id = $_POST['session_id'];
-    $message_body = $_POST['message_body'];
     $sender_type = $_POST['sender_type'];
 
     // session_idをcompany_send_idとuser_send_idに分割
@@ -43,28 +42,29 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     require '../../database_dbh.php';
 
 
-    // SQLを準備
-    $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, message_body, send_at, sender_type) VALUES (:session_id, :user_send_id, :company_send_id, :message_body, NOW(), :sender_type)";
+ // bizdiverse_userから該当ユーザーの情報を取得
+ $sql_user_info = "SELECT name, mail, tel FROM bizdiverse_user WHERE id = :user_send_id";
+ $stmt_user_info = $dbh->prepare($sql_user_info);
+ $stmt_user_info->bindParam(':user_send_id', $user_send_id);
+ $stmt_user_info->execute();
 
-    // SQLを実行
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':session_id', $session_id);
-    $stmt->bindParam(':user_send_id', $user_send_id);
-    $stmt->bindParam(':company_send_id', $company_send_id);
-    $stmt->bindParam(':message_body', $message_body);
-    $stmt->bindParam(':sender_type', $sender_type);
+ $user_info = $stmt_user_info->fetch(PDO::FETCH_ASSOC);
+ // message_bodyの内容を組み立て
+ $message_body = "名前: " . $user_info['name'] . "\n\n" .
+                 "メール: " . $user_info['mail'] . "\n\n" .
+                 "電話: " . $user_info['tel'];
 
-    $stmt->execute();
+ // SQLを準備（message_bodyを追加）
+ $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, send_at, sender_type, message_body) VALUES (:session_id, :user_send_id, :company_send_id, NOW(), :sender_type, :message_body)";
 
-    // 新しく追加されたメッセージのIDを取得
-    $last_message_id = $dbh->lastInsertId();
-
-    // last_idカラムに最新のメッセージIDを保存
-    $sql = "UPDATE messages SET last_id = :last_id WHERE session_id = :session_id";
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':last_id', $last_message_id);
-    $stmt->bindParam(':session_id', $session_id);
-    $stmt->execute();
+ // SQLを実行
+ $stmt = $dbh->prepare($sql);
+ $stmt->bindParam(':session_id', $session_id);
+ $stmt->bindParam(':user_send_id', $user_send_id);
+ $stmt->bindParam(':company_send_id', $company_send_id);
+ $stmt->bindParam(':sender_type', $sender_type);
+ $stmt->bindParam(':message_body', $message_body);  // こちらを追加
+ $stmt->execute();
 
     // If last_id was updated (a new message arrived), send a notification email
     // if($stmt->rowCount() > 0) {
@@ -123,5 +123,5 @@ try {
 
     header("Location: message_details.php?session_id=$session_id");
 } else {
-    echo "No session_id or message_body specified.";
+    echo "No session_id";
 }

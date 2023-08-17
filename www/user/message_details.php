@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-
     <style>
         .message-company,
         .message-user {
@@ -54,21 +53,18 @@
         }
     </style>
     <script>
-    window.onload = function() {
-        var messageContainer = document.querySelector('.message-container');
-        messageContainer.scrollTop = messageContainer.scrollHeight;
-    }
-</script>
+        window.onload = function() {
+            var messageContainer = document.querySelector('.message-container');
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+    </script>
 
 </head>
 <body class="p-3">
     <?php
     if (isset($_GET['session_id'])) {
         $session_id = $_GET['session_id'];
-
         require '../../database_dbh.php';
-
-
 
         // SQLを準備
         $sql = "SELECT * FROM messages WHERE session_id = :session_id ORDER BY send_at";
@@ -97,23 +93,48 @@
         echo "No session_id specified.";
     }
     ?>
+<form method="post" action="sm_detail.php" class="mb-2">
+    <div class="form-group">
+        <label for="message_body">Message:</label>
+        <textarea class="form-control" id="message_body" name="message_body" rows="3"></textarea>
+    </div>
+    <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
+    <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
+    <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
+    <input type="hidden" name="sender_type" value="user">
+    
+    <div class="d-flex justify-content-center"> <!-- ここに "justify-content-center" を追加 -->
+        <input type="submit" value="Send" class="btn btn-primary mr-2">
+        <button onclick="location.href='chat_non.php'" class="btn btn-secondary">Back</button>
+    </div>
+</form>
 
-    <form method="post" action="sm_detail.php">
-        <div class="form-group">
-            <label for="message_body">Message:</label>
-            <textarea class="form-control" id="message_body" name="message_body" rows="3"></textarea>
-        </div>
-        <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
-        <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
-        <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
-        <input type="hidden" name="sender_type" value="user">
-        <input type="submit" value="Send" class="btn btn-primary">
-    </form>
 
-    <button onclick="location.href='chat_non.php'" class="btn btn-secondary mt-3">Back</button>
-        <!-- フッターにサービス名を追加 -->
-<footer class="text-center mb-4 pt-3">
-    <p>&copy; BizDiverse</p>
-</footer>
+    
+<form method="post" action="send_contact_info.php" id="contactForm">
+    <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
+    <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
+    <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
+    <input type="hidden" name="sender_type" value="user">
+    <div class="text-center">
+    
+    <button type="submit" class="btn btn-info mb-3" onclick="return confirmSubmit();">名前・連絡先を公開</button>
+    </div>
+    
+</form>
+<script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            if (!confirm('本当に公開しますか？一度、公開する元には戻せません。')) {
+                event.preventDefault();
+            }
+        });
+    </script>
+
+
+    <!-- フッターにサービス名を追加 -->
+    <footer class="text-center mb-4 pt-3">
+        <p>&copy; BizDiverse</p>
+    </footer>
 </body>
 </html>
+
