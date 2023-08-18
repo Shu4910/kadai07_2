@@ -46,18 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['update'])) {
         // All the other form fields
         $newMail = empty($_POST['mail']) ? $mail : $_POST['mail']; // Check if the new email is empty
- 
-        $types_handi = $_POST['types_handi'];
+
+        $types = $_POST['types'];
         $techo = $_POST['techo'];
         $techo_num = $_POST['techo_num'];
 
         // Prepare the update statement with all the fields
         $stmt = $pdo->prepare("UPDATE bizdiverse_company 
-        SET mail = :mail, types_handi = :types_handi, techo = :techo, techo_num = :techo_num 
+        SET mail = :mail, types = :types, techo = :techo, techo_num = :techo_num 
         WHERE mail = :oldMail");
         $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
         $stmt->bindValue(':oldMail', $mail, PDO::PARAM_STR);
-        $stmt->bindValue(':types_handi', $types_handi, PDO::PARAM_STR);
+        $stmt->bindValue(':types', $types, PDO::PARAM_STR);
         $stmt->bindValue(':techo', $techo, PDO::PARAM_STR);
         $stmt->bindValue(':techo_num', $techo_num, PDO::PARAM_STR);
         $stmt->execute();
@@ -100,11 +100,11 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                     <form method="POST">
 
                     <div class="form-group">
-                            <label for="types_handi">障害種別:</label>
-                            <select class="form-control" id="types_handi" name="types_handi">
+                            <label for="types">障害種別:</label>
+                            <select class="form-control" id="types" name="types">
                                 <?php
                                 foreach ($typesHandiOptions as $value => $label) {
-                                    $selected = ($userData['types_handi'] === $value) ? 'selected' : '';
+                                    $selected = ($userData['types'] === $value) ? 'selected' : '';
                                     echo '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
                                 }
                                 ?>
