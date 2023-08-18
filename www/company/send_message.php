@@ -44,7 +44,8 @@ $mail = $_SESSION['mail']; // セッションからメールアドレスを取�
             $session_id = $sender_id . "_" . $receiver_id;
 
             // Prepare and bind
-            $stmt = $conn->prepare("INSERT INTO messages (session_id, company_send_id, user_send_id, message_body) VALUES (?, ?, ?, ?)");
+            
+            $stmt = $conn->prepare("INSERT INTO messages (session_id, company_send_id, user_send_id, message_body, sender_type) VALUES (?, ?, ?, ?, 'company')");
             $stmt->bind_param("ssis", $session_id, $sender_id, $receiver_id, $message_body);
 
             // Set parameters and execute
