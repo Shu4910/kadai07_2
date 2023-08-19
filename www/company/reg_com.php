@@ -51,11 +51,11 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="types">事業種別:</label>
-                                    <select class="form-control" id="types" name="types">
-                                        <option name="types"> 企業 </option>
-                                        <option name="types"> 就労移行 </option>
-                                        <option name="types"> A・B型 </option>
+                                    <label for="types_fa">事業種別:</label>
+                                    <select class="form-control" id="types_fa" name="types_fa">
+                                        <option name="types_fa"> 企業 </option>
+                                        <option name="types_fa"> 就労移行 </option>
+                                        <option name="types_fa"> A・B型 </option>
                                     </select>
                                 </div>
 
@@ -147,7 +147,7 @@
         window.onload = function() {
     document.getElementById('myForm').onsubmit = function() {
         // 入力項目のIDを配列に格納
-        let fields = ['houjin', 'tanto', 'mail', 'tel', 'types', 'zipcode', 'address1', 'address2', 'address3', 'pass', 'confirm_pass'];
+        let fields = ['houjin', 'tanto', 'mail', 'tel', 'types_fa', 'zipcode', 'address1', 'address2', 'address3', 'pass', 'confirm_pass'];
 
         for (let i = 0; i < fields.length; i++) {
             // 入力項目を取得

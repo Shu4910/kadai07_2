@@ -4,7 +4,7 @@ $houjin = $_POST["houjin"];
 $tanto = $_POST["tanto"];
 $mail = $_POST["mail"];
 $tel = $_POST["tel"];
-$types = $_POST["types"];
+$types_fa = $_POST["types_fa"];
 $zipcode = $_POST["zipcode"];
 $address1 = $_POST["address1"];
 $address2 = $_POST["address2"];
@@ -29,16 +29,16 @@ if ($exists) {
     // Record exists, update it
     $stmt = $pdo->prepare("UPDATE bizdiverse_company
                            SET houjin = :houjin, tanto = :tanto, mail = :mail, tel = :tel, 
-                               types = :types, zipcode = :zipcode, address1 = :address1, 
+                               types_fa = :types_fa, zipcode = :zipcode, address1 = :address1, 
                                address2 = :address2, address3 = :address3, pass = :pass 
                            WHERE company_id = :company_id");
     $stmt->bindValue(':company_id', $exists['company_id'], PDO::PARAM_INT);
 } else {
     // Record does not exist, insert new one
     $stmt = $pdo->prepare("INSERT INTO bizdiverse_company
-                            (houjin, tanto, mail, tel, types, zipcode, address1, address2, address3, pass)
+                            (houjin, tanto, mail, tel, types_fa, zipcode, address1, address2, address3, pass)
                            VALUES
-                            (:houjin, :tanto, :mail, :tel, :types, :zipcode, :address1, :address2, :address3, :pass)");
+                            (:houjin, :tanto, :mail, :tel, :types_fa, :zipcode, :address1, :address2, :address3, :pass)");
 }
 
 // Bind variables
@@ -46,7 +46,7 @@ $stmt->bindValue(':houjin', $houjin, PDO::PARAM_STR);
 $stmt->bindValue(':tanto', $tanto, PDO::PARAM_STR);
 $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
 $stmt->bindValue(':tel', $tel, PDO::PARAM_STR);
-$stmt->bindValue(':types', $types, PDO::PARAM_STR);
+$stmt->bindValue(':types_fa', $types_fa, PDO::PARAM_STR);
 $stmt->bindValue(':zipcode', $zipcode, PDO::PARAM_STR);
 $stmt->bindValue(':address1', $address1, PDO::PARAM_STR);
 $stmt->bindValue(':address2', $address2, PDO::PARAM_STR);

@@ -29,7 +29,7 @@
         }
 
         $mail = $_SESSION['mail'];
-        $stmt = $pdo->prepare("SELECT work, jigyousho, city,techo_num,techo FROM bizdiverse_company WHERE mail = :mail");
+        $stmt = $pdo->prepare("SELECT work, jigyousho, city,techo_num,techo,types FROM bizdiverse_company WHERE mail = :mail");
         $stmt->bindValue(':mail', $mail, PDO::PARAM_STR);
         $stmt->execute();
 
@@ -51,6 +51,7 @@
     <button onclick="location.href='<?php echo generateUrl('city', $sortOptions); ?>'" class="btn <?php echo in_array('city', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">エリアで絞る</button>
     <button onclick="location.href='<?php echo generateUrl('work', $sortOptions); ?>'" class="btn <?php echo in_array('work', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">職種・こだわり条件で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('jigyousho', $sortOptions); ?>'" class="btn <?php echo in_array('jigyousho', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">事業所条件で絞る</button>
+    <button onclick="location.href='<?php echo generateUrl('types', $sortOptions); ?>'" class="btn <?php echo in_array('types', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">障害種別で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('techo', $sortOptions); ?>'" class="btn <?php echo in_array('techo', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">手帳有無で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('techo_num', $sortOptions); ?>'" class="btn <?php echo in_array('techo_num', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">手帳等級で絞る</button>
 </div>
@@ -78,30 +79,38 @@
         }
 
         // 手帳のフィルタリングのための条件を追加
+        $types = in_array('types', $sortOptions) ? explode(',', $row_company["types"]) : ['%'];
         $techos = in_array('techo', $sortOptions) ? explode(',', $row_company["techo"]) : ['%'];
         $techo_nums = in_array('techo_num', $sortOptions) ? explode(',', $row_company["techo_num"]) : ['%'];
-        
+
 
 foreach ($cities as $city) {
     foreach ($works as $work) {
+        foreach ($types as $type) {
         foreach ($jigyoushos as $jigyousho) {
             foreach ($techos as $techo) { // 手帳のループを追加
                 foreach ($techo_nums as $techo_num) { 
                 $city = trim($city);
                 $work = trim($work);
                 $jigyousho = trim($jigyousho);
+                $type = trim($type);
                 $techo = trim($techo); // 手帳データのトリム
                 $techo_num = trim($techo_num); // 手帳データのトリム
                 
 
                 // クエリーに手帳の条件を追加
                 $stmt = $pdo->prepare("SELECT * FROM bizdiverse_user 
-                WHERE city LIKE :city AND work LIKE :work AND jigyousho LIKE :jigyousho AND techo LIKE :techo AND techo_num LIKE :techo_num");
+                WHERE city LIKE :city AND work LIKE :work AND jigyousho 
+                LIKE :jigyousho AND techo LIKE :techo AND techo_num LIKE :techo_num AND types LIKE :types");
+                
+            
                 $stmt->bindValue(':city', $city === '%' ? $city : '%'.$city.'%', PDO::PARAM_STR);
                 $stmt->bindValue(':work', $work === '%' ? $work : '%'.$work.'%', PDO::PARAM_STR);
                 $stmt->bindValue(':jigyousho', $jigyousho === '%' ? $jigyousho : '%'.$jigyousho.'%', PDO::PARAM_STR);
+                $stmt->bindValue(':types', $type === '%' ? $type : '%'.$type.'%', PDO::PARAM_STR); // typesのバインド
                 $stmt->bindValue(':techo', $techo === '%' ? $techo : '%'.$techo.'%', PDO::PARAM_STR); // 手帳のバインド
                 $stmt->bindValue(':techo_num', $techo_num === '%' ? $techo_num : '%'.$techo_num.'%', PDO::PARAM_STR);  // 手帳等級のバインド
+
 
                 $stmt->execute();
 
@@ -121,6 +130,7 @@ foreach ($cities as $city) {
                         }
                     }
                 }
+            }
             }
             }
             }

@@ -17,19 +17,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newTanto = $_POST['tanto'];
         $newMail = $_POST['mail'];
         $newTel = $_POST['tel'];
-        $newTypes = $_POST['types'];
+        $newTypes = $_POST['types_fa'];
         $newContent = $_POST['content'];
         $newZipcode = $_POST['zipcode'];
         $newAddress1 = $_POST['address1'];
         $newAddress2 = $_POST['address2'];
         $newAddress3 = $_POST['address3'];
 
-            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, tanto = :tanto, mail = :mail, tel = :tel, types = :types, content = :content, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3 WHERE mail = :oldMail");
+            $stmt = $pdo->prepare("UPDATE bizdiverse_company SET houjin = :houjin, tanto = :tanto, mail = :mail, tel = :tel, types_fa = :types_fa, content = :content, zipcode = :zipcode, address1 = :address1, address2 = :address2, address3 = :address3 WHERE mail = :oldMail");
             $stmt->bindValue(':houjin', $newHoujin, PDO::PARAM_STR);
             $stmt->bindValue(':tanto', $newTanto, PDO::PARAM_STR);
             $stmt->bindValue(':mail', $newMail, PDO::PARAM_STR);
             $stmt->bindValue(':tel', $newTel, PDO::PARAM_INT);
-            $stmt->bindValue(':types', $newTypes, PDO::PARAM_STR);
+            $stmt->bindValue(':types_fa', $newTypes, PDO::PARAM_STR);
             $stmt->bindValue(':content', $newContent, PDO::PARAM_STR);
             $stmt->bindValue(':zipcode', $newZipcode, PDO::PARAM_INT);
             $stmt->bindValue(':address1', $newAddress1, PDO::PARAM_STR);
@@ -89,8 +89,8 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 <input type="text" class="form-control" id="tel" name="tel" value="<?php echo htmlspecialchars($userData['tel'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
-                                <label for="types">タイプ：</label>
-                                <input type="text" class="form-control" id="types" name="types" value="<?php echo htmlspecialchars($userData['types'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                <label for="types_fa">タイプ：</label>
+                                <input type="text" class="form-control" id="types_fa" name="types_fa" value="<?php echo htmlspecialchars($userData['types_fa'], ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="content">内容：</label>
