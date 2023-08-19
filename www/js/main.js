@@ -1,18 +1,22 @@
 $(document).ready(function() {
     var isStep4 = false;  // 追加：ステップ4に到達したかどうかを保持する変数
 
-    $('#next_btn1').click(function() {
-        if($('#name').val() == "" || $('#kana').val() == ""){
-            alert('名前とふりがなを記入してください。');
-        } else {
-            $('.step1').hide();
-            $('.step2').show();
+    $("#next_btn1").click(function() {
+        if ($('#name').val() == "" || $('#kana').val() == "") {
+            alert('入力項目に不備があります。');
+            return; // ここで処理を終了する
         }
+        $("#li_1").removeClass("active");
+        $("#li_2").addClass("active");
+        $(".step1").hide();
+        $(".step2").show();
     });
 
+
     $('#next_btn2').click(function() {
-        if($('#birthday').val() == "" || $('#email').val() == ""){
+        if($('#birthday').val() == "" || $('#email').val() == ""|| $('#tel').val() == ""){
             alert('生年月日とメールアドレスを記入してください。');
+            return; // ここで処理を終了する
         } else {
             $('.step2').hide();
             $('.step3').show();
@@ -22,6 +26,7 @@ $(document).ready(function() {
     $('#next_btn3').click(function() {
         if($('#types').val() == "" || $('#techo').val() == "" || $('#info').val() == ""){
             alert('障害種別と手帳の有無、希望する情報を選択してください。');
+            return; // ここで処理を終了する
         } else {
             $('.step3').hide();
             $('.step4').show();
@@ -44,7 +49,7 @@ $(document).ready(function() {
             return false;
         }
     
-        alert('登録が完了しました！');
+        alert('登録が完了しました！ログイン後にエリア、こだわり条件は必ず設定してください。レジュメ登録は任意です。');
     });
 
     

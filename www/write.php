@@ -20,7 +20,14 @@ $pass = password_hash($pass, PASSWORD_DEFAULT);
 // 2. DB接続
 require "../database.php";
 
-// Check if record exists
+
+// メール送信に必要なライブラリをロード
+require __DIR__ . '/../vendor/autoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
 $checkStmt = $pdo->prepare("SELECT * FROM bizdiverse_user WHERE mail = :mail OR tel = :tel");
 $checkStmt->execute(['mail' => $email, 'tel' => $tel]);
 $exists = $checkStmt->fetch(PDO::FETCH_ASSOC);
@@ -60,22 +67,46 @@ $stmt->bindValue(':pass', $pass, PDO::PARAM_STR);
 // Execute
 $status = $stmt->execute();
 
-// Data registration process after
 if ($status === false) {
     // Error during SQL execution (get and display error object)
     $error = $stmt->errorInfo();
     exit('ErrorMessage:'.$error[2]);
 } else {
-    // Redirect to index2.php
+    // ここからメール送信処理
+    $mailer = new PHPMailer();
+    $mailer->isSMTP();
+    $mailer->Host = $_ENV['SMTP_HOST'];
+    $mailer->Port = $_ENV['SMTP_PORT'];
+    $mailer->SMTPAuth = true;
+    $mailer->Username = $_ENV['SMTP_USER'];
+    $mailer->Password = $_ENV['SMTP_PASS'];
+
+    $mailer->setFrom('postmaster@komaki0910.sakura.ne.jp', 'テスト');
+    $mailer->addAddress($email); // 1つ目のコードから$emailを使用
+
+    $mailer->CharSet = 'UTF-8';  // 追加: 文字エンコーディングの設定
+    $mailer->Subject = '=?UTF-8?B?' . base64_encode('登録完了のお知らせ') . '?=';  // 修正: 件名のエンコード
+    $mailer->isHTML(true);
+    $mailer->Body = '登録が完了しました。<br>ありがとうございます。登録が完了しました！ログイン後にエリア、こだわり条件は必ず設定してください。レジュメ登録は任意です。<br>BizDiverse';
+
+    if (!$mailer->send()) {
+        echo 'メールの送信に失敗しました。エラー: ' . $mailer->ErrorInfo;
+        exit;
+    }
+    
+    // メール送信後のリダイレクト処理
     header('Location: user/index_user.php');
     exit;
 }
 ?>
+
 <html>
 
 <head>
     <meta charset="utf8_unicode_ci">
     <title>File書き込み</title>
 </head>
+
+</html>
 
 </html>

@@ -8,6 +8,21 @@
     margin: auto;
   }
   
+
+  .fv_text{
+    font-size: 12px;
+    text-align: center;
+    padding-top: 8px;
+    padding-top: 8px;
+    font-weight: bold;
+  }
+
+  .fv_main{
+    font-size: 25px;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+  }
   
   img {
     width: 100%;
@@ -23,7 +38,7 @@
     text-align: center;
     width: 80%;
     padding: 1em;
-    background: #007F76;
+    background: #007bff;
     color: white;
     border-radius: 20px;
     margin-top: 40px;
@@ -37,7 +52,7 @@
     bottom: 40%;
     left: -19px;
     border: 8px solid transparent;
-    border-right: 18px solid #007F76;
+    border-right: 18px solid #007bff;
     /* -webkit-transform: rotate(35deg); */
     transform: rotate(25deg);
   }
@@ -60,7 +75,7 @@
   
     .each-form{
       padding-top: 10px;  
-      width: 100%; /* or whatever width you want */
+      width: auto; /* or whatever width you want */
       margin: auto; /* this will center the form if the parent is wider */
     }
   
@@ -89,12 +104,21 @@
     align-items: center;
     height: 51px;
     border-radius: 3px;
-    box-shadow: 0px 4px 6px #d8504133;
     transition: .2s ease-out;
     cursor: pointer;
   }
   
-  
+  .submit-button::after {
+    content: '';
+    display: inline-block;
+    background: url(../images/right_arrow.svg) no-repeat center center;
+    background-size: contain;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 10px;
+}
+
   
   .pager_wrap {
     margin-top: 40px;
@@ -123,7 +147,11 @@
     cursor: pointer;
   }
   
-  
+  th {
+    font-weight: normal;
+}
+
+
   .next_step_btn::after {
     content: '';
     display: inline-block;
@@ -136,6 +164,9 @@
   }
   
   .back_step_btn {
+    
+    align-items: center;
+    justify-content: center;
     padding-bottom: 10px;
     box-shadow: 0px 4px 6px #d8504133;
     font-size: 13px;
@@ -144,7 +175,6 @@
     text-align: center;
     margin-right: 20px;  
     padding-top: 0px;
-  
   }
   .back_step_btn:hover {
     color: inherit;
@@ -198,12 +228,13 @@
   
   
   footer{
-    background-color: grey;
+    background-color: #007bff;
+    color: white;
     text-align: center;
   }
   
   .desired-jobs{
-    background-color: rgba(70, 70, 219, 0.801);
+    background-color: #007bff;
     font-size: 15px;
     color: white;
     text-align: center;
@@ -299,10 +330,7 @@
   
   
   @media screen and (max-width: 600px) {
-    body {
-      font-size: 1.2em;
-    }
-  
+
     input[type="text"], input[type="email"], input[type="date"] {
       width: 100%;
       padding: 12px 20px;
