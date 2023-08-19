@@ -93,42 +93,38 @@
         echo "No session_id specified.";
     }
     ?>
-<form method="post" action="sm_detail.php" class="mb-2">
-    <div class="form-group">
-        <label for="message_body">Message:</label>
-        <textarea class="form-control" id="message_body" name="message_body" rows="3"></textarea>
-    </div>
-    <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
-    <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
-    <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
-    <input type="hidden" name="sender_type" value="user">
-    
-    <div class="d-flex justify-content-center"> <!-- ここに "justify-content-center" を追加 -->
-        <input type="submit" value="Send" class="btn btn-primary mr-2">
-        <button type="button" class="btn btn-secondary" onclick="goBack();">Back</button>
-    </div>
-</form>
 
+<div> <!-- 既存のdiv -->
+    <form method="post" action="sm_detail.php" class="mb-2">
+        <!-- ... その他のフォームの要素は変わらず ... -->
+        
+        <div class="d-flex justify-content-start mb-3">
+            <input type="submit" value="Send" class="btn btn-primary mr-2">
+            <button type="button" class="btn btn-secondary" onclick="goBack();">Back</button>
+        </div>
+    </form>
 
-    
-<form method="post" action="send_contact_info.php" id="contactForm">
-    <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
-    <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
-    <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
-    <input type="hidden" name="sender_type" value="user">
-    <div class="text-center">
-    <button type="submit" class="btn btn-info mb-3" onclick="return confirmSubmit();">名前・連絡先を公開</button>
-    </div>
-</form>
-<form method="post" action="send_go_info.php" id="contactForm_go">
-    <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
-    <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
-    <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
-    <input type="hidden" name="sender_type" value="user">
-    <div class="text-center">
-    <button type="submit" class="btn btn-info mb-3" onclick="return confirmSubmit();">本通所を決める</button>
-    </div>
-</form>
+    <div class="d-flex"> <!-- このdivを追加します。 -->
+
+        <form method="post" action="send_contact_info.php" id="contactForm" class="mb-3 mr-2"> <!-- ここに "mr-2" を追加 -->
+            <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
+            <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
+            <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
+            <input type="hidden" name="sender_type" value="user">
+            <button type="submit" class="btn btn-info" onclick="return confirmSubmit();">名前・連絡先を公開</button>
+        </form>
+
+        <form method="post" action="send_go_info.php" id="contactForm_go">
+            <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
+            <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
+            <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
+            <input type="hidden" name="sender_type" value="user">
+            <button type="submit" class="btn btn-warning" onclick="return confirmSubmit();">本通所を決める</button>
+        </form>
+
+    </div> <!-- 追加したdivの終了 -->
+
+</div> <!-- 既存のdivの終了 -->
 
 <script>
         // バックボタンのクリック時に戻る関数を追加
