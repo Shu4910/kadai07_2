@@ -48,6 +48,20 @@ if (isset($_POST['session_id'])) {
  $stmt_user_info->bindParam(':user_send_id', $user_send_id);
  $stmt_user_info->execute();
 
+ $sql_check_share = "SELECT share_user FROM messages WHERE session_id = :session_id ORDER BY send_at DESC LIMIT 1";
+ $stmt_check_share = $dbh->prepare($sql_check_share);
+ $stmt_check_share->bindParam(':session_id', $session_id);
+ $stmt_check_share->execute();
+
+
+ $share_status = $stmt_check_share->fetch(PDO::FETCH_ASSOC)['share_user'];
+
+// 以前のメッセージのshare_userステータスが1の場合、新しいメッセージも1にする
+$share_status_to_set = isset($share_status) && $share_status == 1 ? 1 : 1; // ここではどちらの条件も1に設定していますが、将来的に変更が必要な場合に備えてこのように書いています。
+
+
+
+
  $user_info = $stmt_user_info->fetch(PDO::FETCH_ASSOC);
  // message_bodyの内容を組み立て
  $message_body = "名前: " . $user_info['name'] . "\n\n" .
@@ -55,7 +69,8 @@ if (isset($_POST['session_id'])) {
                  "電話: " . $user_info['tel'];
 
  // SQLを準備（message_bodyを追加）
- $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, send_at, sender_type, message_body) VALUES (:session_id, :user_send_id, :company_send_id, NOW(), :sender_type, :message_body)";
+ $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, send_at, sender_type, message_body, share_user) VALUES (:session_id, :user_send_id, :company_send_id, NOW(), :sender_type, :message_body, :share_status)";
+
 
  // SQLを実行
  $stmt = $dbh->prepare($sql);
@@ -63,17 +78,12 @@ if (isset($_POST['session_id'])) {
  $stmt->bindParam(':user_send_id', $user_send_id);
  $stmt->bindParam(':company_send_id', $company_send_id);
  $stmt->bindParam(':sender_type', $sender_type);
- $stmt->bindParam(':message_body', $message_body);  // こちらを追加
- $stmt->execute();
+$stmt->bindParam(':message_body', $message_body); 
+$stmt->bindParam(':share_status', $share_status_to_set); // これを追加
+$stmt->execute();
 
-    // If last_id was updated (a new message arrived), send a notification email
-    // if($stmt->rowCount() > 0) {
-    //     $sql = "SELECT mail FROM bizdiverse_user WHERE id = :user_send_id UNION SELECT mail FROM bizdiverse_company WHERE company_id = :company_send_id";
-    //     $stmt = $dbh->prepare($sql);
-    //     $stmt->bindParam(':user_send_id', $user_send_id);
-    //     $stmt->bindParam(':company_send_id', $company_send_id);
-    //     $stmt->execute();
-    //     $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Extract only the email column
+
+
 
 // If last_id was updated (a new message arrived), send a notification email
 if($stmt->rowCount() > 0) {
@@ -82,6 +92,8 @@ if($stmt->rowCount() > 0) {
     $stmt = $dbh->prepare($sql);
     $stmt->bindParam(':company_send_id', $company_send_id);
     $stmt->execute();
+
+
 
     $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Extract only the email column
 

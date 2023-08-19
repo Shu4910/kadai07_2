@@ -120,6 +120,16 @@
     <button type="submit" class="btn btn-info mb-3" onclick="return confirmSubmit();">名前・連絡先を公開</button>
     </div>
 </form>
+<form method="post" action="send_go_info.php" id="contactForm_go">
+    <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
+    <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
+    <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
+    <input type="hidden" name="sender_type" value="user">
+    <div class="text-center">
+    <button type="submit" class="btn btn-info mb-3" onclick="return confirmSubmit();">本通所を決める</button>
+    </div>
+</form>
+
 <script>
         // バックボタンのクリック時に戻る関数を追加
         function goBack() {
@@ -131,6 +141,14 @@
                 event.preventDefault();
             }
         });
+
+        document.getElementById("contactForm_go").addEventListener("submit", function(event) {
+            if (!confirm('本当に本通所しますか？本通所キャンセルは原則できません。')) {
+                event.preventDefault();
+            }
+        });
+
+
     </script>
 
 

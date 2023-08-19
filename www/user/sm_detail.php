@@ -1,7 +1,6 @@
 <?php
 session_start(); // セッションを開始
 
-
 require __DIR__ . '/../../vendor/autoload.php';
 
 // .envファイルのパスを設定
@@ -9,12 +8,7 @@ $dotenvPath = __DIR__ . '/../../.env';
 if (file_exists($dotenvPath)) {
     $dotenv = Dotenv\Dotenv::createImmutable(dirname($dotenvPath));
     $dotenv->load();
-} else {
-    // .envファイルが見つからない場合はエラー処理を行うか、適切なデフォルト値をセットします
-    // エラー処理の例: die(".envファイルが見つかりません。");
 }
-
-
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -26,9 +20,7 @@ function loadEnv()
     $dotenv->load();
 }
 
-
 loadEnv();
-
 
 if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $session_id = $_POST['session_id'];
@@ -42,9 +34,18 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
 
     require '../../database_dbh.php';
 
+    // Check if there's any message with the same session_id and share_user = 1
+    $sql_check = "SELECT COUNT(*) FROM messages WHERE session_id = :session_id AND share_user = 1";
+    $stmt_check = $dbh->prepare($sql_check);
+    $stmt_check->bindParam(':session_id', $session_id);
+    $stmt_check->execute();
+    $count = $stmt_check->fetchColumn();
+
+    // If a message with share_user = 1 exists, then set share_user for the new message as 1, else 0.
+    $share_user = ($count > 0) ? 1 : 0;
 
     // SQLを準備
-    $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, message_body, send_at, sender_type) VALUES (:session_id, :user_send_id, :company_send_id, :message_body, NOW(), :sender_type)";
+    $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, message_body, send_at, sender_type, share_user) VALUES (:session_id, :user_send_id, :company_send_id, :message_body, NOW(), :sender_type, :share_user)";
 
     // SQLを実行
     $stmt = $dbh->prepare($sql);
@@ -53,7 +54,7 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $stmt->bindParam(':company_send_id', $company_send_id);
     $stmt->bindParam(':message_body', $message_body);
     $stmt->bindParam(':sender_type', $sender_type);
-
+    $stmt->bindParam(':share_user', $share_user); // This is added
     $stmt->execute();
 
     // 新しく追加されたメッセージのIDを取得
@@ -65,15 +66,6 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $stmt->bindParam(':last_id', $last_message_id);
     $stmt->bindParam(':session_id', $session_id);
     $stmt->execute();
-
-    // If last_id was updated (a new message arrived), send a notification email
-    // if($stmt->rowCount() > 0) {
-    //     $sql = "SELECT mail FROM bizdiverse_user WHERE id = :user_send_id UNION SELECT mail FROM bizdiverse_company WHERE company_id = :company_send_id";
-    //     $stmt = $dbh->prepare($sql);
-    //     $stmt->bindParam(':user_send_id', $user_send_id);
-    //     $stmt->bindParam(':company_send_id', $company_send_id);
-    //     $stmt->execute();
-    //     $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Extract only the email column
 
 // If last_id was updated (a new message arrived), send a notification email
 if($stmt->rowCount() > 0) {
