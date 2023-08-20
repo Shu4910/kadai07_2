@@ -141,7 +141,7 @@
                 <div class="pager_wrap" style="margin-top: 100px;">
                             <div class="pager_inner">
                                 <button type="button" id="back_btn2" class="back_step_btn"><span>戻る</span></button>
-                                <button type="button" id="next_btn3" class="next_step_btn"><span>最後の質問に進む</span></button>
+                                <button type="button" id="next_btn3" class="next_step_btn"><span>最後の質問に<br>進む</span></button>
                             </div>
                 </div>
         </div>
@@ -156,26 +156,26 @@
         <table>
         <tbody>
             <tr>
-                <th>郵便番号 </th>
-                <td class="zipcode-cell">
+                <th>郵便番号: </th>
+                <td class="zipcode-cell" style="padding-top: 0px;">
                     <input id="zipcode" class="zipcode" type="text" name="zipcode" value="" placeholder="例)8120012">
-                    <button id="search" type="button">ボタンを押して住所を自動入力</button>
+                    <button id="search" type="button">ボタンを押して<br>住所を自動入力</button>
                     <p id="error"></p>
                 </td>
             </tr>
 
             <tr>
-                <th>都道府県</th>
+                <th>都道府県: </th>
                 <td><input id="address1" type="text" name="address1" value=""></td>
             </tr>
 
             <tr>
-                <th>市区町村</th>
+                <th>市区町村: </th>
                 <td><input id="address2" type="text" name="address2" value=""></td>
             </tr>
 
             <tr>
-                <th>町域</th>
+                <th>町域: </th>
                 <td><input id="address3" type="text" name="address3" value=""></td>
             </tr>
             <br>
@@ -183,11 +183,11 @@
         </table>
         </div>
         
-        <div class="each-form">
+        <div class="each-form pass-check">
             パスワード: <input type="password" id="pass" name="pass">
             <br>
         </div>
-        <div class="each-form"> <!-- new line -->
+        <div class="each-form pass-check"> <!-- new line -->
             パスワード(確認): <input type="password" id="confirm_pass" name="confirm_pass"> <!-- new line -->
             <br>
         </div>

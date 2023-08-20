@@ -75,7 +75,7 @@
   
     .each-form{
       padding-top: 10px;  
-      width: auto; /* or whatever width you want */
+      width: 80%; /* or whatever width you want */
       margin: auto; /* this will center the form if the parent is wider */
     }
   
@@ -149,6 +149,7 @@
   
   th {
     font-weight: normal;
+    width: 30%;
 }
 
 
@@ -308,6 +309,11 @@
     transform: translateX(-50%) translateY(-50%);
   }
   
+  .pass-check{
+    font-size: 13px;
+  }
+
+
   .step_bar_wrap {
     display: flex;
     justify-content: center;
@@ -341,7 +347,7 @@
     }
   
     select {
-      width: 100%;
+      width: 80%;
       padding: 12px 20px;
       margin: 8px 0;
       display: inline-block;
@@ -350,7 +356,7 @@
     }
   
     button {
-      width: 100%;
+      width: 80%;
       padding: 14px 20px;
       margin: 8px 0;
       background-color: #4CAF50;

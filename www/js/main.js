@@ -18,6 +18,8 @@ $(document).ready(function() {
             alert('生年月日とメールアドレスを記入してください。');
             return; // ここで処理を終了する
         } else {
+        $("#li_2").removeClass("active");
+        $("#li_3").addClass("active");
             $('.step2').hide();
             $('.step3').show();
         }
@@ -28,6 +30,8 @@ $(document).ready(function() {
             alert('障害種別と手帳の有無、希望する情報を選択してください。');
             return; // ここで処理を終了する
         } else {
+        $("#li_3").removeClass("active");
+        $("#li_4").addClass("active");
             $('.step3').hide();
             $('.step4').show();
             isStep4 = true;  // 追加：ステップ4に到達した
@@ -55,16 +59,24 @@ $(document).ready(function() {
     
 
     $('#back_btn1').click(function() {
+        $("#li_2").removeClass("active");
+        $("#li_1").addClass("active");
     $('.step2').hide();
     $('.step1').show();
     });
 
     $('#back_btn2').click(function() {
+        
+        $("#li_3").removeClass("active");
+        $("#li_2").addClass("active");
         $('.step3').hide();
         $('.step2').show();
     });
 
     $('#back_btn3').click(function() {
+        
+        $("#li_4").removeClass("active");
+        $("#li_3").addClass("active");
         $('.step4').hide();
         $('.step3').show();
     });
