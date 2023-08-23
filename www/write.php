@@ -87,7 +87,12 @@ if ($status === false) {
     $mailer->CharSet = 'UTF-8';  // 追加: 文字エンコーディングの設定
     $mailer->Subject = '=?UTF-8?B?' . base64_encode('登録完了のお知らせ') . '?=';  // 修正: 件名のエンコード
     $mailer->isHTML(true);
-    $mailer->Body = '登録が完了しました。<br>ありがとうございます。登録が完了しました！ログイン後にエリア、こだわり条件は必ず設定してください。レジュメ登録は任意です。<br>BizDiverse';
+    $mailer->Body = '登録が完了しました。<br>
+    ありがとうございます。登録が完了しました! 下記のURLからログインできます。<br>
+    https://komaki0910.sakura.ne.jp/user/index_user.php?<br>
+    ログイン後にエリア、こだわり条件は必ず設定してください。※レジュメ登録は任意です。<br>
+    
+    精神障害者に特化したスカウトメディアサービス BizDiverse';
 
     if (!$mailer->send()) {
         echo 'メールの送信に失敗しました。エラー: ' . $mailer->ErrorInfo;

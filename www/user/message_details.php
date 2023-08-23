@@ -97,11 +97,19 @@
 <div> <!-- 既存のdiv -->
     <form method="post" action="sm_detail.php" class="mb-2">
         <!-- ... その他のフォームの要素は変わらず ... -->
-        
-        <div class="d-flex justify-content-start mb-3">
-            <input type="submit" value="Send" class="btn btn-primary mr-2">
-            <button type="button" class="btn btn-secondary" onclick="goBack();">Back</button>
-        </div>
+        <div class="form-group">
+        <label for="message_body">Message:</label>
+        <textarea class="form-control" id="message_body" name="message_body" rows="3"></textarea>
+    </div>
+    <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">
+    <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
+    <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
+    <input type="hidden" name="sender_type" value="user">
+    
+    <div class="d-flex justify-content-center"> <!-- ここに "justify-content-center" を追加 -->
+        <input type="submit" value="Send" class="btn btn-primary mr-2">
+        <button type="button" class="btn btn-secondary" onclick="goBack();">Back</button>
+    </div>
     </form>
 
     <div class="d-flex"> <!-- このdivを追加します。 -->

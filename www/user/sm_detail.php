@@ -35,17 +35,23 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     require '../../database_dbh.php';
 
     // Check if there's any message with the same session_id and share_user = 1
-    $sql_check = "SELECT COUNT(*) FROM messages WHERE session_id = :session_id AND share_user = 1";
-    $stmt_check = $dbh->prepare($sql_check);
-    $stmt_check->bindParam(':session_id', $session_id);
-    $stmt_check->execute();
-    $count = $stmt_check->fetchColumn();
+    $sql_check_share = "SELECT COUNT(*) FROM messages WHERE session_id = :session_id AND share_user = 1";
+    $stmt_check_share = $dbh->prepare($sql_check_share);
+    $stmt_check_share->bindParam(':session_id', $session_id);
+    $stmt_check_share->execute();
+    $count_share = $stmt_check_share->fetchColumn();
+    $share_user = ($count_share > 0) ? 1 : 0;
 
-    // If a message with share_user = 1 exists, then set share_user for the new message as 1, else 0.
-    $share_user = ($count > 0) ? 1 : 0;
-
+    // Check if there's any message with the same session_id and go_user = 1
+    $sql_check_go = "SELECT COUNT(*) FROM messages WHERE session_id = :session_id AND go_user = 1";
+    $stmt_check_go = $dbh->prepare($sql_check_go);
+    $stmt_check_go->bindParam(':session_id', $session_id);
+    $stmt_check_go->execute();
+    $count_go = $stmt_check_go->fetchColumn();
+    $go_user = ($count_go > 0) ? 1 : 0;
+    
     // SQLを準備
-    $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, message_body, send_at, sender_type, share_user) VALUES (:session_id, :user_send_id, :company_send_id, :message_body, NOW(), :sender_type, :share_user)";
+    $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, message_body, send_at, sender_type, share_user, go_user) VALUES (:session_id, :user_send_id, :company_send_id, :message_body, NOW(), :sender_type, :share_user, :go_user)";
 
     // SQLを実行
     $stmt = $dbh->prepare($sql);
@@ -54,7 +60,8 @@ if (isset($_POST['session_id']) && isset($_POST['message_body'])) {
     $stmt->bindParam(':company_send_id', $company_send_id);
     $stmt->bindParam(':message_body', $message_body);
     $stmt->bindParam(':sender_type', $sender_type);
-    $stmt->bindParam(':share_user', $share_user); // This is added
+    $stmt->bindParam(':share_user', $share_user);
+    $stmt->bindParam(':go_user', $go_user); // This is added
     $stmt->execute();
 
     // 新しく追加されたメッセージのIDを取得
