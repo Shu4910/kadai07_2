@@ -29,14 +29,14 @@
         $company = $stmt_company->fetch(PDO::FETCH_ASSOC);
         $company_id = $company['company_id'];
 
+
         // DISTINCT session_idを使って、session_idごとにデータを取得します。
-        $sql = "SELECT DISTINCT session_id, user_send_id, company_send_id, share_user, last_id, send_at FROM messages WHERE company_send_id = :company_id ORDER BY session_id";
+        $sql = "SELECT DISTINCT session_id, user_send_id, company_send_id, share_user, last_id, send_at,id FROM messages WHERE company_send_id = :company_id ORDER BY session_id";
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':company_id', $company_id);
         $stmt->execute();
-
         $sessions = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        
         function formatDate($send_at)
         {
             $today = new DateTime("today");
@@ -55,11 +55,17 @@
 
         ?>
 
-        <ul class="list-group">
+<ul class="list-group">
             <?php
             foreach ($sessions as $session) :
-                $session_id = $session['session_id'];
+                $id = $session['id'];
                 $last_id = $session['last_id'];
+
+                if ($id !== $last_id) {
+                    continue;
+                }
+
+                $session_id = $session['session_id'];
                 $user_send_id = $session['user_send_id'];
                 $company_send_id = $session['company_send_id'];
                 $send_at = formatDate($session['send_at']);
@@ -80,8 +86,9 @@
                 $tel = $user['tel'];
             ?>
                 <a href="message_details.php?session_id=<?= $session_id ?>" class="list-group-item list-group-item-action">
-                session_id: <?= $session_id ?><br>
-                company_send_id: <?= $company_send_id ?><br>
+                    id: <?= $id ?><br>
+                    session_id: <?= $session_id ?><br>
+                    company_send_id: <?= $company_send_id ?><br>
                     user_send_id: <?= $user_send_id ?><br>
                     last_id: <?= $last_id ?><br>
                     ニックネーム: <?= $kana ?><br>
