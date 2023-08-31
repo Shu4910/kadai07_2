@@ -27,18 +27,27 @@
             </div>
             <div class="mb-3"> <!-- カラムのサイズを変更 -->
                 <!-- こだわり条件設定画面のボタン -->
-                <form action="scout_set_train.php" method="get">
-                    <button class="btn btn-primary btn-block" type="submit">駅・路線</button>
+                <form action="scout_set_line.php" method="get">
+                    <button class="btn btn-primary btn-block" type="submit">路線</button>
                 </form>
             </div>
             <div class="mb-3"> <!-- カラムのサイズを変更 -->
-                <!-- 基本情報修正画面のボタン -->
+                <!-- こだわり条件設定画面のボタン -->
+                <form action="scout_set_train.php" method="get">
+                    <button class="btn btn-primary btn-block" type="submit">駅</button>
+                </form>
+            </div>
+            <!-- <div class="mb-3">
                 <form action="scout_set_location.php" method="get">
                     <button class="btn btn-primary btn-block" type="submit">現在地周辺</button>
                 </form>
             </div>
-        </div>
+        </div> -->
     </div>
+    <div class="text-center mt-4">
+                    <p> <a href="dash.php">もとに戻る</a></p>
+                </div>
+    
     <!-- フッターにサービス名を追加 -->
 <footer class="text-center mb-4 pt-3">
     <p>&copy; BizDiverse</p>
