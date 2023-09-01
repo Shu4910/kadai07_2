@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ログイン画面</title>
+    <title>企画説明</title>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,30 +31,44 @@
             font-size: 18px;
             margin-bottom: 20px;
         }
+
+        .body-wrapper {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .about {
+            font-weight:bold;
+        }
+        .img_box {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+
     </style>
 </head>
 <body>
 
+<div class="body-wrapper">
 <div class="container mt-5">
         <div class="service-title">精神障害者特化型<br>スカウトメディアサービス</div> <!-- クラスを追加 -->
         <h2 class="text-center mb-4">BizDiverse</h2>
     <div class="row justify-content-center">
-        <div class="col-12 col-md-6 login-container">
-            <form action="explain.php" method="get" class="mb-3">
-                <button class="btn btn-warning btn-lg login-button" type="submit">　　企画説明　　</button>
-            </form>
-            <!-- 個人用ログイン画面のボタン -->
-            <form action="user/index_user.php" method="get" class="mb-3">
-                <button class="btn btn-primary btn-lg login-button" type="submit">個人用ログイン画面</button>
-            </form>
-            <!-- 企業用ログイン画面のボタン -->
-            <form action="company/index_com.php" method="get" class="mb-3">
-                <button class="btn btn-primary btn-lg login-button" type="submit">企業用ログイン画面</button>
-            </form>
-        </div>
+        <p class="about">BizDiverseは精神障害者と福祉施設をマッチングさせる障害者版『ビズリーチ』です。</p>
+        <img src="img/explain.png" alt="説明画像" class="img_box"> 
+        <p>施設側は基本利用料は<strong>無料</strong>。本通所開始地点で<strong>12万円</strong>をお支払いいただきます。<br>
+        障害者側も利用料は<strong>無料</strong>。本通所開始地点でお祝い金<strong>3,000円</strong>を進呈します!!</p>
+        
+        
+    </div>
     </div>
 </div>
+</div>
 
+<div class="text-center mt-4">
+                    <p> <a href="index.php">もとに戻る</a></p>
+                </div>
 
 <!-- フッターにサービス名を追加 -->
 <footer>
