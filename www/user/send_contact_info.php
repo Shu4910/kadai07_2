@@ -43,7 +43,7 @@ if (isset($_POST['session_id'])) {
 
 
  // bizdiverse_userから該当ユーザーの情報を取得
- $sql_user_info = "SELECT name, mail, tel FROM bizdiverse_user WHERE id = :user_send_id";
+ $sql_user_info = "SELECT kana, mail, tel FROM bizdiverse_user WHERE id = :user_send_id";
  $stmt_user_info = $dbh->prepare($sql_user_info);
  $stmt_user_info->bindParam(':user_send_id', $user_send_id);
  $stmt_user_info->execute();
@@ -59,30 +59,32 @@ if (isset($_POST['session_id'])) {
 // 以前のメッセージのshare_userステータスが1の場合、新しいメッセージも1にする
 $share_status_to_set = isset($share_status) && $share_status == 1 ? 1 : 1; // ここではどちらの条件も1に設定していますが、将来的に変更が必要な場合に備えてこのように書いています。
 
-
-
-
  $user_info = $stmt_user_info->fetch(PDO::FETCH_ASSOC);
  // message_bodyの内容を組み立て
- $message_body = "名前: " . $user_info['name'] . "\n\n" .
-                 "メール: " . $user_info['mail'] . "\n\n" .
-                 "電話: " . $user_info['tel'];
+ $message_body = "名前: " . $user_info['kana'] ."が個人情報を共有することを許可しました。\n\n" ;
 
  // SQLを準備（message_bodyを追加）
  $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, send_at, sender_type, message_body, share_user) VALUES (:session_id, :user_send_id, :company_send_id, NOW(), :sender_type, :message_body, :share_status)";
 
 
  // SQLを実行
- $stmt = $dbh->prepare($sql);
- $stmt->bindParam(':session_id', $session_id);
- $stmt->bindParam(':user_send_id', $user_send_id);
- $stmt->bindParam(':company_send_id', $company_send_id);
- $stmt->bindParam(':sender_type', $sender_type);
+$stmt = $dbh->prepare($sql);
+$stmt->bindParam(':session_id', $session_id);
+$stmt->bindParam(':user_send_id', $user_send_id);
+$stmt->bindParam(':company_send_id', $company_send_id);
+$stmt->bindParam(':sender_type', $sender_type);
 $stmt->bindParam(':message_body', $message_body); 
 $stmt->bindParam(':share_status', $share_status_to_set); // これを追加
 $stmt->execute();
 
+// 直近の挿入されたIDを取得
+$last_id = $dbh->lastInsertId();
 
+// last_idを更新
+$sql_update_last_id = "UPDATE messages SET last_id = :last_id WHERE id = :last_id";
+$stmt_update_last_id = $dbh->prepare($sql_update_last_id);
+$stmt_update_last_id->bindParam(':last_id', $last_id);
+$stmt_update_last_id->execute();
 
 
 // If last_id was updated (a new message arrived), send a notification email
@@ -93,11 +95,7 @@ if($stmt->rowCount() > 0) {
     $stmt->bindParam(':company_send_id', $company_send_id);
     $stmt->execute();
 
-
-
     $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Extract only the email column
-
-
         $subject = "New";
         $message = "新着メッセージがあります。チャットを確認してください。\n\nメッセージ内容: " . $message_body;
         

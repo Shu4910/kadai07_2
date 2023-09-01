@@ -38,19 +38,17 @@ if (isset($_POST['session_id'])) {
     $share_user_exists = $stmt_check->fetch(PDO::FETCH_ASSOC)['count'] > 0;
 
     if ($share_user_exists) {
-        $sql_user_info = "SELECT name FROM bizdiverse_user WHERE id = :user_send_id";
+        $sql_user_info = "SELECT kana FROM bizdiverse_user WHERE id = :user_send_id";
         $stmt_user_info = $dbh->prepare($sql_user_info);
         $stmt_user_info->bindParam(':user_send_id', $user_send_id);
         $stmt_user_info->execute();
 
-        $user_name = $stmt_user_info->fetch(PDO::FETCH_ASSOC)['name'];
+        $user_name = $stmt_user_info->fetch(PDO::FETCH_ASSOC)['kana'];
 
         // message_bodyの内容を更新
         $message_body = $user_name . "が本通所を決めました。";
 
-        // SQLを準備（go_userを追加）
         $sql = "INSERT INTO messages (session_id, user_send_id, company_send_id, send_at, sender_type, message_body, go_user, share_user) VALUES (:session_id, :user_send_id, :company_send_id, NOW(), :sender_type, :message_body, 1, 1)";
-
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':session_id', $session_id);
         $stmt->bindParam(':user_send_id', $user_send_id);
@@ -58,12 +56,17 @@ if (isset($_POST['session_id'])) {
         $stmt->bindParam(':sender_type', $sender_type);
         $stmt->bindParam(':message_body', $message_body);
         $stmt->execute();
-
-    if($stmt->rowCount() > 0) {
-        $sql = "SELECT mail FROM bizdiverse_company WHERE company_id = :company_send_id";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindParam(':company_send_id', $company_send_id);
-        $stmt->execute();
+    
+        if ($stmt->rowCount() > 0) {
+            // Get the last inserted ID
+            $lastId = $dbh->lastInsertId();
+    
+            // Update the messages table to set last_id to the last inserted ID
+            $sqlUpdate = "UPDATE messages SET last_id = :last_id WHERE session_id = :session_id";
+            $stmtUpdate = $dbh->prepare($sqlUpdate);
+            $stmtUpdate->bindParam(':last_id', $lastId);
+            $stmtUpdate->bindParam(':session_id', $session_id);
+            $stmtUpdate->execute();
 
         $emails = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 

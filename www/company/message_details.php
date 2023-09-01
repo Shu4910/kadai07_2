@@ -65,7 +65,6 @@
 
     if (isset($_GET['session_id'])) {
         $session_id = $_GET['session_id'];
-
         
         // session_idをcompany_send_idとuser_send_idに分割
         $ids = explode('_', $session_id);

@@ -17,18 +17,17 @@ $prefectureOptions = [
 
 $prefectureCityMapping = [
     "東京都" => [
-        "千代田区" => "千代田区",
-        "港区" => "港区",
-        "八王子市" => "八王子市",
-        "立川市" => "立川市"
-    ],
+        "山手線"=>"山手線",
+        "中央線"=>"中央線",
+        "京浜東北線"=>"京浜東北線"
+        ],
     "神奈川県" => [
-        "川崎市" => "川崎市",
-        "横浜市" => "横浜市"
+        "京浜東北線"=>"京浜東北線",
+        "東海道線" => "東海道線"
     ],
     "埼玉県" => [
-        "さいたま市" => "さいたま市",
-        "川口市" => "川口市"
+        "埼京線" => "埼京線",
+        "" => "東北線"
     ],
     // 他の都道府県と都市のマッピングもここに追加
 ];
@@ -46,15 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // All the other form fields
         $newMail = empty($_POST['mail']) ? $mail : $_POST['mail'];
         $prefecture = $_POST['prefecture'];
-        $cities = is_array($_POST['city']) ? implode(",", $_POST['city']) : $_POST['city'];
+        $train_lines = is_array($_POST['train_line']) ? implode(",", $_POST['train_line']) : $_POST['train_line'];
 
         // ここでDBへの更新処理
         $updateStmt = $pdo->prepare("UPDATE bizdiverse_user 
-        SET mail = :newMail, prefecture = :prefecture, city = :cities 
+        SET mail = :newMail, prefecture = :prefecture, train_line = :train_lines 
         WHERE mail = :mail");
     $updateStmt->bindValue(':newMail', $newMail, PDO::PARAM_STR);
     $updateStmt->bindValue(':prefecture', $prefecture, PDO::PARAM_STR);
-    $updateStmt->bindValue(':cities', $cities, PDO::PARAM_STR);
+    $updateStmt->bindValue(':train_lines', $train_lines, PDO::PARAM_STR);
     $updateStmt->bindValue(':mail', $mail, PDO::PARAM_STR);
     $updateStmt->execute();
 
@@ -74,7 +73,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html>
 <head>
-    <title>エリア設定</title>
+    <title>駅・路線設定</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="form.js"></script>
@@ -104,14 +103,14 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 </select>
                             </div>
                             <div class="form-group">
-                                <p>都市選択:</p>
-                                <div id="city">
+                                <p>路線選択:</p>
+                                <div id="train_line">
                                     <?php
-                                    $selectedCities = explode(',', $userData['city']);
-                                    foreach ($prefectureCityMapping as $prefecture => $cities) {
-                                        foreach ($cities as $cityValue => $cityLabel) {
+                                    $selectedCities = explode(',', $userData['train_line']);
+                                    foreach ($prefectureCityMapping as $prefecture => $train_lines) {
+                                        foreach ($train_lines as $cityValue => $cityLabel) {
                                             $checked = in_array($cityValue, $selectedCities) ? 'checked' : '';
-                                            echo '<input type="checkbox" id="' . $cityValue . '" name="city[]" value="' . $cityValue . '" ' . $checked . '>
+                                            echo '<input type="checkbox" id="' . $cityValue . '" name="train_line[]" value="' . $cityValue . '" ' . $checked . '>
                                             <label for="' . $cityValue . '">' . $cityLabel . '</label><br>';
                                         }
                                     }
@@ -152,7 +151,7 @@ $(document).ready(function(){
 
         // 既に選択されている都市を取得
         var selectedCities = [];
-        $('input[name="city[]"]:checked').each(function(){
+        $('input[name="train_line[]"]:checked').each(function(){
             selectedCities.push($(this).val());
         });
 
@@ -160,23 +159,23 @@ $(document).ready(function(){
         switch (prefecture) {
             case "東京都":
                 <?php
-                foreach ($prefectureCityMapping["東京都"] as $city => $label) {
-                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
+                foreach ($prefectureCityMapping["東京都"] as $train_line => $label) {
+                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $train_line . "\" name=\"train_line[]\" value=\"" . $train_line . "\" ' + (selectedCities.includes('" . $train_line . "') ? 'checked' : '') + '> <label for=\"" . $train_line . "\">" . $label . "</label><br>';\n";
                 }
                 ?>
                 break;
             case '神奈川県':
                 <?php
-                foreach ($prefectureCityMapping['神奈川県'] as $city => $label) {
-                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
+                foreach ($prefectureCityMapping['神奈川県'] as $train_line => $label) {
+                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $train_line . "\" name=\"train_line[]\" value=\"" . $train_line . "\" ' + (selectedCities.includes('" . $train_line . "') ? 'checked' : '') + '> <label for=\"" . $train_line . "\">" . $label . "</label><br>';\n";
                 }
                 ?>
                 break;
 
             case '埼玉県':
                 <?php
-                foreach ($prefectureCityMapping['埼玉県'] as $city => $label) {
-                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $city . "\" name=\"city[]\" value=\"" . $city . "\" ' + (selectedCities.includes('" . $city . "') ? 'checked' : '') + '> <label for=\"" . $city . "\">" . $label . "</label><br>';\n";
+                foreach ($prefectureCityMapping['埼玉県'] as $train_line => $label) {
+                    echo "cityOptions += '<input type=\"checkbox\" id=\"" . $train_line . "\" name=\"train_line[]\" value=\"" . $train_line . "\" ' + (selectedCities.includes('" . $train_line . "') ? 'checked' : '') + '> <label for=\"" . $train_line . "\">" . $label . "</label><br>';\n";
                 }
                 ?>
                 break;
@@ -187,7 +186,7 @@ $(document).ready(function(){
                 cityOptions = ''; // 何も選択されていない場合は都市のオプションを空にする
                 break;
         }
-        $('#city').html(cityOptions);
+        $('#train_line').html(cityOptions);
     }
     
     // 都道府県が変更されたときのイベントハンドラ

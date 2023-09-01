@@ -99,7 +99,7 @@ $stmt->execute();
         }
 
 
-        //SMS送信
+        // //SMS送信
         // $sid = $_ENV['TWILIO_SID'];
         // $token = $_ENV['TWILIO_AUTH_TOKEN'];
         // $twilio_number = $_ENV['TWILIO_PHONE_NUMBER'];
