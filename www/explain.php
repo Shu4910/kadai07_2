@@ -43,6 +43,9 @@
         .img_box {
             padding-top: 10px;
             padding-bottom: 10px;
+            width: 50%;  /* この行を追加しました */
+            display: block;
+            margin: 0 auto;
         }
 
 
@@ -55,9 +58,9 @@
         <div class="service-title">精神障害者特化型<br>スカウトメディアサービス</div> <!-- クラスを追加 -->
         <h2 class="text-center mb-4">BizDiverse</h2>
     <div class="row justify-content-center">
-        <p class="about">BizDiverseは精神障害者と福祉施設をマッチングさせる障害者版『ビズリーチ』です。</p>
+        <p class="about text-center">BizDiverseは精神障害者と福祉施設をマッチングさせる障害者版『ビズリーチ』です。</p>
         <img src="img/explain.png" alt="説明画像" class="img_box"> 
-        <p>施設側は基本利用料は<strong>無料</strong>。本通所開始地点で<strong>12万円</strong>をお支払いいただきます。<br>
+        <p class="text-center">施設側は基本利用料は<strong>無料</strong>。本通所開始地点で<strong>12万円</strong>をお支払いいただきます。<br>
         障害者側も利用料は<strong>無料</strong>。本通所開始地点でお祝い金<strong>3,000円</strong>を進呈します!!</p>
         
         
