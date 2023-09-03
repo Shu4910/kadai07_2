@@ -49,13 +49,13 @@
 
 <div class="mb-3">
     <button onclick="location.href='<?php echo generateUrl('city', $sortOptions); ?>'" class="btn <?php echo in_array('city', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">市区町村で絞る</button>
-    <!-- <button onclick="location.href='<?php echo generateUrl('train_line', $sortOptions); ?>'" class="btn <?php echo in_array('train_line', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">路線で絞る</button>
-    <button onclick="location.href='<?php echo generateUrl('train_station', $sortOptions); ?>'" class="btn <?php echo in_array('train_station', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">駅で絞る</button> -->
     <button onclick="location.href='<?php echo generateUrl('work', $sortOptions); ?>'" class="btn <?php echo in_array('work', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">職種・こだわり条件で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('jigyousho', $sortOptions); ?>'" class="btn <?php echo in_array('jigyousho', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">事業所条件で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('types', $sortOptions); ?>'" class="btn <?php echo in_array('types', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">障害種別で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('techo', $sortOptions); ?>'" class="btn <?php echo in_array('techo', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">手帳有無で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('techo_num', $sortOptions); ?>'" class="btn <?php echo in_array('techo_num', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">手帳等級で絞る</button>
+    <button onclick="location.href='<?php echo generateUrl('train_line', $sortOptions); ?>'" class="btn <?php echo in_array('train_line', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">路線で絞る</button>
+    <button onclick="location.href='<?php echo generateUrl('train_station', $sortOptions); ?>'" class="btn <?php echo in_array('train_station', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">駅で絞る</button>
 </div>
 
 <ul class="list-group">
@@ -66,9 +66,11 @@
         $noResultFlag = false;
 
     foreach ($result_company as $row_company) {
-                            $cities = explode(',', $row_company["city"]);
-                            $train_lines = explode(',', $row_company["train_line"]);
-                            $train_stations = explode(',', $row_company["train_station"]);
+
+        $cities = !is_null($row_company["city"]) ? explode(',', $row_company["city"]) : ['%'];
+        $train_lines = !is_null($row_company["train_line"]) ? explode(',', $row_company["train_line"]) : ['%'];
+        $train_stations = !is_null($row_company["train_station"]) ? explode(',', $row_company["train_station"]) : ['%'];
+      
                             $works = explode(',', $row_company["work"]);
                             $jigyoushos = explode(',', $row_company["jigyousho"]);
                             // If the sort option isn't selected, reset to the full list
@@ -102,26 +104,33 @@
                                         foreach ($jigyoushos as $jigyousho) {
                                             foreach ($techos as $techo) { // 手帳のループを追加
                                                 foreach ($techo_nums as $techo_num) { 
-                                                        $city = trim($city);
-                                                        $train_line = trim($train_line);
-                                                        $train_station = trim($train_station);
-                                                        
-                                                        $work = trim($work);
-                                                        $jigyousho = trim($jigyousho);
-                                                        $type = trim($type);
-                                                        $techo = trim($techo); // 手帳データのトリム
-                                                        $techo_num = trim($techo_num); // 手帳データのトリム
-                                                        
-                                                        // クエリーに手帳の条件を追加
-                                                        $stmt = $pdo->prepare("SELECT * FROM bizdiverse_user 
-                                                        WHERE city LIKE :city AND work LIKE :work AND jigyousho 
-                                                        LIKE :jigyousho AND techo LIKE :techo AND techo_num LIKE :techo_num AND types LIKE :types");
+
+                                                    $city = is_null($city) ? '%' : trim($city);
+                                                    $train_line = is_null($train_line) ? '%' : trim($train_line);
+                                                    $train_station = is_null($train_station) ? '%' : trim($train_station);
+                                                    $work = is_null($work) ? '%' : trim($work);
+                                                    $jigyousho = is_null($jigyousho) ? '%' : trim($jigyousho);
+                                                    $type = is_null($type) ? '%' : trim($type);
+                                                    $techo = is_null($techo) ? '%' : trim($techo);
+                                                    $techo_num = is_null($techo_num) ? '%' : trim($techo_num);
+                                                    
+                                                    $stmt = $pdo->prepare("SELECT * FROM bizdiverse_user 
+                                                    WHERE city LIKE :city AND work LIKE :work AND jigyousho 
+                                                    LIKE :jigyousho AND techo LIKE :techo AND techo_num LIKE :techo_num AND types LIKE :types
+                                                    AND train_line LIKE :train_line AND train_station LIKE :train_station");
+
+
                                                         $stmt->bindValue(':city', $city === '%' ? $city : '%'.$city.'%', PDO::PARAM_STR);
                                                         $stmt->bindValue(':work', $work === '%' ? $work : '%'.$work.'%', PDO::PARAM_STR);
                                                         $stmt->bindValue(':jigyousho', $jigyousho === '%' ? $jigyousho : '%'.$jigyousho.'%', PDO::PARAM_STR);
                                                         $stmt->bindValue(':types', $type === '%' ? $type : '%'.$type.'%', PDO::PARAM_STR); // typesのバインド
                                                         $stmt->bindValue(':techo', $techo === '%' ? $techo : '%'.$techo.'%', PDO::PARAM_STR); // 手帳のバインド
                                                         $stmt->bindValue(':techo_num', $techo_num === '%' ? $techo_num : '%'.$techo_num.'%', PDO::PARAM_STR);  // 手帳等級のバインド
+                                                        $stmt->bindValue(':train_line', $train_line === '%' ? $train_line : '%'.$train_line.'%', PDO::PARAM_STR);
+                                                        $stmt->bindValue(':train_station', $train_station === '%' ? $train_station : '%'.$train_station.'%', PDO::PARAM_STR);
+                
+                                                        
+                                                        
 
                                                         $stmt->execute();
 
