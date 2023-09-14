@@ -15,12 +15,19 @@
             width: 70%;
         }
 
+        .button-group {
+            display: flex;
+            justify-content: center; /* ボタンを中央に配置 */
+            gap: 15px; /* ボタン間のスペース */
+        }
+
         .message-company {
             background-color: #00B900;
         }
 
         .message-user {
             background-color: #8A8A8A;
+            margin-left: auto;             
         }
 
         .message-container {
@@ -29,17 +36,18 @@
             margin-bottom: 20px;
         }
 
+
         @media (min-width: 768px) {
             .message-company,
             .message-user {
                 width: 70%;
             }
 
-            .message-user {
+            .message-company {
                 margin-left: auto;
             }
 
-            .message-company {
+            .message-user {
                 margin-right: auto;
             }
         }
@@ -74,7 +82,7 @@
         require '../../database_dbh.php';
 
         // SQLを準備
-        $sql = "SELECT * FROM messages WHERE session_id = :session_id ORDER BY send_at";
+        $sql = "SELECT * FROM messages WHERE session_id = :session_id ORDER BY id ASC";
 
         // SQLを実行
         $stmt = $dbh->prepare($sql);
@@ -102,9 +110,9 @@
     <div class="message-container">
         <?php foreach ($messages as $message): ?>
             <div class="message-<?php echo $message['sender_type']; ?>">
-                <strong><?php echo ucfirst($message['sender_type']); ?></strong><br>
+                <!-- <strong><?php echo ucfirst($message['sender_type']); ?></strong><br> -->
                 <?php echo $message['message_body']; ?><br>
-                <small><?php echo $message['send_at']; ?></small>
+                <!-- <small><?php echo $message['send_at']; ?></small> -->
             </div>
         <?php endforeach; ?>
     </div>
@@ -125,14 +133,11 @@
         <input type="hidden" name="user_send_id" value="<?php echo $user_send_id; ?>">
         <input type="hidden" name="company_send_id" value="<?php echo $company_send_id; ?>">
         <input type="hidden" name="sender_type" value="company">
+        <div class="button-group"> <!-- ボタンをラップする div -->
         <input type="submit" value="Send" class="btn btn-primary">
+        <button type="button" onclick="location.href='com_chat.php'" class="btn btn-secondary">Back</button>
+    </div>
     </form>
-
-    
-
-    <button onclick="location.href='com_chat.php'" class="btn btn-secondary mt-3">Back</button>
-
-
 
 </body>
 </html>

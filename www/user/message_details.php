@@ -16,9 +16,10 @@
         }
 
         .message-company {
-            background-color: #8A8A8A;
-            text-align: right;
-        }
+        background-color: #8A8A8A;
+        text-align: left;  /* この部分を修正しました */
+        margin-left: auto; 
+    }
 
         .message-user {
             background-color: #00B900;
@@ -37,7 +38,7 @@
             }
 
             .message-company {
-                margin-left: auto;
+                margin-left: auto; 
             }
 
             .message-user {
@@ -67,7 +68,7 @@
         require '../../database_dbh.php';
 
         // SQLを準備
-        $sql = "SELECT * FROM messages WHERE session_id = :session_id ORDER BY send_at";
+        $sql = "SELECT * FROM messages WHERE session_id = :session_id ORDER BY id ASC";
 
         // SQLを実行
         $stmt = $dbh->prepare($sql);
@@ -81,9 +82,9 @@
     <div class="message-container">
         <?php foreach ($messages as $message): ?>
             <div class="message-<?php echo $message['sender_type']; ?>">
-                <strong><?php echo ucfirst($message['sender_type']); ?></strong><br>
+                <!-- <strong><?php echo ucfirst($message['sender_type']); ?></strong><br> -->
                 <?php echo $message['message_body']; ?><br>
-                <small><?php echo $message['send_at']; ?></small>
+                <!-- <small><?php echo $message['send_at']; ?></small> -->
             </div>
         <?php endforeach; ?>
     </div>
@@ -112,7 +113,7 @@
     </div>
     </form>
 
-    <div class="d-flex"> <!-- このdivを追加します。 -->
+    <div class="d-flex justify-content-center"> <!-- このdivを追加します。 -->
 
         <form method="post" action="send_contact_info.php" id="contactForm" class="mb-3 mr-2"> <!-- ここに "mr-2" を追加 -->
             <input type="hidden" name="session_id" value="<?php echo $session_id; ?>">

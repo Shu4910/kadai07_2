@@ -4,16 +4,21 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>やり取り詳細</title>
+    <title>メッセージ</title>
     <style>
         .list-group-item-action:hover {
             background-color: lightblue;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center; /* ボタンを中央に配置 */
+            gap: 15px; /* ボタン間のスペース */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="my-3">やり取り詳細</h1>
+        <h1 class="my-3 text-center">メッセージ</h1>
         <?php
         session_start();
 
@@ -87,8 +92,9 @@ if ($last_message) {
         }
         ?>
         </ul>
-        
+        <div class="button-group"> <!-- ボタンをラップする div -->
         <button class="btn btn-primary my-3" onclick="location.href='dash.php'">Back</button>
+        </div>
     </div>
         <!-- フッターにサービス名を追加 -->
 <footer class="text-center mb-4 pt-3">

@@ -9,6 +9,11 @@
         .list-group-item-action:hover {
             background-color: lightblue;
         }
+        .button-group {
+            display: flex;
+            justify-content: center; /* ボタンを中央に配置 */
+            gap: 15px; /* ボタン間のスペース */
+        }
     </style>
 </head>
 
@@ -86,11 +91,11 @@
                 $tel = $user['tel'];
             ?>
                 <a href="message_details.php?session_id=<?= $session_id ?>" class="list-group-item list-group-item-action">
-                    id: <?= $id ?><br>
+                    <!-- id: <?= $id ?><br>
                     session_id: <?= $session_id ?><br>
                     company_send_id: <?= $company_send_id ?><br>
                     user_send_id: <?= $user_send_id ?><br>
-                    last_id: <?= $last_id ?><br>
+                    last_id: <?= $last_id ?><br> -->
                     ニックネーム: <?= $kana ?><br>
                     <?php
                     if ($share_user == 1) {
@@ -104,8 +109,9 @@
                 </a>
             <?php endforeach; ?>
         </ul>
-
+        <div class="button-group"> <!-- ボタンをラップする div -->
         <button onclick="location.href='dash_com.php'" class="btn btn-primary mt-3">Back</button>
+        </div>
     </div>
     <footer class="text-center mb-4 pt-3">
         <p>&copy; BizDiverse</p>
