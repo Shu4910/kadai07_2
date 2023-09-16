@@ -10,6 +10,10 @@
         .list-group-item-action:hover {
             background-color: lightblue;
         }
+            /* ボタンのマージンを設定 */
+    .btn {
+        margin: 3px;
+    }
     </style>
 </head>
 
@@ -49,7 +53,7 @@
 
 <div class="mb-3">
     <button onclick="location.href='<?php echo generateUrl('city', $sortOptions); ?>'" class="btn <?php echo in_array('city', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">市区町村で絞る</button>
-    <button onclick="location.href='<?php echo generateUrl('work', $sortOptions); ?>'" class="btn <?php echo in_array('work', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">職種・こだわり条件で絞る</button>
+    <button onclick="location.href='<?php echo generateUrl('work', $sortOptions); ?>'" class="btn <?php echo in_array('work', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">こだわり条件で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('jigyousho', $sortOptions); ?>'" class="btn <?php echo in_array('jigyousho', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">事業所条件で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('types', $sortOptions); ?>'" class="btn <?php echo in_array('types', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">障害種別で絞る</button>
     <button onclick="location.href='<?php echo generateUrl('techo', $sortOptions); ?>'" class="btn <?php echo in_array('techo', $sortOptions) ? 'btn-primary' : 'btn-secondary'; ?>">手帳有無で絞る</button>
