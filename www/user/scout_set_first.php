@@ -17,7 +17,7 @@
 
 <body> 
     <div class="text-center container mt-5">
-    <h2 class="text-center mb-4">どの条件でエリアを設定しますか？</h2>
+    <h2 class="text-center mb-4">どの条件で設定しますか？</h2>
     <div class="text-center"> <!-- ここを追加 -->
             <div class="mb-3"> <!-- カラムのサイズを変更 -->
                 <!-- エリア条件設定画面のボタン -->

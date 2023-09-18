@@ -83,7 +83,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html>
 <head>
-    <title>エリア設定</title>
+    <title>障害種別・等級設定</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="form.js"></script>
@@ -93,7 +93,7 @@ $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <h2 class="text-center mb-4">エリア設定</h2>
+            <h2 class="text-center mb-4">障害種別・等級設定</h2>
             <?php if (!empty($msg)) { echo '<div class="alert alert-danger">' . htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') . '</div>'; } ?>
             <div class="card">
                 <div class="card-body">

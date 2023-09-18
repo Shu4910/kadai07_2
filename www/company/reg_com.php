@@ -51,9 +51,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="types_fa">事業種別:</label>
+                                    <label for="types_fa">どの条件で設定しますか？</label>
                                     <select class="form-control" id="types_fa" name="types_fa">
-                                        <option name="types_fa"> 企業 </option>
                                         <option name="types_fa"> 就労移行 </option>
                                         <option name="types_fa"> A・B型 </option>
                                     </select>
