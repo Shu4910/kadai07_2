@@ -34,14 +34,13 @@
         $company = $stmt_company->fetch(PDO::FETCH_ASSOC);
         $company_id = $company['company_id'];
 
-
-        // DISTINCT session_idを使って、session_idごとにデータを取得します。
-        $sql = "SELECT DISTINCT session_id, user_send_id, company_send_id, share_user, last_id, send_at,id FROM messages WHERE company_send_id = :company_id ORDER BY session_id";
+        // セッションIDごとにデータを取得し、send_atの降順で並べます。
+        $sql = "SELECT DISTINCT session_id, user_send_id, company_send_id, share_user, last_id, send_at, id FROM messages WHERE company_send_id = :company_id ORDER BY send_at DESC, session_id DESC";
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':company_id', $company_id);
         $stmt->execute();
         $sessions = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         function formatDate($send_at)
         {
             $today = new DateTime("today");
@@ -57,7 +56,6 @@
                 return $send_date->format('Y-m-d');
             }
         }
-
         ?>
 
 <ul class="list-group">
@@ -77,6 +75,8 @@
                 $share_user = $session['share_user'];
 
                 $sql_user = "SELECT kana, types, techo, work, jigyousho, techo_num, mail, tel FROM bizdiverse_user WHERE id = :user_send_id";
+                
+        $sql = "SELECT DISTINCT session_id, user_send_id, company_send_id, share_user, last_id, send_at, id FROM messages WHERE company_send_id = :company_id ORDER BY send_at DESC, session_id DESC";
                 $stmt_user = $dbh->prepare($sql_user);
                 $stmt_user->bindParam(':user_send_id', $user_send_id);
                 $stmt_user->execute();
