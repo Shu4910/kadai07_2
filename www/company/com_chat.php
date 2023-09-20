@@ -35,7 +35,8 @@
         $company_id = $company['company_id'];
 
         // セッションIDごとにデータを取得し、send_atの降順で並べます。
-        $sql = "SELECT DISTINCT session_id, user_send_id, company_send_id, share_user, last_id, send_at, id FROM messages WHERE company_send_id = :company_id ORDER BY send_at DESC, session_id DESC";
+        // ここでgo_userカラムも取得
+        $sql = "SELECT DISTINCT session_id, user_send_id, company_send_id, share_user, last_id, send_at, id, go_user FROM messages WHERE company_send_id = :company_id ORDER BY send_at DESC, session_id DESC";
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':company_id', $company_id);
         $stmt->execute();
@@ -58,11 +59,12 @@
         }
         ?>
 
-<ul class="list-group">
+        <ul class="list-group">
             <?php
             foreach ($sessions as $session) :
                 $id = $session['id'];
                 $last_id = $session['last_id'];
+                $go_user = $session['go_user'];  // 追加: go_userカラムの値を取得
 
                 if ($id !== $last_id) {
                     continue;
@@ -76,7 +78,6 @@
 
                 $sql_user = "SELECT kana, types, techo, work, jigyousho, techo_num, mail, tel FROM bizdiverse_user WHERE id = :user_send_id";
                 
-        $sql = "SELECT DISTINCT session_id, user_send_id, company_send_id, share_user, last_id, send_at, id FROM messages WHERE company_send_id = :company_id ORDER BY send_at DESC, session_id DESC";
                 $stmt_user = $dbh->prepare($sql_user);
                 $stmt_user->bindParam(':user_send_id', $user_send_id);
                 $stmt_user->execute();
@@ -91,16 +92,14 @@
                 $tel = $user['tel'];
             ?>
                 <a href="message_details.php?session_id=<?= $session_id ?>" class="list-group-item list-group-item-action">
-                    <!-- id: <?= $id ?><br>
-                    session_id: <?= $session_id ?><br>
-                    company_send_id: <?= $company_send_id ?><br>
-                    user_send_id: <?= $user_send_id ?><br>
-                    last_id: <?= $last_id ?><br> -->
                     ニックネーム: <?= $kana ?><br>
                     <?php
                     if ($share_user == 1) {
                         echo "メール: " . $mail . "<br>";
                         echo "電話番号: " . $tel . "<br>";
+                    }
+                    if ($go_user == 1) {  // 追加: go_userが1の場合、"本通所決定"と表示
+                        echo "本通所決定<br>";
                     }
                     ?>
                     障害種別: <?= $types ?><br>
@@ -110,7 +109,7 @@
             <?php endforeach; ?>
         </ul>
         <div class="button-group"> <!-- ボタンをラップする div -->
-        <button onclick="location.href='dash_com.php'" class="btn btn-primary mt-3">Back</button>
+            <button onclick="location.href='dash_com.php'" class="btn btn-primary mt-3">Back</button>
         </div>
     </div>
     <footer class="text-center mb-4 pt-3">
