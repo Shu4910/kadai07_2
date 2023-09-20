@@ -30,6 +30,11 @@ loadEnv();
 <body class="bg-light">
     <div class="container mt-5">
         <?php
+
+            function convertUrlsToLinks($text) {
+                return preg_replace('@(http(s)?://([-\w]+\.)+[-\w]+(/[-\w ./?%&=]*)?)@', '<a href="$1" target="_blank">$1</a>', $text);
+            }
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             require '../../dbconfig.php'; 
 
@@ -46,7 +51,7 @@ loadEnv();
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
             $sender_id = $row['company_id'];
-            $message_body = $_POST['message_body'];
+            $message_body = convertUrlsToLinks($_POST['message_body']);
             $session_id = $sender_id . "_" . $receiver_id;
 
             $stmt = $conn->prepare("INSERT INTO messages (session_id, company_send_id, user_send_id, message_body, sender_type) VALUES (?, ?, ?, ?, 'company')");
