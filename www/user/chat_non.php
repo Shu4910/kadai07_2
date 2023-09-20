@@ -88,7 +88,7 @@ if ($last_message) {
 }
 
         
-            echo "<a href='message_details.php?session_id=$session_id' class='list-group-item list-group-item-action'>企業名: $company_name<br>$last_message_date</a>";
+            echo "<a href='message_details.php?session_id=$session_id' class='list-group-item list-group-item-action'>施設名: $company_name<br>$last_message_date</a>";
         }
         ?>
         </ul>

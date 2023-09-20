@@ -47,9 +47,9 @@
             <form action="user/index_user.php" method="get" class="mb-3">
                 <button class="btn btn-primary btn-lg login-button" type="submit">個人用ログイン画面</button>
             </form>
-            <!-- 企業用ログイン画面のボタン -->
+            <!-- 施設用ログイン画面のボタン -->
             <form action="company/index_com.php" method="get" class="mb-3">
-                <button class="btn btn-primary btn-lg login-button" type="submit">企業用ログイン画面</button>
+                <button class="btn btn-primary btn-lg login-button" type="submit">施設用ログイン画面</button>
             </form>
         </div>
     </div>

@@ -65,7 +65,7 @@ $stmt->execute();
         $company_name = $company['houjin'];
 
         $subject = "New_Message_from_company(BizDiverse)";
-        $message = "新着メッセージがあります。" . "企業名: " . $company_name . "\n\nメッセージ内容: " . $message_body;
+        $message = "新着メッセージがあります。" . "施設名: " . $company_name . "\n\nメッセージ内容: " . $message_body;
         
         $mailer = new PHPMailer(true);
         try {
