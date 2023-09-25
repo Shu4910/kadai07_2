@@ -8,7 +8,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 $dotenvPath = __DIR__ . '/../../.env';
 if (file_exists($dotenvPath)) {
     $dotenv = Dotenv\Dotenv::createImmutable(dirname($dotenvPath));
-    $dotenv->load();
+    $dotenv->load(); 
 } else {
     // .envファイルが見つからない場合はエラー処理を行うか、適切なデフォルト値をセットします
     // エラー処理の例: die(".envファイルが見つかりません。");
