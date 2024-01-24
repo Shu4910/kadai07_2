@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <p> <a href="../register.php">会員登録するあ</a></p>
+                    <p> <a href="../register.php">会員登録するaa</a></p>
                 </div>
                 <div class="text-center mt-4">
                 <p> <a href="../forgot1.php">パスワードを忘れた</a></p>
