@@ -56,16 +56,14 @@ loadEnv();
 
             $stmt = $conn->prepare("INSERT INTO messages (session_id, company_send_id, user_send_id, message_body, sender_type) VALUES (?, ?, ?, ?, 'company')");
             $stmt->bind_param("ssis", $session_id, $sender_id, $receiver_id, $message_body);
-            $stmt->execute();
 
-            $last_id = $conn->insert_id;
-            $update_stmt = $conn->prepare("UPDATE messages SET last_id = ? WHERE session_id = ?");
-            $update_stmt->bind_param("is", $last_id, $session_id);
-            $update_stmt->execute();
-
-
-            if($stmt->execute()) {
-                echo "<div class='alert alert-success'>Message sent successfully</div>";
+            if ($stmt->execute()) {
+                $last_id = $conn->insert_id;
+                $update_stmt = $conn->prepare("UPDATE messages SET last_id = ? WHERE session_id = ?");
+                $update_stmt->bind_param("is", $last_id, $session_id);
+                $update_stmt->execute();
+            
+                echo "<div class='alert alert-success'>メッセージが送信されました</div>";
             
                 // 受信者のメールアドレスを取得
     $sql = "SELECT mail, tel FROM bizdiverse_user WHERE id = ?";

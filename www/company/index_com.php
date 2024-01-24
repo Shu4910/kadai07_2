@@ -17,7 +17,7 @@
 
         <div class="row justify-content-center">
             <div class="col-md-5">
-                <h2 class="text-center mb-4">BizDiverse企業用<br> ログインページ</h2>
+                <h2 class="text-center mb-4">BizDiverse施設用<br> ログインページ</h2>
                 <div class="card">
                     <div class="card-body">
                         <form action="login_com.php" method="post">
